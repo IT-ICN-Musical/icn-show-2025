@@ -103,7 +103,7 @@ function MobileNavbar({ className }: { className?: string }) {
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               {navItems.map((item, index) => (
-                <DropdownMenuItem asChild>
+                <DropdownMenuItem key={index} asChild>
                   <Link
                     href={item.href}
                     className="py-2 flex flex-row gap-2 items-center focus:bg-accent focus:text-accent-foreground"

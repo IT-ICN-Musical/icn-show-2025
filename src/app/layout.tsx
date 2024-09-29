@@ -1,6 +1,8 @@
 import { mont, safiraMarch } from "@/fonts/font";
 import type { Metadata } from "next";
 
+import { Navbar } from "@/components/navbar";
+
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -15,7 +17,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${mont.variable} ${safiraMarch.variable}`}>
-      <body className={mont.className}>{children}</body>
+      <body className={mont.className}>
+        <div className="relative min-h-screen w-full flex flex-col">
+          <Navbar />
+          {children}
+        </div>
+      </body>
     </html>
   );
 }

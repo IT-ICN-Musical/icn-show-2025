@@ -19,7 +19,6 @@ export default function RootLayout({
     <html lang="en" className={`${mont.variable} ${safiraMarch.variable}`}>
       <body className={mont.className}>
         <div className="relative min-h-screen w-full flex flex-col">
-          <Navbar />
           {children}
         </div>
       </body>

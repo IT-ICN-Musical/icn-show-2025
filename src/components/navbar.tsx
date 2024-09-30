@@ -1,7 +1,7 @@
 import ICNLogo from "@/_assets/logo.png";
 import { cn } from "@/lib/utils";
 import { HamburgerMenuIcon, HomeIcon } from "@radix-ui/react-icons";
-import { Clapperboard, House, Store } from "lucide-react";
+import { Clapperboard, House, Info, Store } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -38,6 +38,11 @@ const navItems = [
     name: "Show",
     href: "/show",
     icon: <Clapperboard width={20} />,
+  },
+  {
+    name: "About Us",
+    href: "/about-us",
+    icon: <Info width={20} />,
   },
 ];
 

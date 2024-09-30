@@ -7,6 +7,17 @@ export interface RequestOptions {
 }
 
 export interface RequestError {
+  success: false;
+  message?: string;
+}
+
+export interface RequestSuccess<T> {
+  success: true;
+  data: any;
+}
+
+interface Response<T> {
+  data: T;
   message?: string;
 }
 
@@ -14,7 +25,7 @@ export async function request<T>({
   method = "GET",
   path,
   body,
-}: RequestOptions): Promise<T | RequestError> {
+}: RequestOptions): Promise<RequestSuccess<T> | RequestError> {
   const base = process.env.BACKEND_API_URL;
 
   const requestUrl = `${base}/${path}`;
@@ -33,11 +44,15 @@ export async function request<T>({
 
   if (!response.ok) {
     return {
+      success: false,
       message: response.statusText,
     };
   }
 
-  const data: T = await response.json();
+  const data: Response<T> = await response.json();
 
-  return data;
+  return {
+    success: true,
+    data: data.data,
+  };
 }

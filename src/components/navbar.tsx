@@ -1,12 +1,10 @@
 import ICNLogo from "@/_assets/logo.png";
 import { cn } from "@/lib/utils";
-import { HamburgerMenuIcon, HomeIcon } from "@radix-ui/react-icons";
+import { HamburgerMenuIcon } from "@radix-ui/react-icons";
 import { Clapperboard, House, Info, Store } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-import Typography from "./typography/typography";
-import { Button } from "./ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,11 +13,9 @@ import {
 } from "./ui/dropdown-menu";
 import {
   NavigationMenu,
-  NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-  NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "./ui/navigation-menu";
 

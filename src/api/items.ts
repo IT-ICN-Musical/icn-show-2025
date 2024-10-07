@@ -70,7 +70,7 @@ export async function fetchGenericDetails(
 ): Promise<RetrieveGenericDetailsResponse> {
   const response = await request<RetrieveGenericDetailsResponse>({
     method: "GET",
-    path: "v2/shop/items/generics/${id}",
+    path: `v2/shop/items/generics/${id}`,
   });
 
   if (!response.success) {

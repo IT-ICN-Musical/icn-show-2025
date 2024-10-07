@@ -3,6 +3,7 @@ type RequestMethod = "GET" | "POST";
 export interface RequestOptions {
   method?: RequestMethod;
   path: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   body?: any;
 }
 
@@ -13,7 +14,7 @@ export interface RequestError {
 
 export interface RequestSuccess<T> {
   success: true;
-  data: any;
+  data: T;
 }
 
 interface Response<T> {

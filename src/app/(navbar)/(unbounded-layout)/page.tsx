@@ -1,3 +1,9 @@
+
+import Image from "next/image";
+
+import Committees from "./committees";
+
 export default async function Home() {
-  return <main className="font-safira-march">Homepage</main>;
+  return <div id="box"><Committees /></div>;
+
 }

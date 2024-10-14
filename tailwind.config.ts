@@ -25,6 +25,7 @@ const config: Config = {
       },
       colors: {
         "icn-grey": "#E4E4E7",
+        "icn-icon-info": "#2563EB",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {

@@ -62,6 +62,8 @@ function Content({
 
   const currentCost = stringToCurrency(currentTicket?.price ?? "0.00") * count;
 
+  const disableButton = selectedCategory === undefined || count <= 0;
+
   const costString = [
     (currentCost / 100).toString(),
     (currentCost % 100).toString().padStart(2, "0"),
@@ -101,7 +103,12 @@ function Content({
                   Add {5 - (count % 5)} more to get Bundle Price
                 </Typography>
               </div>
-              <Counter value={count} setValue={setCount} minValue={0} />
+              <Counter
+                value={count}
+                setValue={setCount}
+                minValue={0}
+                maxValue={currentTicket?.max_order}
+              />
             </div>
             <div className="flex flex-row w-full justify-between py-2 items-center">
               <Typography variant="p">Select your CAT</Typography>
@@ -145,6 +152,7 @@ function Content({
               <Button
                 variant="outline"
                 size="lg"
+                disabled={disableButton}
                 className="border-primary-700 text-primary-700 font-book w-full h-fit py-[10px]"
                 onClick={onAddToCartHandler}
               >
@@ -153,6 +161,7 @@ function Content({
               <Button
                 variant="default"
                 size="lg"
+                disabled={disableButton}
                 className="border-primary-700  w-full font-semibold h-fit py-[10px]"
                 onClick={onBuyNowHandler}
               >
@@ -184,8 +193,16 @@ export function TicketSelection({
 
   const handleCategorySelect = (category: string) => {
     if (category === selectedCategory) {
+      setCount(0);
       setSelectedCategory(undefined);
     } else {
+      const newCategoryMaxOrder = show.tickets?.find(
+        (ticket) => ticket.category === category,
+      )?.max_order;
+      if (newCategoryMaxOrder !== undefined && count > newCategoryMaxOrder) {
+        setCount(newCategoryMaxOrder);
+      }
+
       setSelectedCategory(category);
     }
   };

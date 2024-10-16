@@ -3,7 +3,6 @@ import catB from "@/_assets/store/seats/catB.svg";
 import catC from "@/_assets/store/seats/catC.svg";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
-import { useState } from "react";
 
 import Typography from "@/components/typography/typography";
 

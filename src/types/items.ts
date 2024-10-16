@@ -13,7 +13,7 @@ interface ClientShowTickets {
   max_order: number;
 }
 
-interface ClientClothingSizes {
+export interface ClientClothingSizes {
   item_id: ItemUUID;
   size: string;
   price: string;
@@ -86,7 +86,7 @@ interface ClientBundleItem {
   items?: ClientBundleDetail[];
 }
 
-type ClientClothingItem = ClientClothingItemGeneric<ClientClothingSizes>;
+export type ClientClothingItem = ClientClothingItemGeneric<ClientClothingSizes>;
 
 interface ClientClothingItemGeneric<T> {
   clothing_id?: ClothingUUID;

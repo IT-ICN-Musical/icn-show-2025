@@ -11,7 +11,12 @@ import { SeatCategory } from "@/components/store/seat-category";
 import Typography from "@/components/typography/typography";
 import { Button } from "@/components/ui/button";
 
-import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from "../ui/dialog";
 import { Drawer, DrawerContent, DrawerTrigger } from "../ui/drawer";
 
 type TicketSelectionProps = {
@@ -207,23 +212,25 @@ export function TicketSelection({
     }
   };
 
+  const content = (
+    <Content
+      show={show}
+      count={count}
+      setOpen={setOpen}
+      setCount={setCount}
+      handleCategorySelect={handleCategorySelect}
+      onAddToCart={onAddToCart}
+      onBuyNow={onBuyNow}
+      selectedCategory={selectedCategory}
+      categories={categories}
+    />
+  );
+
   if (!isDesktop) {
     return (
       <Drawer open={open} onOpenChange={setOpen}>
         <DrawerTrigger asChild>{children}</DrawerTrigger>
-        <DrawerContent>
-          <Content
-            show={show}
-            count={count}
-            setOpen={setOpen}
-            setCount={setCount}
-            handleCategorySelect={handleCategorySelect}
-            onAddToCart={onAddToCart}
-            onBuyNow={onBuyNow}
-            selectedCategory={selectedCategory}
-            categories={categories}
-          />
-        </DrawerContent>
+        <DrawerContent>{content}</DrawerContent>
       </Drawer>
     );
   } else {
@@ -231,17 +238,8 @@ export function TicketSelection({
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>{children}</DialogTrigger>
         <DialogContent className="min-w-[40rem]">
-          <Content
-            show={show}
-            count={count}
-            setOpen={setOpen}
-            setCount={setCount}
-            handleCategorySelect={handleCategorySelect}
-            onAddToCart={onAddToCart}
-            onBuyNow={onBuyNow}
-            selectedCategory={selectedCategory}
-            categories={categories}
-          />
+          <DialogTitle></DialogTitle>
+          {content}
         </DialogContent>
       </Dialog>
     );

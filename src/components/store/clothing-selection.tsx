@@ -8,6 +8,7 @@ import {
   ClientClothingSizes,
   ClientShowItem,
 } from "@/types/items";
+import { DialogTitle } from "@radix-ui/react-dialog";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -224,7 +225,10 @@ export function ClothingSelection({
     return (
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>{children}</DialogTrigger>
-        <DialogContent className="min-w-[40rem]">{content}</DialogContent>
+        <DialogContent className="min-w-[40rem]">
+          <DialogTitle></DialogTitle>
+          {content}
+        </DialogContent>
       </Dialog>
     );
   }

@@ -27,7 +27,7 @@ export function Counter({ value, setValue, maxValue, minValue }: CounterProps) {
       <Button
         variant="outline"
         className={cn(
-          "bg-icn-grey w-8 aspect-square p-0",
+          "bg-icn-grey w-fit aspect-square p-0",
           minValue !== undefined && value <= minValue && "opacity-50",
         )}
         disabled={minValue !== undefined ? value <= minValue : false}
@@ -42,7 +42,7 @@ export function Counter({ value, setValue, maxValue, minValue }: CounterProps) {
       <Button
         variant="outline"
         className={cn(
-          "bg-icn-grey w-8 aspect-square p-0",
+          "bg-icn-grey w-fit aspect-square p-0",
           maxValue !== undefined && value >= maxValue && "opacity-50",
         )}
         disabled={maxValue !== undefined ? value >= maxValue : false}

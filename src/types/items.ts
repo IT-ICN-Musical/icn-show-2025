@@ -60,7 +60,7 @@ interface ClientBundleDetail {
 }
 
 // Generic types
-type ClientShowItem = ClientShowItemGeneric<ClientShowTickets>;
+export type ClientShowItem = ClientShowItemGeneric<ClientShowTickets>;
 
 interface ClientShowItemGeneric<T> {
   show_id?: ShowUUID;

@@ -10,6 +10,7 @@ export const TypographyVariant = {
   h6: "h6",
   p: "p",
   p1: "p1",
+  p2: "p2",
 } as const;
 
 export const TypographyColor = {
@@ -49,6 +50,7 @@ export default function Typography<T extends React.ElementType>({
           variant === "h6" && ["text-lg"],
           variant === "p" && ["text-base"],
           variant === "p1" && ["text-sm"],
+          variant === "p2" && ["text-xs"],
         ],
 
         //#region  //*=========== Color ===========

@@ -1,3 +1,5 @@
+import Committees from "src/app/(navbar)/(unbounded-layout)/committees.tsx"
+
 export default function Show() {
   return <main className="font-safira-march">
     <main className="font-mont">

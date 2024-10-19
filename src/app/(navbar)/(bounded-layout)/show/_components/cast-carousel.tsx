@@ -66,15 +66,15 @@ const CastCarousel = () => {
               className="mb-8"
               onClick={() => handleSlideClick(index)}
             >
-              <div className="w-auto h-74 pt-10 transition-transform transform hover:scale-105 duration-300">
-                <div className="relative w-64 h-64 bg-white border border-primary-700 rounded-lg overflow-visible pt-15">
+              <div className="w-auto h-74 pt-10">
+                <div className="relative w-64 h-64 bg-white border border-primary-700 rounded-lg overflow-visible pt-15 group">
                   <div className="absolute inset-x-0 -top-8 h-[calc(65%+3rem)] overflow-visible">
                     <Image
                       src={cast.image}
                       alt={cast.name}
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      className="rounded-t-lg object-cover object-top"
+                      className="rounded-t-lg object-cover object-top transition-transform duration-300 group-hover:scale-110"
                     />
                   </div>
                   <div className="absolute bottom-0 w-full h-[35%] bg-primary-700 p-3 text-white rounded-b-lg">

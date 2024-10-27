@@ -233,7 +233,7 @@ export default function LandingPage() {
         className="absolute top-0 z-10 main-foreground font-safira-march h-screen w-screen flex items-center justify-center gap-40 count-down"
         initial={{ opacity: 0 }}
       >
-        <div>
+        <div className="flex flex-col items-center justify-center text-center">
           <Typography variant="h1" className="text-white">
             00
           </Typography>
@@ -241,7 +241,7 @@ export default function LandingPage() {
             Days
           </Typography>
         </div>
-        <div>
+        <div className="flex flex-col items-center justify-center text-center">
           <Typography variant="h1" className="text-white">
             00
           </Typography>
@@ -249,7 +249,7 @@ export default function LandingPage() {
             Hours
           </Typography>
         </div>
-        <div>
+        <div className="flex flex-col items-center justify-center text-center">
           <Typography variant="h1" className="text-white">
             00
           </Typography>
@@ -257,7 +257,7 @@ export default function LandingPage() {
             Minutes
           </Typography>
         </div>
-        <div>
+        <div className="flex flex-col items-center justify-center text-center">
           <Typography variant="h1" className="text-white">
             00
           </Typography>

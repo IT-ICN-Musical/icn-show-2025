@@ -6,6 +6,7 @@ import BundleDummyImage from "@/app/(navbar)/(bounded-layout)/store/_assets/bund
 import TicketTemplate from "@/app/(navbar)/(bounded-layout)/store/_assets/ticket-template.svg";
 
 import Typography from "@/components/typography/typography";
+import { Button } from "@/components/ui/button";
 
 export function BundleCard({
   name,
@@ -13,6 +14,7 @@ export function BundleCard({
   description,
   price,
   originalPrice,
+  onClickCart,
 }: BundleCardProps) {
   return (
     <div className="relative px-6 w-[40rem]">
@@ -49,10 +51,12 @@ export function BundleCard({
           </div>
           <div className="flex justify-between">
             <BundleCardPrice price={price} originalPrice={originalPrice} />
-            <ShoppingCart
-              className="bg-primary-700 text-white p-1 rounded-md"
-              size={32}
-            />
+            <Button
+              className="bg-primary-700 text-white rounded-md p-[0.4rem] aspect-square"
+              onClick={onClickCart}
+            >
+              <ShoppingCart className="" size={28} />
+            </Button>
           </div>
         </div>
       </div>
@@ -79,6 +83,7 @@ type BundleCardProps = {
   //   image: string;
   name: string;
   time: string;
+  onClickCart?: () => void;
   description: string;
   price: string;
   originalPrice?: string;

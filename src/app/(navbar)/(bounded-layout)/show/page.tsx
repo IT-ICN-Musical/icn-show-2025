@@ -1,3 +1,12 @@
+import CastCarousel from "./_components/cast-carousel";
+
 export default function Show() {
-  return <main className="font-safira-march">Show page</main>;
+  return (
+    <main className="font-safira-march">
+      <p>Show page</p>
+      <div className="my-2">
+        <CastCarousel />
+      </div>
+    </main>
+  );
 }

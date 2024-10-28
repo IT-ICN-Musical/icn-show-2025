@@ -32,7 +32,7 @@ export default function Checkout() {
   ]);
 
   return (
-    <div className="flex flex-col min-h-screen h-screen">
+    <div className="relative flex flex-col min-h-screen h-screen">
       <div className="bg-zinc-50 w-full flex-grow ">
         <div className="top-0" style={{ zIndex: 3 }}>
           <button

@@ -1,25 +1,32 @@
+type UUID = string;
+type ItemUUID = UUID;
+type ShowUUID = UUID;
+type ClothingUUID = UUID;
+type BundleUUID = UUID;
+type GenericUUID = UUID;
+
 // Details
 interface ClientShowTickets {
-  item_id?: string;
+  item_id: ItemUUID;
   category: string;
   price: string;
   max_order: number;
 }
 
 interface ClientClothingSizes {
-  item_id?: string;
+  item_id: ItemUUID;
   size: string;
   price: string;
   max_order: number;
 }
 
 interface ClientGenericDetail {
-  item_id?: string;
+  item_id: ItemUUID;
 }
 
 // Bundle types
 interface ClientBundleStaticItem {
-  item_id: string;
+  item_id: ItemUUID;
   old_price: string;
   price: string;
   max_order: number;
@@ -27,7 +34,7 @@ interface ClientBundleStaticItem {
 }
 
 interface ClientBundleShowTicket {
-  item_id?: string;
+  item_id?: ItemUUID;
   category: string;
   old_price: string;
   price: string;
@@ -35,7 +42,7 @@ interface ClientBundleShowTicket {
 }
 
 interface ClientBundleClothingSize {
-  item_id: string;
+  item_id: ItemUUID;
   size: string;
   old_price: string;
   price: string;
@@ -56,7 +63,7 @@ interface ClientBundleDetail {
 type ClientShowItem = ClientShowItemGeneric<ClientShowTickets>;
 
 interface ClientShowItemGeneric<T> {
-  show_id?: string;
+  show_id?: ShowUUID;
   name: string;
   min_price: string;
   max_order: number;
@@ -69,7 +76,7 @@ interface ClientShowItemGeneric<T> {
 }
 
 interface ClientBundleItem {
-  bundle_id?: string;
+  bundle_id?: BundleUUID;
   name: string;
   old_min_price: string;
   min_price: string;
@@ -82,7 +89,7 @@ interface ClientBundleItem {
 type ClientClothingItem = ClientClothingItemGeneric<ClientClothingSizes>;
 
 interface ClientClothingItemGeneric<T> {
-  clothing_id?: string;
+  clothing_id?: ClothingUUID;
   name: string;
   min_price: string;
   max_order: number;
@@ -93,7 +100,7 @@ interface ClientClothingItemGeneric<T> {
 }
 
 interface ClientGenericItem {
-  generic_id?: string;
+  generic_id?: GenericUUID;
   name: string;
   price: string;
   max_order: number;

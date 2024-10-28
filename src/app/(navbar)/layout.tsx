@@ -1,5 +1,3 @@
-import { mont, safiraMarch } from "@/fonts/font";
-
 import { Navbar } from "@/components/navbar";
 
 export default function Layout({

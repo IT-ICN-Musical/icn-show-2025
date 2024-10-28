@@ -1,12 +1,19 @@
+import { cn } from "@/lib/utils";
 import Image from "next/image";
+import React from "react";
 
 import MerchandiseDummyImage from "@/app/(navbar)/(bounded-layout)/store/_assets/merchandise-dummy-image.png";
 
 import Typography from "@/components/typography/typography";
 
-export function MerchandiseCard({ name, price }: MerchandiseCardProps) {
+export function MerchandiseCard({
+  name,
+  price,
+  className,
+  ...rest
+}: MerchandiseCardProps) {
   return (
-    <div className="flex flex-col gap-1">
+    <div className={cn("flex flex-col gap-1", className)} {...rest}>
       <Image
         src={MerchandiseDummyImage}
         alt="merchandise-dummy-image"
@@ -23,4 +30,4 @@ export function MerchandiseCard({ name, price }: MerchandiseCardProps) {
 type MerchandiseCardProps = {
   name: string;
   price: string;
-};
+} & React.HTMLAttributes<HTMLDivElement>;

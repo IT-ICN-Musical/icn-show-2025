@@ -64,33 +64,3 @@
     @apply bg-background text-foreground;
   }
 }
-#tablinks {
-  padding:10px;
-  flex: 0 0 auto;
-  margin:10px;
-  font-size:18px;
-  border-radius:10px;
-}
-
-#tablinks2 {
-  padding:10px;
-  flex: 0 0 auto;
-  margin:10px;
-  font-size:18px;
-  border-radius:50px;
-}
-
-#tab {
-  display:flex;
-  max-width:fit-content;
-  overflow-x:scroll;
-  max-height:max-content;
-  scrollbar-width:none;
-}
-
-#box {
-  max-width:80vw;
-  margin-top:20px;
-  margin-bottom:20px;
-  margin-left:10vw;
-}

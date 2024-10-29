@@ -106,43 +106,35 @@ export default function Committees() {
     setFilteredCommittees(committees.filter(committee => committee.type === selectedType && committee.name === name));
   };
 
-  const buttonStyle = (isActive) => ({
-    backgroundColor: isActive ? '#7e4e70' : 'transparent',
-    color: isActive ? 'white' : '#7e4e70',
-  });
-
-  const buttonStyle2 = (isActive) => ({
-    backgroundColor: isActive ? '#ffffff' : '#a3aaa8',
-    color: isActive ? '#7e4e70' : '#000000',
-    border: isActive ? '3px solid rgba(126, 78, 128, 1)' :  '3px solid rgba(163, 170, 168, 1)'
-  });
+  const buttonStyle = (isActive) => isActive? "bg-primary-700 text-white rounded-[10px] text-[18px] flex-none p-[10px] m-[10px]" : "bg-transparent text-primary-700 rounded-[10px] text-[18px] flex-none p-[10px] m-[10px]";
+  const buttonStyle2 = (isActive) => isActive? "bg-white text-primary-700 border-2 border-primary-700 rounded-[40px] text-[18px] flex-none p-[10px] m-[10px]" : "bg-secondary-300 text-black rounded-[40px] text-[18px] flex-none p-[10px] m-[10px]";
 
   return (
     <main>
       <main className="font-safira-march">Committees<br></br></main>
       <div className="--font-mont">
-      <div id="tab">
-        <button id="tablinks2" onClick={() => handleTypeSelection("artprod")} style={buttonStyle2(selectedType === "artprod")}>Arts & Productions</button>
-        <button id="tablinks2" onClick={() => handleTypeSelection("extaff")} style={buttonStyle2(selectedType === "extaff")}>External Affairs</button>
+      <div className="flex max-w-fit overflow-x-auto max-h-max">
+        <button id="tablinks2" onClick={() => handleTypeSelection("artprod")} className={buttonStyle2(selectedType === "artprod")}>Arts & Productions</button>
+        <button id="tablinks2" onClick={() => handleTypeSelection("extaff")} className={buttonStyle2(selectedType === "extaff")}>External Affairs</button>
       </div>
       <div>
-        {selectedType === "artprod" && (<div id="tab">
-          <button id="tablinks" onClick={() => handleNameSelection("TOPS & MC")} style={buttonStyle(selectedName === "TOPS & MC")}>TOPS & MC</button>
-          <button id="tablinks" onClick={() => handleNameSelection("Actor/Actress")} style={buttonStyle(selectedName === "Actor/Actress")}>Actor/Actress</button>
-          <button id="tablinks" onClick={() => handleNameSelection("Musician")} style={buttonStyle(selectedName === "Musician")}>Musician</button>
-          <button id="tablinks" onClick={() => handleNameSelection("Dancer")} style={buttonStyle(selectedName === "Dancer")}>Dancer</button>
-          <button id="tablinks" onClick={() => handleNameSelection("Makeup & Wardrobe")} style={buttonStyle(selectedName === "Makeup & Wardrobe")}>Makeup & Wardrobe</button>
-          <button id="tablinks" onClick={() => handleNameSelection("Sound Effect Designer")} style={buttonStyle(selectedName === "Sound Effect Designer")}>Sound Effect Designer</button>
-          <button id="tablinks" onClick={() => handleNameSelection("Sets, Property & Equipment")} style={buttonStyle(selectedName === "Sets, Property & Equipment")}>Sets, Property & Equipment</button>
-          <button id="tablinks" onClick={() => handleNameSelection("Assistant State Manager")} style={buttonStyle(selectedName === "Assistant State Manager")}>Assistant State Manager</button>
+        {selectedType === "artprod" && (<div className="flex max-w-fit overflow-x-auto max-h-max">
+          <button id="tablinks" onClick={() => handleNameSelection("TOPS & MC")} className={buttonStyle(selectedName === "TOPS & MC")}>TOPS & MC</button>
+          <button id="tablinks" onClick={() => handleNameSelection("Actor/Actress")} className={buttonStyle(selectedName === "Actor/Actress")}>Actor/Actress</button>
+          <button id="tablinks" onClick={() => handleNameSelection("Musician")} className={buttonStyle(selectedName === "Musician")}>Musician</button>
+          <button id="tablinks" onClick={() => handleNameSelection("Dancer")} className={buttonStyle(selectedName === "Dancer")}>Dancer</button>
+          <button id="tablinks" onClick={() => handleNameSelection("Makeup & Wardrobe")} className={buttonStyle(selectedName === "Makeup & Wardrobe")}>Makeup & Wardrobe</button>
+          <button id="tablinks" onClick={() => handleNameSelection("Sound Effect Designer")} className={buttonStyle(selectedName === "Sound Effect Designer")}>Sound Effect Designer</button>
+          <button id="tablinks" onClick={() => handleNameSelection("Sets, Property & Equipment")} className={buttonStyle(selectedName === "Sets, Property & Equipment")}>Sets, Property & Equipment</button>
+          <button id="tablinks" onClick={() => handleNameSelection("Assistant State Manager")} className={buttonStyle(selectedName === "Assistant State Manager")}>Assistant State Manager</button>
           </div>
         )
         }
-        {selectedType === "extaff" && (<div id="tab">
-          <button id="tablinks" onClick={() => handleNameSelection("TOPS & MC")} style={buttonStyle(selectedName === "TOPS & MC")}>TOPS & MC</button>
-          <button id="tablinks" onClick={() => handleNameSelection("Corporate Liaison")} style={buttonStyle(selectedName === "Corporate Liaison")}>Corporate Liaison</button>
-          <button id="tablinks" onClick={() => handleNameSelection("Marketing & Ticketing")} style={buttonStyle(selectedName === "Marketing & Ticketing")}>Marketing & Ticketing</button>
-          <button id="tablinks" onClick={() => handleNameSelection("Publicity, Publication & IT (PPIT)")} style={buttonStyle(selectedName === "Publicity, Publication & IT (PPIT)")}>Publicity, Publication & IT</button>
+        {selectedType === "extaff" && (<div className="flex max-w-fit overflow-x-auto max-h-max">
+          <button id="tablinks" onClick={() => handleNameSelection("TOPS & MC")} className={buttonStyle(selectedName === "TOPS & MC")}>TOPS & MC</button>
+          <button id="tablinks" onClick={() => handleNameSelection("Corporate Liaison")} className={buttonStyle(selectedName === "Corporate Liaison")}>Corporate Liaison</button>
+          <button id="tablinks" onClick={() => handleNameSelection("Marketing & Ticketing")} className={buttonStyle(selectedName === "Marketing & Ticketing")}>Marketing & Ticketing</button>
+          <button id="tablinks" onClick={() => handleNameSelection("Publicity, Publication & IT (PPIT)")} className={buttonStyle(selectedName === "Publicity, Publication & IT (PPIT)")}>Publicity, Publication & IT</button>
           </div>
         )
         }

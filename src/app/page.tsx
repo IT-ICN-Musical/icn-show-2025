@@ -1,8 +1,19 @@
 "use client";
 
-import { MotionConfig, type Variants, motion, useAnimate } from "framer-motion";
+import {
+  MotionConfig,
+  type Variants,
+  animate,
+  motion,
+  useAnimate,
+  useMotionValue,
+  useMotionValueEvent,
+  useScroll,
+  useTransform,
+} from "framer-motion";
+import { ReactLenis } from "lenis/dist/lenis-react";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import Typography from "@/components/typography/typography";
 import { Button } from "@/components/ui/button";
@@ -14,258 +25,390 @@ import IcnLogo from "./_assets/icn-logo.png";
 import LeftForeground from "./_assets/left-foreground.png";
 import MainForeground from "./_assets/main-foreground.png";
 import RightForeground from "./_assets/right-foreground.png";
+import Countdown from "./_components/countdown";
+import Descriptions from "./_components/descriptions";
+import Sponsors from "./_components/sponsors";
+
+const animationOrder = {
+  initial: 0,
+  bottomInitial: 0.07,
+  animation1: 0.28,
+  showLogo: 0.29,
+  scrollSpace1: 0.36,
+  animation2: 0.51,
+  scrollSpace2: 0.58,
+  animation3: 0.73,
+  scrollSpace3: 0.79,
+  animation4: 0.94,
+  scrollSpace4: 1,
+};
 
 export default function LandingPage() {
-  const [scope, animate] = useAnimate();
+  const targetRef = useRef<HTMLDivElement | null>(null);
+  const autoScrollProgress = useMotionValue(0);
+  const [autoAnimationComplete, setAutoAnimationComplete] = useState(false);
+  const combinedScrollProgress = useMotionValue(0);
 
-  const goToPageTwo = () => {
-    animate(
-      ".background1",
-      {
-        opacity: 0,
-      },
-      { duration: 2.5 },
-    );
-    animate(
-      ".cave",
-      {
-        opacity: 0,
-      },
-      { duration: 2.5 },
-    );
-    animate(
-      ".icn-logo",
-      {
-        opacity: 0,
-      },
-      { duration: 2.5 },
-    );
-    animate(
-      ".icn-logo",
-      {
-        opacity: 0,
-      },
-      { duration: 2.5 },
-    );
-    animate(
-      ".first-button",
-      {
-        opacity: 0,
-      },
-      { duration: 2.5 },
-    );
-    animate(
-      ".right-foreground",
-      {
-        opacity: 0,
-        transform: "translateX(20%)",
-      },
-      {
-        duration: 2.5,
-      },
-    );
-    animate(
-      ".main-foreground",
-      {
-        opacity: 0,
-      },
-      { duration: 2.5 },
-    );
-    animate(
-      ".left-foreground",
-      {
-        scaleX: 1.05,
-        transform: "translateX(0)",
-      },
-      {
-        duration: 2.5,
-      },
-    );
-    animate(
-      ".synopsis",
-      {
-        opacity: 1,
-      },
-      { duration: 2.5 },
-    );
-  };
+  const remainingScrollRange = 1 - animationOrder.showLogo;
 
-  const goToPageThree = () => {
-    animate(
-      ".right-foreground",
-      {
-        opacity: 1,
-        transform: "translateX(0)",
-      },
-      { duration: 2.5 },
-    );
-    animate(
-      ".left-foreground",
-      {
-        opacity: 0,
-        transform: "translateX(-10%)",
-      },
-      { duration: 2.5 },
-    );
-    animate(
-      ".synopsis",
-      {
-        opacity: 0,
-      },
-      { duration: 2.5 },
-    );
-    animate(
-      ".sponsors",
-      {
-        opacity: 1,
-      },
-      { duration: 2.5 },
-    );
-  };
+  const { scrollYProgress } = useScroll({
+    target: targetRef,
+    offset: ["start end", "end end"],
+  });
 
-  const goToPageFour = () => {
-    animate(".count-down", { opacity: 1 }, { duration: 2.5 });
-    animate(".sponsors", { opacity: 0 }, { duration: 2.5 });
-    animate(
-      ".left-foreground",
-      { opacity: 1, transform: "translateX(-10%)" },
-      { duration: 2.5 },
-    );
-    animate(
-      ".right-foreground",
-      { opacity: 1, transform: "translateX(5%)" },
-      { duration: 2.5 },
-    );
-    animate(".hour-glass", { opacity: 1 }, { duration: 2.5 });
-  };
+  useEffect(() => {
+    const handleWheel = (e: WheelEvent) => {
+      if (!autoAnimationComplete) {
+        e.preventDefault();
+      }
+    };
+
+    window.addEventListener("wheel", handleWheel, { passive: false });
+
+    return () => {
+      window.removeEventListener("wheel", handleWheel);
+    };
+  }, [autoAnimationComplete]);
+
+  useEffect(() => {
+    const startAutoAnimation = async () => {
+      await animate(autoScrollProgress, animationOrder.showLogo, {
+        duration: 4,
+        ease: [0.16, 1, 0.3, 1],
+        onUpdate: (value) => {
+          combinedScrollProgress.set(value);
+        },
+        onComplete: () => {
+          setAutoAnimationComplete(true);
+        },
+      });
+    };
+
+    startAutoAnimation();
+  }, []);
+
+  useEffect(() => {
+    if (autoAnimationComplete) {
+      const unsubscribe = scrollYProgress.on("change", (latest) => {
+        const mappedProgress =
+          animationOrder.showLogo + latest * remainingScrollRange;
+        combinedScrollProgress.set(mappedProgress);
+      });
+
+      return () => unsubscribe();
+    }
+  }, [autoAnimationComplete, scrollYProgress]);
+
+  const bgPosition = useTransform(combinedScrollProgress, (pos) =>
+    pos >= 0.46 ? "relative" : "sticky",
+  );
+
+  const initialBgScale = useTransform(
+    combinedScrollProgress,
+    [animationOrder.bottomInitial, animationOrder.animation1],
+    [2, 1],
+  );
+
+  const bgY = useTransform(
+    combinedScrollProgress,
+    [animationOrder.bottomInitial, animationOrder.animation1],
+    ["-60%", "0%"],
+  );
+
+  const bgOpacity = useTransform(
+    combinedScrollProgress,
+    [animationOrder.scrollSpace1, animationOrder.scrollSpace1 + 0.07],
+    [1, 0],
+  );
+
+  const cavePosition = useTransform(combinedScrollProgress, (pos) =>
+    pos >= 0.46 ? "relative" : "fixed",
+  );
+
+  const caveScale = useTransform(
+    combinedScrollProgress,
+    [animationOrder.bottomInitial, animationOrder.animation1],
+    [3, 1],
+  );
+
+  const leftForegroundScale = useTransform(
+    combinedScrollProgress,
+    [animationOrder.bottomInitial, animationOrder.animation1],
+    [3, 1],
+  );
+
+  const leftForegroundX = useTransform(
+    combinedScrollProgress,
+    [
+      animationOrder.initial,
+      animationOrder.bottomInitial,
+      animationOrder.animation1,
+      animationOrder.showLogo,
+      animationOrder.scrollSpace1,
+      animationOrder.animation2,
+      animationOrder.scrollSpace2,
+      animationOrder.animation3,
+      animationOrder.scrollSpace3,
+      animationOrder.animation4,
+      animationOrder.scrollSpace4,
+    ],
+    [
+      "-30%",
+      "-30%",
+      "-15%",
+      "-15%",
+      "-15%",
+      "0%",
+      "0%",
+      "-60%",
+      "-60%",
+      "-10%",
+      "-10%",
+    ],
+  );
+
+  const rightForegroundScale = useTransform(
+    combinedScrollProgress,
+    [animationOrder.bottomInitial, animationOrder.animation1],
+    [3, 1],
+  );
+
+  const rightForegroundX = useTransform(
+    combinedScrollProgress,
+    [
+      animationOrder.initial,
+      animationOrder.bottomInitial,
+      animationOrder.animation1,
+      animationOrder.showLogo,
+      animationOrder.scrollSpace1,
+      animationOrder.animation2,
+      animationOrder.scrollSpace2,
+      animationOrder.animation3,
+      animationOrder.scrollSpace3,
+      animationOrder.animation4,
+      animationOrder.scrollSpace4,
+    ],
+    ["30%", "30%", "0%", "0%", "0%", "80%", "80%", "0%", "0%", "0%", "0%"],
+  );
+
+  const logoScale = useTransform(
+    combinedScrollProgress,
+    [animationOrder.animation1, animationOrder.showLogo],
+    [3, 1],
+  );
+
+  const logoOpacity = useTransform(
+    combinedScrollProgress,
+    [
+      animationOrder.animation1,
+      animationOrder.showLogo,
+      animationOrder.scrollSpace1,
+      animationOrder.scrollSpace1 + 0.07,
+    ],
+    [0, 1, 1, 0],
+  );
+
+  const logoX = useTransform(
+    combinedScrollProgress,
+    [
+      animationOrder.animation1,
+      animationOrder.scrollSpace1,
+      animationOrder.animation2,
+      animationOrder.scrollSpace2,
+    ],
+    ["-50%", "-50%", "-50%", "100%"],
+  );
+
+  const logoY = useTransform(
+    combinedScrollProgress,
+    [
+      animationOrder.animation1,
+      animationOrder.scrollSpace1,
+      animationOrder.animation2,
+      animationOrder.scrollSpace2,
+    ],
+    ["-40%", "-40%", "-40%", "100%"],
+  );
+
+  const descriptionX = useTransform(
+    combinedScrollProgress,
+    [
+      animationOrder.scrollSpace1,
+      animationOrder.animation2,
+      animationOrder.scrollSpace2,
+      animationOrder.scrollSpace2 + 0.07,
+    ],
+    ["0%", "90%", "90%", "0%"],
+  );
+
+  const descriptionPosition = useTransform(combinedScrollProgress, (pos) =>
+    pos >= animationOrder.animation3 || pos < animationOrder.scrollSpace1
+      ? "relative"
+      : "fixed",
+  );
+
+  const descriptionOpacity = useTransform(
+    combinedScrollProgress,
+    [
+      animationOrder.scrollSpace1,
+      animationOrder.animation2,
+      animationOrder.scrollSpace2,
+      animationOrder.scrollSpace2 + 0.07,
+    ],
+    [0, 1, 1, 0],
+  );
+
+  const sponsorsX = useTransform(
+    combinedScrollProgress,
+    [
+      animationOrder.scrollSpace2,
+      animationOrder.animation3,
+      animationOrder.scrollSpace3,
+      animationOrder.scrollSpace3 + 0.07,
+    ],
+    ["0%", "-30%", "-30%", "0%"],
+  );
+
+  const sponsorsPosition = useTransform(combinedScrollProgress, (pos) =>
+    pos >= animationOrder.animation4 || pos < animationOrder.scrollSpace2
+      ? "relative"
+      : "fixed",
+  );
+
+  const sponsorsOpacity = useTransform(
+    combinedScrollProgress,
+    [
+      animationOrder.scrollSpace2,
+      animationOrder.animation3,
+      animationOrder.scrollSpace3,
+      animationOrder.scrollSpace3 + 0.07,
+    ],
+    [0, 1, 1, 0],
+  );
+
+  const sponsorScale = useTransform(
+    combinedScrollProgress,
+    [
+      animationOrder.scrollSpace2,
+      animationOrder.animation3,
+      animationOrder.scrollSpace3,
+      animationOrder.scrollSpace3 + 0.07,
+    ],
+    [0.3, 1, 1, 0.5],
+  );
+
+  const countdownPosition = useTransform(combinedScrollProgress, (pos) =>
+    pos < animationOrder.scrollSpace3 ? "relative" : "fixed",
+  );
+
+  const countdownOpacity = useTransform(
+    combinedScrollProgress,
+    [
+      animationOrder.scrollSpace3,
+      animationOrder.animation4,
+      animationOrder.scrollSpace4,
+    ],
+    [0, 1, 1],
+  );
+
+  const countdownScale = useTransform(
+    combinedScrollProgress,
+    [animationOrder.scrollSpace3, animationOrder.animation4],
+    [0.3, 1],
+  );
+
   return (
-    <div
-      className="w-screen h-screen relative overflow-hidden bg-primary-800"
-      ref={scope}
-    >
-      <MotionConfig>
-        <Image
-          src={Background1}
-          alt="background-image"
-          className="w-screen h-screen object-cover absolute top-0 background1"
-        />
-
-        <Image
-          src={Cave}
-          alt="cave"
-          className="h-screen absolute z-10 left-[50%] -translate-x-[50%] cave"
-        />
-        <div className="absolute left-[50%] -translate-x-[50%] z-30 top-[50%] -translate-y-[50%] flex flex-col items-center justify-center gap-8">
-          <Image src={IcnLogo} alt="icn-logo" className="w-[15rem] icn-logo" />
-          <Button
-            className="border border-white font-safira-march z-30 first-button"
-            onClick={goToPageTwo}
-          >
-            Scroll down
-          </Button>
-        </div>
-        <Image
-          src={LeftForeground}
-          alt="left-foreground"
-          className="absolute left-0 h-screen top-0 z-20 -translate-x-[10%] left-foreground"
-        />
-        <Image
-          src={RightForeground}
-          alt="right-foreground"
-          className="absolute right-0 h-screen top-0 z-20 translate-x-[5%] right-foreground"
-        />
-        <Image
-          src={MainForeground}
-          alt="main-foreground"
-          className="absolute top-0 w-screen h-screen z-10 main-foreground"
-        />
-      </MotionConfig>
-      <motion.div
-        className="w-screen h-screen flex items-center justify-end synopsis top-0"
-        initial={{ opacity: 0 }}
-      >
-        <div className="flex items-center flex-col justify-end w-8/12 z-30 absolute">
-          <div className="text-white w-3/6">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Soluta
-            magnam nam omnis nulla iure culpa incidunt, beatae mollitia
-            perferendis officia, ut eveniet rerum aut aliquam facilis esse?
-            Quibusdam, laborum! Temporibus vero delectus ea! Quia nulla optio
-            autem corporis quam sunt eveniet, natus quisquam sed voluptas, nam
-            odio earum esse quasi vitae velit numquam eligendi? Rerum neque
-            praesentium iste molestiae repudiandae?
+    <MotionConfig reducedMotion="never">
+      <ReactLenis root>
+        <section ref={targetRef}>
+          <div className="relative h-[1000vh] bg-primary-800">
+            <motion.img
+              src={Background1.src}
+              alt="backround-image"
+              style={{
+                scale: initialBgScale,
+                position: bgPosition,
+                y: bgY,
+                opacity: bgOpacity,
+              }}
+              className="min-h-screen w-screen object-cover object-bottom top-0 overflow-hidden"
+            />
+            <motion.img
+              src={Cave.src}
+              alt="cave"
+              style={{
+                scale: caveScale,
+                opacity: bgOpacity,
+                position: cavePosition,
+              }}
+              className="min-h-screen object-bottom top-0 overflow-hidden"
+            />
+            <motion.img
+              src={LeftForeground.src}
+              alt="left-foreground"
+              style={{
+                x: leftForegroundX,
+                scale: leftForegroundScale,
+              }}
+              className="min-h-screen object-cover object-bottom fixed left-0 top-0 overflow-hidden"
+            />
+            <motion.img
+              src={RightForeground.src}
+              alt="right-foreground"
+              style={{
+                x: rightForegroundX,
+                scale: rightForegroundScale,
+              }}
+              className="min-h-screen object-cover object-bottom fixed right-0 top-0 overflow-hidden"
+            />
+            <motion.div
+              style={{
+                scale: logoScale,
+                opacity: logoOpacity,
+                x: logoX,
+                y: logoY,
+              }}
+              className="object-bottom fixed top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 overflow-hidden flex flex-col"
+            >
+              <img src={IcnLogo.src} alt="cave" />
+              <p className="font-safira-march text-primary-800 items-center text-center pt-5">
+                Scroll Down
+              </p>
+            </motion.div>
+            <motion.div
+              style={{
+                x: descriptionX,
+                position: descriptionPosition,
+                opacity: descriptionOpacity,
+              }}
+              className="top-[35vh] left-[10vw] w-[40vw]"
+            >
+              <Descriptions />
+            </motion.div>
+            <motion.div
+              style={{
+                scale: sponsorScale,
+                opacity: sponsorsOpacity,
+                position: sponsorsPosition,
+                x: sponsorsX,
+              }}
+              className="w-[70vw] top-[20vh] right-[10vw]"
+            >
+              <Sponsors />
+            </motion.div>
+            <motion.div
+              style={{
+                opacity: countdownOpacity,
+                scale: countdownScale,
+                position: countdownPosition,
+              }}
+              className="w-screen h-screen top-0"
+            >
+              <Countdown />
+            </motion.div>
           </div>
-          <Button
-            className="border border-white font-safira-march z-30 second-button"
-            onClick={goToPageThree}
-          >
-            Buy Tickets
-          </Button>
-        </div>
-      </motion.div>
-      <motion.div
-        className="w-screen h-screen items-center justify-start flex sponsors absolute top-0"
-        initial={{ opacity: 0 }}
-      >
-        <div className="flex-col flex gap-20 items-center justify-center w-8/12">
-          <Typography variant="h2" className="font-safira-march text-white">
-            Sponsors
-          </Typography>
-          <div className="flex gap-4 flex-wrap w-[40rem] justify-center">
-            {new Array(8).fill(0).map((_, index) => (
-              <div key={index} className="w-1/5 aspect-square bg-white"></div>
-            ))}
-          </div>
-          <Button
-            className="border border-white font-safira-march z-30 second-button"
-            onClick={goToPageFour}
-          >
-            Go Down (temporary)
-          </Button>
-        </div>
-      </motion.div>
-      <motion.div
-        className="absolute top-0 right-0 w-screen h-screen flex items-center justify-center hour-glass"
-        initial={{ opacity: 0 }}
-      >
-        <Image src={HourGlass} alt="hour-glass" />
-      </motion.div>
-      <motion.div
-        className="absolute top-0 z-10 main-foreground font-safira-march h-screen w-screen flex items-center justify-center gap-40 count-down"
-        initial={{ opacity: 0 }}
-      >
-        <div className="flex flex-col items-center justify-center text-center">
-          <Typography variant="h1" className="text-white">
-            00
-          </Typography>
-          <Typography variant="h6" className="text-white">
-            Days
-          </Typography>
-        </div>
-        <div className="flex flex-col items-center justify-center text-center">
-          <Typography variant="h1" className="text-white">
-            00
-          </Typography>
-          <Typography variant="h6" className="text-white">
-            Hours
-          </Typography>
-        </div>
-        <div className="flex flex-col items-center justify-center text-center">
-          <Typography variant="h1" className="text-white">
-            00
-          </Typography>
-          <Typography variant="h6" className="text-white">
-            Minutes
-          </Typography>
-        </div>
-        <div className="flex flex-col items-center justify-center text-center">
-          <Typography variant="h1" className="text-white">
-            00
-          </Typography>
-          <Typography variant="h6" className="text-white">
-            Seconds
-          </Typography>
-        </div>
-      </motion.div>
-    </div>
+        </section>
+      </ReactLenis>
+    </MotionConfig>
   );
 }

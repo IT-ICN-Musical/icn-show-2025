@@ -30,15 +30,10 @@ export default function Shop() {
           <div className="text-white font-bold italic text-xl">
             BUNDLES TIME!
           </div>
-          <div className="flex items-center gap-2">
-            <div className="bg-[#7E4E70] text-white p-2 rounded-lg">99</div>
-            <div className=""> : </div>
-            <div className="bg-[#7E4E70] text-white p-2 rounded-lg">60</div>
-            <div className=""> : </div>
-            <div className="bg-[#7E4E70] text-white p-2 rounded-lg">60</div>
-          </div>
         </div>
         <BundleCards bundles={data?.bundles ?? []} />
+      </div>
+      <div className="w-full flex flex-col gap-4 items-center justify-center rounded-3xl relative overflow-hidden py-4 px-4">
         <ShowCards shows={data?.shows ?? []} />
       </div>
       <Typography variant="h4" className="font-safira-march mt-10 mb-6">

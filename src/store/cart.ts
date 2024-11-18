@@ -6,6 +6,7 @@ type CartStoreType = {
   cart: CartItem[];
   addToCart: (item: CartItem) => void;
   removeFromCart: (index: number) => void;
+  resetCart: () => void;
 };
 
 const useCartStoreBase: StateCreator<CartStoreType> = (set) => ({
@@ -14,6 +15,7 @@ const useCartStoreBase: StateCreator<CartStoreType> = (set) => ({
     set((state) => ({ cart: [...state.cart, item] })),
   removeFromCart: (index: number) =>
     set((state) => ({ cart: state.cart.filter((_, i) => i !== index) })),
+  resetCart: () => set({ cart: [] }),
 });
 
 const cartMiddleware = (creator: StateCreator<CartStoreType>) =>

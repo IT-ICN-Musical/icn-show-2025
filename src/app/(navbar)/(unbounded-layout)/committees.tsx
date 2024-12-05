@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import { Button } from "src/components/ui/button"
 import { useState } from "react";
 import "../../globals.css"
 
@@ -114,27 +115,27 @@ export default function Committees() {
       <main className="font-safira-march">Committees<br></br></main>
       <div className="--font-mont">
       <div className="flex max-w-fit overflow-x-auto max-h-max">
-        <button id="tablinks2" onClick={() => handleTypeSelection("artprod")} className={buttonStyle2(selectedType === "artprod")}>Arts & Productions</button>
-        <button id="tablinks2" onClick={() => handleTypeSelection("extaff")} className={buttonStyle2(selectedType === "extaff")}>External Affairs</button>
+          <Button variant="outline" size="lg" id="tablinks2" onClick={() => handleTypeSelection("artprod")} className={buttonStyle2(selectedType === "artprod")}>Arts & Productions</Button> 
+          <Button variant="outline" size="lg" id="tablinks2" onClick={() => handleTypeSelection("extaff")} className={buttonStyle2(selectedType === "extaff")}>External Affairs</Button> 
       </div>
       <div>
         {selectedType === "artprod" && (<div className="flex max-w-fit overflow-x-auto max-h-max">
-          <button id="tablinks" onClick={() => handleNameSelection("TOPS & MC")} className={buttonStyle(selectedName === "TOPS & MC")}>TOPS & MC</button>
-          <button id="tablinks" onClick={() => handleNameSelection("Actor/Actress")} className={buttonStyle(selectedName === "Actor/Actress")}>Actor/Actress</button>
-          <button id="tablinks" onClick={() => handleNameSelection("Musician")} className={buttonStyle(selectedName === "Musician")}>Musician</button>
-          <button id="tablinks" onClick={() => handleNameSelection("Dancer")} className={buttonStyle(selectedName === "Dancer")}>Dancer</button>
-          <button id="tablinks" onClick={() => handleNameSelection("Makeup & Wardrobe")} className={buttonStyle(selectedName === "Makeup & Wardrobe")}>Makeup & Wardrobe</button>
-          <button id="tablinks" onClick={() => handleNameSelection("Sound Effect Designer")} className={buttonStyle(selectedName === "Sound Effect Designer")}>Sound Effect Designer</button>
-          <button id="tablinks" onClick={() => handleNameSelection("Sets, Property & Equipment")} className={buttonStyle(selectedName === "Sets, Property & Equipment")}>Sets, Property & Equipment</button>
-          <button id="tablinks" onClick={() => handleNameSelection("Assistant State Manager")} className={buttonStyle(selectedName === "Assistant State Manager")}>Assistant State Manager</button>
+          <Button variant="ghost" size="lg" id="tablinks" onClick={() => handleNameSelection("TOPS & MC")} className={buttonStyle(selectedName === "TOPS & MC")}>TOPS & MC</Button>
+          <Button variant="ghost" size="lg" id="tablinks" onClick={() => handleNameSelection("Actor/Actress")} className={buttonStyle(selectedName === "Actor/Actress")}>Actor/Actress</Button>
+          <Button variant="ghost" size="lg" id="tablinks" onClick={() => handleNameSelection("Musician")} className={buttonStyle(selectedName === "Musician")}>Musician</Button>
+          <Button variant="ghost" size="lg" id="tablinks" onClick={() => handleNameSelection("Dancer")} className={buttonStyle(selectedName === "Dancer")}>Dancer</Button>
+          <Button variant="ghost" size="lg" id="tablinks" onClick={() => handleNameSelection("Makeup & Wardrobe")} className={buttonStyle(selectedName === "Makeup & Wardrobe")}>Makeup & Wardrobe</Button>
+          <Button variant="ghost" size="lg" id="tablinks" onClick={() => handleNameSelection("Sound Effect Designer")} className={buttonStyle(selectedName === "Sound Effect Designer")}>Sound Effect Designer</Button>
+          <Button variant="ghost" size="lg" id="tablinks" onClick={() => handleNameSelection("Sets, Property & Equipment")} className={buttonStyle(selectedName === "Sets, Property & Equipment")}>Sets, Property & Equipment</Button>
+          <Button variant="ghost" size="lg" id="tablinks" onClick={() => handleNameSelection("Assistant State Manager")} className={buttonStyle(selectedName === "Assistant State Manager")}>Assistant State Manager</Button>
           </div>
         )
         }
         {selectedType === "extaff" && (<div className="flex max-w-fit overflow-x-auto max-h-max">
-          <button id="tablinks" onClick={() => handleNameSelection("TOPS & MC")} className={buttonStyle(selectedName === "TOPS & MC")}>TOPS & MC</button>
-          <button id="tablinks" onClick={() => handleNameSelection("Corporate Liaison")} className={buttonStyle(selectedName === "Corporate Liaison")}>Corporate Liaison</button>
-          <button id="tablinks" onClick={() => handleNameSelection("Marketing & Ticketing")} className={buttonStyle(selectedName === "Marketing & Ticketing")}>Marketing & Ticketing</button>
-          <button id="tablinks" onClick={() => handleNameSelection("Publicity, Publication & IT (PPIT)")} className={buttonStyle(selectedName === "Publicity, Publication & IT (PPIT)")}>Publicity, Publication & IT</button>
+          <Button variant="ghost" size="lg" id="tablinks" onClick={() => handleNameSelection("TOPS & MC")} className={buttonStyle(selectedName === "TOPS & MC")}>TOPS & MC</Button>
+          <Button variant="ghost" size="lg" id="tablinks" onClick={() => handleNameSelection("Corporate Liaison")} className={buttonStyle(selectedName === "Corporate Liaison")}>Corporate Liaison</Button>
+          <Button variant="ghost" size="lg" id="tablinks" onClick={() => handleNameSelection("Marketing & Ticketing")} className={buttonStyle(selectedName === "Marketing & Ticketing")}>Marketing & Ticketing</Button>
+          <Button variant="ghost" size="lg" id="tablinks" onClick={() => handleNameSelection("Publicity, Publication & IT (PPIT)")} className={buttonStyle(selectedName === "Publicity, Publication & IT (PPIT)")}>Publicity, Publication & IT</Button>
           </div>
         )
         }

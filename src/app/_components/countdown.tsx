@@ -4,13 +4,20 @@ import Typography from "@/components/typography/typography";
 
 import HourGlass from "../_assets/hour-glass.png";
 
-export default function Countdown() {
+type MyComponentProps = {
+  isMobile: boolean;
+};
+
+const Countdown: React.FC<MyComponentProps> = ({ isMobile }) => {
   return (
     <>
       <div className="absolute top-0 right-0 w-screen h-screen flex items-center justify-center hour-glass">
         <Image src={HourGlass} alt="hour-glass" />
       </div>
-      <div className="absolute top-0 z-10 main-foreground font-safira-march h-screen w-screen flex items-center justify-center gap-40 count-down">
+      <div
+        className={`absolute top-0 z-10 main-foreground font-safira-march h-screen w-screen 
+          flex items-center justify-center ${isMobile ? "gap-20" : "gap-40"} count-down`}
+      >
         <div className="flex flex-col items-center justify-center text-center">
           <Typography variant="h1" className="text-white">
             00
@@ -46,4 +53,6 @@ export default function Countdown() {
       </div>
     </>
   );
-}
+};
+
+export default Countdown;

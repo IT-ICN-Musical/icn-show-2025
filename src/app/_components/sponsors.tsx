@@ -7,7 +7,7 @@ export default function Sponsors() {
         <Typography variant="h2" className="font-safira-march text-white">
           Sponsors
         </Typography>
-        <div className="flex gap-4 flex-wrap w-[40rem] justify-center">
+        <div className="flex gap-4 flex-wrap w-full justify-center">
           {new Array(8).fill(0).map((_, index) => (
             <div key={index} className="w-1/5 aspect-square bg-white"></div>
           ))}

@@ -13,7 +13,6 @@ export async function previewOrder(
     path: `v2/order/preview`,
     body: body,
   });
-  console.log(body);
 
   if (!response.success) {
     throw new Error(response.message);

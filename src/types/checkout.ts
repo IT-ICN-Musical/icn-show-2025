@@ -1,28 +1,20 @@
 type UUID = string;
 
-type CheckoutTicketOption = {
-  name: string;
-};
-
-type CheckoutBundleOption = {
-  show_id: UUID;
-  ticket_optiona: CheckoutTicketOption[];
+export type CheckoutItemOrderRequest = {
   item_id: UUID;
   quantity: number;
 } & {
-  clothing_id: UUID;
   item_id: UUID;
   quantity: number;
+  bundle_options: {
+    item_id: UUID;
+    quantity: number;
+  }[];
 };
 
-type CheckoutItemOrderRequest = {
-  item_id: UUID;
-  quantity: number;
-  ticket_option?: CheckoutTicketOption[];
-} & {
-  bundle_id: UUID;
-  quantity: number;
-  bundle_option: CheckoutBundleOption[];
+type ViewerDetails = {
+  ticket_item_id: UUID;
+  viewers: string[];
 };
 
 export type CheckoutRequest = {
@@ -30,6 +22,7 @@ export type CheckoutRequest = {
   buyer_name: string;
   promo_code?: string;
   items: CheckoutItemOrderRequest[];
+  viewer_details: ViewerDetails[];
 };
 
 export type CheckoutResponse = {

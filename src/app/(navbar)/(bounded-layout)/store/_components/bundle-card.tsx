@@ -9,11 +9,14 @@ import RightTicket from "@/app/(navbar)/(bounded-layout)/store/_assets/right-tic
 import Typography from "@/components/typography/typography";
 import { Button } from "@/components/ui/button";
 
+import { LeftTicketBorder, RightTicketBorder } from "./ticket-borders";
+
 export function BundleCard({ bundle }: BundleCardProps) {
   return (
-    <div className="w-full flex bg-inherit">
-      <Image src={LeftTicket} alt="left-ticket" className="object-cover" />
-      <div className="flex items-center justify-center sm:gap-2 gap-0 bg-white flex-grow">
+    <div className="w-full flex bg-inherit h-[166px]">
+      <LeftTicketBorder />
+
+      <div className="flex items-center justify-center sm:gap-2 gap-0 flex-grow bg-white px-3 border-y border-[#D9D9D9]">
         <div>
           <Image
             src={bundle.image_url ?? ""}
@@ -23,7 +26,7 @@ export function BundleCard({ bundle }: BundleCardProps) {
             className="rounded-lg sm:h-32 sm:w-32 h-20 w-20"
           />
         </div>
-        <div className="flex flex-col py-4 px-3 flex-grow gap-6">
+        <div className="flex flex-col py-4 pl-3 flex-grow gap-6">
           <div>
             <Typography variant="p" className="text-md sm:text-xl">
               {bundle.name}
@@ -52,7 +55,7 @@ export function BundleCard({ bundle }: BundleCardProps) {
           </div>
         </div>
       </div>
-      <Image src={RightTicket} alt="left-ticket" className="object-cover" />
+      <RightTicketBorder />
     </div>
   );
 }

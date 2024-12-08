@@ -19,7 +19,7 @@ export function ClothingCard({ clothing }: ClothingCardProps) {
       <Typography variant="p" className="text-xs sm:text-xs">
         SGD{" "}
         <span className="font-bold text-md sm:text-xl">
-          {clothing.min_price}
+          {(clothing.min_price / 100).toFixed(2)}
         </span>
       </Typography>
     </div>

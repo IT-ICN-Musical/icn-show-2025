@@ -44,7 +44,10 @@ export function ShowCard({ show }: BundleCardProps) {
           </div>
           <div className="flex justify-between">
             <div className="text-sm sm:text-lg">
-              SGD <span className="font-bold">{show.min_price}</span>
+              SGD{" "}
+              <span className="font-bold">
+                {(show.min_price / 100).toFixed(2)}
+              </span>
             </div>
             <ShoppingCart className="bg-primary-700 text-white p-1 rounded-md sm:w-8 sm:h-8 h-6 w-6" />
           </div>

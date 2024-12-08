@@ -18,7 +18,9 @@ export function GenericCard({ generic }: GenericCardProps) {
       </Typography>
       <Typography variant="p" className="text-xs sm:text-xs">
         SGD{" "}
-        <span className="font-bold text-md sm:text-xl">{generic.price}</span>
+        <span className="font-bold text-md sm:text-xl">
+          {(generic.price / 100).toFixed(2)}
+        </span>
       </Typography>
     </div>
   );

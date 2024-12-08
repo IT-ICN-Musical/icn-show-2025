@@ -6,7 +6,7 @@ export function GenericCards({ generics }: GenericCardsProps) {
   return (
     <>
       {generics.map((generic) => (
-        <GenericCard generic={generic} key={generic.generic_id} />
+        <GenericCard generic={generic} key={generic.item_id} />
       ))}
     </>
   );

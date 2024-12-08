@@ -13,7 +13,6 @@ type BundleItem = {
 
 type ItemOrderPreview = {
   item_id: string;
-
   name: string;
   image_url?: string;
   quantity: number;
@@ -33,7 +32,7 @@ type ItemOrderPreview = {
       size?: string;
     }
   | {
-      bundle_items?: BundleItem[];
+      bundle_items: BundleItem[];
     }
 );
 

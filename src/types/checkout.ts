@@ -1,6 +1,6 @@
 type UUID = string;
 
-type CheckoutItemOrderRequest = {
+export type CheckoutItemOrderRequest = {
   item_id: UUID;
   quantity: number;
 } & {

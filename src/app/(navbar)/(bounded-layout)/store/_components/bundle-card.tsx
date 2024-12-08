@@ -48,7 +48,7 @@ export function BundleCard({ bundle }: BundleCardProps) {
               minPrice={bundle.min_price}
               oldMinPrice={bundle.old_min_price}
             />
-            <ShoppingCart className="bg-primary-700 text-white p-1 rounded-md sm:w-8 sm:h-8 h-4 w-4" />
+            <ShoppingCart className="bg-primary-700 text-white p-1 rounded-md sm:w-8 sm:h-8 h-6 w-6" />
           </div>
         </div>
       </div>

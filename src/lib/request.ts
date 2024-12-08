@@ -27,10 +27,10 @@ export async function request<T>({
   path,
   body,
 }: RequestOptions): Promise<RequestSuccess<T> | RequestError> {
-  const base = process.env.BACKEND_API_URL;
+  const base = process.env.NEXT_PUBLIC_BACKEND_API_URL;
 
   const requestUrl = `${base}/${path}`;
-
+  console.log(base);
   const headers: Record<string, string> = {};
 
   if (method === "POST") {

@@ -1,5 +1,5 @@
 import { Clock12, Ticket } from "lucide-react";
-import Image, { StaticImageData } from "next/image";
+import Image from "next/image";
 
 export function ShowCardCheckout({
   name,
@@ -14,12 +14,12 @@ export function ShowCardCheckout({
           <Image
             className="w-16 h-16 rounded-sm mr-1"
             src={image}
+            width={64}
+            height={64}
             alt="ticket image"
           />
           <div>
-            <p className="text-sm font-mont font-medium">
-              Matinee Ticket - CAT {name}
-            </p>
+            <p className="text-sm font-mont font-medium">{name}</p>
             <div className="flex flex-row items-center">
               <Clock12 strokeWidth={2} className="w-4" color="#71717A" />
               <p className="font-mont text-xs font-normal ml-1 text-zinc-500">
@@ -81,5 +81,5 @@ type ShowCardCheckoutProps = {
   name: string;
   time: string;
   quantity: number;
-  image: StaticImageData;
+  image: string;
 } & React.HTMLAttributes<HTMLDivElement>;

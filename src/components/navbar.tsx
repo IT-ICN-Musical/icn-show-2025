@@ -55,7 +55,7 @@ function DesktopNavbar({ className }: { className?: string }) {
   return (
     <nav
       className={cn(
-        "flex flex-col items-center sticky top-0 px-6 py-4",
+        "flex flex-col items-center sticky top-0 px-6 py-4 bg-white z-[999]",
         className,
       )}
     >
@@ -91,7 +91,7 @@ function MobileNavbar({ className }: { className?: string }) {
   return (
     <nav
       className={cn(
-        "flex flex-col items-center sticky top-0 px-6 py-4",
+        "flex flex-col items-center sticky top-0 px-6 py-4 bg-white z-[999]",
         className,
       )}
     >

@@ -9,7 +9,7 @@ import { ClientClothingItem, ClientClothingSizes } from "@/types/items";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Counter } from "@/components/counter";
 import Typography from "@/components/typography/typography";
@@ -197,6 +197,14 @@ export function ClothingSelection({
     queryFn: () => fetchClothingDetails(orig.clothing_id),
     enabled: open,
   });
+
+  // clear data on open
+  useEffect(() => {
+    if (open) {
+      setCount(0);
+      setSelectedSize(undefined);
+    }
+  }, [open]);
 
   const sizes = clothing?.sizes?.map((size) => size);
 

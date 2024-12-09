@@ -1,10 +1,13 @@
 "use client";
 
+import { fetchShowDetails } from "@/api/shop";
 import { DESKTOP_MIN_WIDTH } from "@/consts/size.consts";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { cn } from "@/lib/utils";
+import { useCartStore } from "@/store/cart";
 import { ClientShowItem } from "@/types/items";
-import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 
 import { Counter } from "@/components/counter";
 import Typography from "@/components/typography/typography";
@@ -17,6 +20,7 @@ import {
 } from "@/components/ui/dialog";
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
 
+import { LoadingSelection } from "./loading-selection";
 import { SeatCategory } from "./seat-category";
 
 type TicketSelectionProps = {
@@ -65,7 +69,7 @@ function Content({
     (ticket) => ticket.category === safeCategory,
   );
 
-  const currentCost = currentTicket?.price ?? 0 * count;
+  const currentCost = (currentTicket?.price ?? 0) * count;
 
   const disableButton = selectedCategory === undefined || count <= 0;
 
@@ -118,7 +122,7 @@ function Content({
             <div className="flex flex-row w-full justify-between py-2 items-center">
               <Typography variant="p">Select your CAT</Typography>
               <div className="flex flex-row gap-2 h-full items-center">
-                {categories?.map((category) => (
+                {categories?.sort().map((category) => (
                   <Button
                     key={category}
                     variant="outline"
@@ -181,18 +185,44 @@ function Content({
 }
 
 export function TicketSelection({
-  show,
+  show: orig,
   children,
-  onAddToCart,
   onBuyNow,
 }: TicketSelectionProps) {
-  const categories = show.tickets?.map((ticket) => ticket.category);
-
   const [open, setOpen] = useState(false);
   const [count, setCount] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState<string | undefined>(
     undefined,
   );
+
+  const { data: show } = useQuery({
+    queryKey: ["show", orig.show_id],
+    queryFn: () => fetchShowDetails(orig.show_id),
+    enabled: !!orig.show_id,
+  });
+
+  const { addToCart } = useCartStore();
+  const onAddToCart = () => {
+    const itemId = show?.tickets?.find(
+      (ticket) => ticket.category === selectedCategory,
+    )?.item_id;
+    if (itemId) {
+      addToCart({
+        item_id: itemId,
+        quantity: count,
+      });
+    }
+  };
+
+  // clear data on open
+  useEffect(() => {
+    if (open) {
+      setCount(0);
+      setSelectedCategory(undefined);
+    }
+  }, [open]);
+
+  const categories = show?.tickets?.map((ticket) => ticket.category);
 
   const isDesktop = useMediaQuery(`(min-width: ${DESKTOP_MIN_WIDTH}px)`);
 
@@ -201,7 +231,7 @@ export function TicketSelection({
       setCount(0);
       setSelectedCategory(undefined);
     } else {
-      const newCategoryMaxOrder = show.tickets?.find(
+      const newCategoryMaxOrder = show?.tickets?.find(
         (ticket) => ticket.category === category,
       )?.max_order;
       if (newCategoryMaxOrder !== undefined && count > newCategoryMaxOrder) {
@@ -212,7 +242,7 @@ export function TicketSelection({
     }
   };
 
-  const content = (
+  const content = show ? (
     <Content
       show={show}
       count={count}
@@ -224,6 +254,8 @@ export function TicketSelection({
       selectedCategory={selectedCategory}
       categories={categories}
     />
+  ) : (
+    <LoadingSelection />
   );
 
   if (!isDesktop) {

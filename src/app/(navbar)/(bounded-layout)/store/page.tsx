@@ -1,6 +1,7 @@
 "use client";
 
 import { fetchShopItems } from "@/api/shop";
+import { useCartStore } from "@/store/cart";
 import { useQuery } from "@tanstack/react-query";
 
 import Typography from "@/components/typography/typography";

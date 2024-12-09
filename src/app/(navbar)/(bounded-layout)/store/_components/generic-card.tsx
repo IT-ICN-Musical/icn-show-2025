@@ -5,7 +5,7 @@ import Typography from "@/components/typography/typography";
 
 export function GenericCard({ generic }: GenericCardProps) {
   return (
-    <div className="flex flex-col gap-1 shadow p-4">
+    <div className="flex flex-col gap-1 shadow p-4 items-start">
       <Image
         src={generic.image_url ?? ""}
         width={80}

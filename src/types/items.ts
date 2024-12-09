@@ -99,7 +99,7 @@ interface ClientClothingItemGeneric<T> {
   sizes?: T[];
 }
 
-interface ClientGenericItem {
+export interface ClientGenericItem {
   item_id: ItemUUID;
   name: string;
   price: number;

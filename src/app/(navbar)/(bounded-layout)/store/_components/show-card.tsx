@@ -3,9 +3,6 @@ import { RetrieveShowDetailsResponse } from "@/types/items";
 import { Clock12, Info, ShoppingCart } from "lucide-react";
 import Image from "next/image";
 
-import LeftTicket from "@/app/(navbar)/(bounded-layout)/store/_assets/left-ticket.svg";
-import RightTicket from "@/app/(navbar)/(bounded-layout)/store/_assets/right-ticket.svg";
-
 import Typography from "@/components/typography/typography";
 
 import { LeftTicketBorder, RightTicketBorder } from "./ticket-borders";

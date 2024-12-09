@@ -2,22 +2,22 @@
 
 import { DESKTOP_MIN_WIDTH } from "@/consts/size.consts";
 import { useMediaQuery } from "@/hooks/use-media-query";
-import { cn, stringToCurrency } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { ClientShowItem } from "@/types/items";
 import { useState } from "react";
 
 import { Counter } from "@/components/counter";
-import { SeatCategory } from "@/components/store/seat-category";
 import Typography from "@/components/typography/typography";
 import { Button } from "@/components/ui/button";
-
 import {
   Dialog,
   DialogContent,
   DialogTitle,
   DialogTrigger,
-} from "../ui/dialog";
-import { Drawer, DrawerContent, DrawerTrigger } from "../ui/drawer";
+} from "@/components/ui/dialog";
+import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
+
+import { SeatCategory } from "./seat-category";
 
 type TicketSelectionProps = {
   show: ClientShowItem;

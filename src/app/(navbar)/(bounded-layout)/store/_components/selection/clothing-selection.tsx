@@ -2,23 +2,17 @@
 
 import { DESKTOP_MIN_WIDTH } from "@/consts/size.consts";
 import { useMediaQuery } from "@/hooks/use-media-query";
-import { cn, stringToCurrency } from "@/lib/utils";
-import {
-  ClientClothingItem,
-  ClientClothingSizes,
-  ClientShowItem,
-} from "@/types/items";
+import { cn } from "@/lib/utils";
+import { ClientClothingItem, ClientClothingSizes } from "@/types/items";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import Image from "next/image";
 import { useState } from "react";
 
 import { Counter } from "@/components/counter";
-import { SeatCategory } from "@/components/store/seat-category";
 import Typography from "@/components/typography/typography";
 import { Button } from "@/components/ui/button";
-
-import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
-import { Drawer, DrawerContent, DrawerTrigger } from "../ui/drawer";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
 
 type ClothingSelectionProps = {
   clothing: ClientClothingItem;

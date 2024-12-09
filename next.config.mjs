@@ -4,9 +4,13 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "upload.wikimedia.org",
-        port: "",
-        pathname: "/**",
+        hostname: "icn-2025.s3.ap-southeast-2.amazonaws.com",
+        pathname: "/**/*",
+      },
+      {
+        protocol: "http",
+        hostname: "icn-2025.s3.ap-southeast-2.amazonaws.com",
+        pathname: "/**/*",
       },
     ],
   },

@@ -2,6 +2,7 @@ import { mont, safiraMarch } from "@/fonts/font";
 import type { Metadata } from "next";
 
 import "./globals.css";
+import QueryProviders from "./providers";
 
 export const metadata: Metadata = {
   title: "ICN 2025 Musical",
@@ -17,7 +18,7 @@ export default function RootLayout({
     <html lang="en" className={`${mont.variable} ${safiraMarch.variable}`}>
       <body className={mont.className}>
         <div className="relative min-h-screen w-full flex flex-col">
-          {children}
+          <QueryProviders>{children}</QueryProviders>
         </div>
       </body>
     </html>

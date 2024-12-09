@@ -9,12 +9,15 @@ export const TypographyVariant = {
   h5: "h5",
   h6: "h6",
   p: "p",
+  p1: "p1",
+  p2: "p2",
 } as const;
 
 export const TypographyColor = {
   black: "black",
   white: "white",
   blue: "blue",
+  "icn-icon-info": "icn-icon-info",
 } as const;
 
 export type TypographyProps<T extends React.ElementType> = {
@@ -46,6 +49,8 @@ export default function Typography<T extends React.ElementType>({
           variant === "h5" && ["text-xl"],
           variant === "h6" && ["text-lg"],
           variant === "p" && ["text-base"],
+          variant === "p1" && ["text-sm"],
+          variant === "p2" && ["text-xs"],
         ],
 
         //#region  //*=========== Color ===========
@@ -53,6 +58,7 @@ export default function Typography<T extends React.ElementType>({
           color === "black" && ["text-black"],
           color === "white" && ["text-white"],
           color === "blue" && ["text-blue-500"],
+          color === "icn-icon-info" && ["text-icn-icon-info"],
         ],
         //#endregion  //*======== Color ===========
         className,

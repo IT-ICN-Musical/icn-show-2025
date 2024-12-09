@@ -1,10 +1,13 @@
 "use client";
 
+import { fetchClothingDetails } from "@/api/shop";
 import { DESKTOP_MIN_WIDTH } from "@/consts/size.consts";
 import { useMediaQuery } from "@/hooks/use-media-query";
-import { cn } from "@/lib/utils";
+import { cn, sortSizes } from "@/lib/utils";
+import { useCartStore } from "@/store/cart";
 import { ClientClothingItem, ClientClothingSizes } from "@/types/items";
 import { DialogTitle } from "@radix-ui/react-dialog";
+import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -13,6 +16,8 @@ import Typography from "@/components/typography/typography";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
+
+import { LoadingSelection } from "./loading-selection";
 
 type ClothingSelectionProps = {
   clothing: ClientClothingItem;
@@ -49,13 +54,15 @@ function Content({
     (size) => size.size === selectedSize,
   );
 
-  const currentCost = currentSize?.price ?? 0 * count;
+  const currentCost = (currentSize?.price ?? 0) * count;
   const disableButton = selectedSize === undefined || count <= 0;
 
   const costString = [
     (currentCost / 100).toString(),
     (currentCost % 100).toString().padStart(2, "0"),
   ];
+
+  const sortedSizes = sortSizes(sizes ?? []);
 
   const onAddToCartHandler = () => {
     onAddToCart?.();
@@ -98,7 +105,7 @@ function Content({
             <div className="flex flex-row w-full justify-between py-2 items-center">
               <Typography variant="p">Size</Typography>
               <div className="flex flex-row gap-2 h-full items-center">
-                {sizes?.map((size) => (
+                {sortedSizes?.map((size) => (
                   <Button
                     key={size.size}
                     variant="outline"
@@ -161,18 +168,37 @@ function Content({
 }
 
 export function ClothingSelection({
-  clothing,
+  clothing: orig,
   children,
-  onAddToCart,
   onBuyNow,
 }: ClothingSelectionProps) {
-  const sizes = clothing?.sizes?.map((size) => size);
-
   const [open, setOpen] = useState(false);
   const [count, setCount] = useState(0);
   const [selectedSize, setSelectedSize] = useState<string | undefined>(
     undefined,
   );
+
+  const { addToCart } = useCartStore();
+  const onAddToCart = () => {
+    const size = clothing?.sizes?.find(
+      (sizeObj) => sizeObj.size === selectedSize,
+    );
+
+    if (size) {
+      addToCart({
+        item_id: size.item_id,
+        quantity: count,
+      });
+    }
+  };
+
+  const { data: clothing } = useQuery({
+    queryKey: ["clothing", orig.clothing_id],
+    queryFn: () => fetchClothingDetails(orig.clothing_id),
+    enabled: open,
+  });
+
+  const sizes = clothing?.sizes?.map((size) => size);
 
   const isDesktop = useMediaQuery(`(min-width: ${DESKTOP_MIN_WIDTH}px)`);
 
@@ -182,7 +208,7 @@ export function ClothingSelection({
       setCount(0);
     } else {
       // set count tto max(count, new size max order)
-      const newSizeMaxOrder = clothing.sizes?.find(
+      const newSizeMaxOrder = clothing?.sizes?.find(
         (sizeObj) => sizeObj.size === size,
       )?.max_order;
 
@@ -194,7 +220,7 @@ export function ClothingSelection({
     }
   };
 
-  const content = (
+  const content = clothing ? (
     <Content
       clothing={clothing}
       count={count}
@@ -206,6 +232,8 @@ export function ClothingSelection({
       selectedSize={selectedSize}
       sizes={sizes}
     />
+  ) : (
+    <LoadingSelection />
   );
 
   if (!isDesktop) {

@@ -102,7 +102,7 @@ interface ClientClothingItemGeneric<T> {
 interface ClientGenericItem {
   item_id: ItemUUID;
   name: string;
-  price: string;
+  price: number;
   max_order: number;
   image_url?: string | null;
   fixed_price: boolean;

@@ -1,3 +1,7 @@
 export default function AboutUs() {
-  return <main className="font-safira-march">About us page</main>;
+  return (
+    <main className="font-safira-march">
+      <p>About us page</p>
+    </main>
+  );
 }

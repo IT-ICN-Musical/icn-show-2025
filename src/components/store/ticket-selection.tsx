@@ -65,7 +65,7 @@ function Content({
     (ticket) => ticket.category === safeCategory,
   );
 
-  const currentCost = stringToCurrency(currentTicket?.price ?? "0.00") * count;
+  const currentCost = currentTicket?.price ?? 0 * count;
 
   const disableButton = selectedCategory === undefined || count <= 0;
 

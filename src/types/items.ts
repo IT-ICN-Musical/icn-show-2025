@@ -9,14 +9,14 @@ type GenericUUID = UUID;
 interface ClientShowTickets {
   item_id: ItemUUID;
   category: string;
-  price: string;
+  price: number;
   max_order: number;
 }
 
 export interface ClientClothingSizes {
   item_id: ItemUUID;
   size: string;
-  price: string;
+  price: number;
   max_order: number;
 }
 
@@ -27,8 +27,8 @@ interface ClientGenericDetail {
 // Bundle types
 interface ClientBundleStaticItem {
   item_id: ItemUUID;
-  old_price: string;
-  price: string;
+  old_price: number;
+  price: number;
   max_order: number;
   bundle_amount?: number;
 }
@@ -36,16 +36,16 @@ interface ClientBundleStaticItem {
 interface ClientBundleShowTicket {
   item_id?: ItemUUID;
   category: string;
-  old_price: string;
-  price: string;
+  old_price: number;
+  price: number;
   max_order: number;
 }
 
 interface ClientBundleClothingSize {
   item_id: ItemUUID;
   size: string;
-  old_price: string;
-  price: string;
+  old_price: number;
+  price: number;
   max_order: number;
 }
 
@@ -63,9 +63,9 @@ interface ClientBundleDetail {
 export type ClientShowItem = ClientShowItemGeneric<ClientShowTickets>;
 
 interface ClientShowItemGeneric<T> {
-  show_id?: ShowUUID;
+  show_id: ShowUUID;
   name: string;
-  min_price: string;
+  min_price: number;
   max_order: number;
   image_url?: string | null;
   fixed_price: boolean;
@@ -76,10 +76,10 @@ interface ClientShowItemGeneric<T> {
 }
 
 interface ClientBundleItem {
-  bundle_id?: BundleUUID;
+  item_id: ItemUUID;
   name: string;
-  old_min_price: string;
-  min_price: string;
+  old_min_price: number;
+  min_price: number;
   max_order: number;
   image_url?: string | null;
   fixed_price: boolean;
@@ -89,9 +89,9 @@ interface ClientBundleItem {
 export type ClientClothingItem = ClientClothingItemGeneric<ClientClothingSizes>;
 
 interface ClientClothingItemGeneric<T> {
-  clothing_id?: ClothingUUID;
+  clothing_id: ClothingUUID;
   name: string;
-  min_price: string;
+  min_price: number;
   max_order: number;
   image_url?: string | null;
   fixed_price: boolean;
@@ -100,9 +100,9 @@ interface ClientClothingItemGeneric<T> {
 }
 
 interface ClientGenericItem {
-  generic_id?: GenericUUID;
+  item_id: ItemUUID;
   name: string;
-  price: string;
+  price: number;
   max_order: number;
   image_url?: string | null;
   fixed_price: boolean;

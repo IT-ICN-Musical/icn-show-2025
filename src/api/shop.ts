@@ -79,3 +79,16 @@ export async function fetchGenericDetails(
 
   return response.data;
 }
+
+export async function fetchPromoCodeDetails(
+  code: string,
+): Promise<{ valid: boolean; discount: number }> {
+  const response = await request<{ valid: boolean; discount: number }>({
+    method: "GET",
+    path: `v2/shop/promo-codes/${code}`,
+  });
+  if (!response.success) {
+    throw new Error(response.message);
+  }
+  return response.data;
+}

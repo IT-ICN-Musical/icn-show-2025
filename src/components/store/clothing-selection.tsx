@@ -55,7 +55,7 @@ function Content({
     (size) => size.size === selectedSize,
   );
 
-  const currentCost = stringToCurrency(currentSize?.price ?? "0.00") * count;
+  const currentCost = currentSize?.price ?? 0 * count;
   const disableButton = selectedSize === undefined || count <= 0;
 
   const costString = [

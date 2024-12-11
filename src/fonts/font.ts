@@ -24,6 +24,16 @@ export const mont = localFont({
       style: "italic",
     },
     {
+      path: "./mont/Mont-SemiBold.otf",
+      weight: "600",
+      style: "normal",
+    },
+    {
+      path: "./mont/Mont-SemiBoldItalic.otf",
+      weight: "600",
+      style: "italic",
+    },
+    {
       path: "./mont/Mont-Regular.woff2",
       weight: "400",
       style: "normal",
@@ -31,6 +41,26 @@ export const mont = localFont({
     {
       path: "./mont/Mont-RegularItalic.woff2",
       weight: "400",
+      style: "italic",
+    },
+    {
+      path: "./mont/Mont-Book.ttf",
+      weight: "350",
+      style: "normal",
+    },
+    {
+      path: "./mont/Mont-BookItalic.ttf",
+      weight: "350",
+      style: "italic",
+    },
+    {
+      path: "./mont/Mont-Light.otf",
+      weight: "300",
+      style: "normal",
+    },
+    {
+      path: "./mont/Mont-LightItalic.woff2",
+      weight: "300",
       style: "italic",
     },
     {

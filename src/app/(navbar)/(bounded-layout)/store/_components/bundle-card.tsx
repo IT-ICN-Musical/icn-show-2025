@@ -1,95 +1,95 @@
 import { cn } from "@/lib/utils";
+import { RetrieveBundleDetailsResponse } from "@/types/items";
 import { Clock12, Info, ShoppingCart } from "lucide-react";
 import Image from "next/image";
 
-import BundleDummyImage from "@/app/(navbar)/(bounded-layout)/store/_assets/bundle-dummy-image.png";
-import TicketTemplate from "@/app/(navbar)/(bounded-layout)/store/_assets/ticket-template.svg";
-
 import Typography from "@/components/typography/typography";
-import { Button } from "@/components/ui/button";
 
-export function BundleCard({
-  name,
-  time,
-  description,
-  price,
-  originalPrice,
-  onClickCart,
-}: BundleCardProps) {
+import { LeftTicketBorder, RightTicketBorder } from "./ticket-borders";
+
+export function BundleCard({ bundle }: BundleCardProps) {
+  const startDate = bundle.start_time ? new Date(bundle.start_time) : undefined;
+  const endDate = bundle.end_time ? new Date(bundle.end_time) : undefined;
+
   return (
-    <div className="relative px-6 w-[40rem]">
-      <Image
-        src={TicketTemplate}
-        alt="ticket-template"
-        className="absolute -z-10 w-full h-40 top-0 left-0 object-cover"
-      />
-      <div className="flex items-center justify-center gap-2">
+    <div className="w-full flex bg-inherit h-[124px] sm:h-[166px] item-start text-start">
+      <LeftTicketBorder />
+
+      <div className="flex items-center justify-center sm:gap-2 gap-0 flex-grow bg-white px-3 border-y border-[#D9D9D9]">
         <div>
           <Image
-            src={BundleDummyImage}
-            alt="bundle-dummy-image"
-            className="rounded-lg h-32 w-32"
+            src={bundle.image_url ?? ""}
+            alt="ticket-image"
+            width={100}
+            height={100}
+            className="rounded-lg sm:h-32 sm:w-32 h-20 w-20"
           />
         </div>
-        <div className="flex flex-col py-4 px-6 flex-grow gap-6">
+        <div className="flex flex-col py-4 pl-3 flex-grow gap-6">
           <div>
-            <Typography variant="h5">{name}</Typography>
+            <Typography variant="p" className="text-md sm:text-xl">
+              {bundle.name}
+            </Typography>
             <Typography
-              className="text-[#71717As] flex gap-2 items-center"
+              className="text-[#71717As] flex gap-2 items-center text-xs sm:text-base"
               variant="p"
             >
               <Clock12 size={12} />
-              {time}
+              {startDate?.toLocaleString("en-SG", {
+                timeZone: "Asia/Singapore",
+                dateStyle: "short",
+                timeStyle: "short",
+              })}{" "}
+              - {/* ASSUMING THAT THE SHOW WILL END ON THE SAME DAY */}
+              {endDate?.toLocaleString("en-SG", {
+                timeZone: "Asia/Singapore",
+                timeStyle: "short",
+              })}
             </Typography>
-            <Typography
-              className="text-[#71717As] flex gap-2 items-center"
-              variant="p"
-            >
-              <Info size={12} />
-              {description}
-            </Typography>
+            {bundle.description && (
+              <Typography
+                className="text-[#71717As] flex gap-2 items-center text-xs sm:text-base"
+                variant="p"
+              >
+                <Info size={12} />
+                {bundle.description}
+              </Typography>
+            )}
           </div>
           <div className="flex justify-between">
-            <BundleCardPrice price={price} originalPrice={originalPrice} />
-            <Button
-              className="bg-primary-700 text-white rounded-md p-[0.4rem] aspect-square"
-              onClick={onClickCart}
-            >
-              <ShoppingCart className="" size={28} />
-            </Button>
+            <BundleCardPrice
+              minPrice={(bundle.min_price / 100).toFixed(2)}
+              oldMinPrice={(bundle.old_min_price / 100).toFixed(2)}
+            />
           </div>
         </div>
       </div>
+      <RightTicketBorder />
     </div>
   );
 }
 
-const BundleCardPrice = ({ price, originalPrice }: BundleCardPriceProps) => {
-  const isDiscounted = originalPrice !== price;
+function BundleCardPrice({ minPrice, oldMinPrice }: BundleCardPriceProps) {
+  const isDiscounted = oldMinPrice !== minPrice;
   return (
-    <div>
+    <div className="text-sm sm:text-lg">
+      <span className="font-book text-xs sm:text-md">from </span>
       <span className={cn(isDiscounted && "text-[#DC2626]")}>SGD</span>{" "}
-      {isDiscounted && (
-        <span className="line-through text-[#A1A1AA]">{originalPrice}</span>
-      )}{" "}
       <span className={cn("font-bold", isDiscounted && "text-[#DC2626]")}>
-        {price}
-      </span>
+        {minPrice}
+      </span>{" "}
+      {isDiscounted && (
+        <span className="line-through text-[#A1A1AA]">{oldMinPrice}</span>
+      )}{" "}
     </div>
   );
-};
+}
 
 type BundleCardProps = {
-  //   image: string;
-  name: string;
-  time: string;
-  onClickCart?: () => void;
-  description: string;
-  price: string;
-  originalPrice?: string;
+  bundle: RetrieveBundleDetailsResponse;
 };
 
 type BundleCardPriceProps = {
-  price: string;
-  originalPrice?: string;
+  minPrice: string;
+  oldMinPrice?: string;
 };

@@ -9,6 +9,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontWeight: {
+        book: "350",
+      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
@@ -24,6 +27,8 @@ const config: Config = {
         sm: "calc(var(--radius) - 4px)",
       },
       colors: {
+        "icn-grey": "#E4E4E7",
+        "icn-icon-info": "#2563EB",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {

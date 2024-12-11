@@ -13,7 +13,7 @@ interface ClientShowTickets {
   max_order: number;
 }
 
-interface ClientClothingSizes {
+export interface ClientClothingSizes {
   item_id: ItemUUID;
   size: string;
   price: number;
@@ -29,19 +29,21 @@ interface ClientBundleStaticItem {
   item_id: ItemUUID;
   old_price: number;
   price: number;
+  name: string;
+  image_url?: string;
   max_order: number;
   bundle_amount?: number;
 }
 
 interface ClientBundleShowTicket {
-  item_id?: ItemUUID;
+  item_id: ItemUUID;
   category: string;
   old_price: number;
   price: number;
   max_order: number;
 }
 
-interface ClientBundleClothingSize {
+export interface ClientBundleClothingSize {
   item_id: ItemUUID;
   size: string;
   old_price: number;
@@ -49,10 +51,11 @@ interface ClientBundleClothingSize {
   max_order: number;
 }
 
-type ClientBundleShow = ClientShowItemGeneric<ClientBundleShowTicket>;
-type ClientBundleClothing = ClientClothingItemGeneric<ClientBundleClothingSize>;
+export type ClientBundleShow = ClientShowItemGeneric<ClientBundleShowTicket>;
+export type ClientBundleClothing =
+  ClientClothingItemGeneric<ClientBundleClothingSize>;
 
-interface ClientBundleDetail {
+export interface ClientBundleDetail {
   generic_item?: ClientBundleStaticItem;
   show?: ClientBundleShow;
   clothing?: ClientBundleClothing;
@@ -60,7 +63,7 @@ interface ClientBundleDetail {
 }
 
 // Generic types
-type ClientShowItem = ClientShowItemGeneric<ClientShowTickets>;
+export type ClientShowItem = ClientShowItemGeneric<ClientShowTickets>;
 
 interface ClientShowItemGeneric<T> {
   show_id: ShowUUID;
@@ -75,18 +78,21 @@ interface ClientShowItemGeneric<T> {
   tickets?: T[];
 }
 
-interface ClientBundleItem {
+export interface ClientBundleItem {
   item_id: ItemUUID;
   name: string;
+  description?: string;
   old_min_price: number;
   min_price: number;
   max_order: number;
   image_url?: string | null;
   fixed_price: boolean;
   items?: ClientBundleDetail[];
+  start_time?: string;
+  end_time?: string;
 }
 
-type ClientClothingItem = ClientClothingItemGeneric<ClientClothingSizes>;
+export type ClientClothingItem = ClientClothingItemGeneric<ClientClothingSizes>;
 
 interface ClientClothingItemGeneric<T> {
   clothing_id: ClothingUUID;
@@ -99,10 +105,10 @@ interface ClientClothingItemGeneric<T> {
   sizes?: T[];
 }
 
-interface ClientGenericItem {
+export interface ClientGenericItem {
   item_id: ItemUUID;
   name: string;
-  price: string;
+  price: number;
   max_order: number;
   image_url?: string | null;
   fixed_price: boolean;

@@ -5,7 +5,7 @@ import Typography from "@/components/typography/typography";
 
 export function ClothingCard({ clothing }: ClothingCardProps) {
   return (
-    <div className="flex flex-col gap-1 shadow p-4">
+    <div className="flex flex-col gap-1 shadow p-4 items-start">
       <Image
         src={clothing.image_url ?? ""}
         width={80}

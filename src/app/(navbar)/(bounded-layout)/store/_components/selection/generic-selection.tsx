@@ -1,27 +1,30 @@
 "use client";
 
+import { fetchClothingDetails, fetchGenericDetails } from "@/api/shop";
 import { DESKTOP_MIN_WIDTH } from "@/consts/size.consts";
 import { useMediaQuery } from "@/hooks/use-media-query";
-import { cn, stringToCurrency } from "@/lib/utils";
+import { cn, sortSizes } from "@/lib/utils";
+import { useCartStore } from "@/store/cart";
 import {
   ClientClothingItem,
   ClientClothingSizes,
-  ClientShowItem,
+  ClientGenericItem,
 } from "@/types/items";
 import { DialogTitle } from "@radix-ui/react-dialog";
+import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Counter } from "@/components/counter";
-import { SeatCategory } from "@/components/store/seat-category";
 import Typography from "@/components/typography/typography";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
 
-import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
-import { Drawer, DrawerContent, DrawerTrigger } from "../ui/drawer";
+import { LoadingSelection } from "./loading-selection";
 
-type ClothingSelectionProps = {
-  clothing: ClientClothingItem;
+type GenericSelectionProps = {
+  generic_item: ClientGenericItem;
   children: React.ReactNode;
   // TODO: Add input type
   onAddToCart?: () => void;
@@ -29,34 +32,25 @@ type ClothingSelectionProps = {
 };
 
 type ContentProps = {
-  clothing: ClientClothingItem;
+  generic_item: ClientGenericItem;
   count: number;
   setCount: (value: number) => void;
   setOpen: (value: boolean) => void;
-  handleSizeSelect: (category: string) => void;
   onAddToCart?: () => void;
   onBuyNow?: () => void;
-  selectedSize: string | undefined;
-  sizes: ClientClothingSizes[] | undefined;
 };
 
 function Content({
-  clothing,
+  generic_item,
   count,
   setCount,
   setOpen,
-  handleSizeSelect,
   onAddToCart,
   onBuyNow,
-  selectedSize,
-  sizes,
 }: ContentProps) {
-  const currentSize = clothing?.sizes?.find(
-    (size) => size.size === selectedSize,
-  );
+  const currentCost = (generic_item?.price ?? 0) * count;
 
-  const currentCost = currentSize?.price ?? 0 * count;
-  const disableButton = selectedSize === undefined || count <= 0;
+  const disableButton = count <= 0;
 
   const costString = [
     (currentCost / 100).toString(),
@@ -82,10 +76,10 @@ function Content({
             <div className="w-full h-fit flex items-center justify-center py-3">
               <div className="relative w-52 h-52 rounded-2xl">
                 <Image
-                  src={clothing.image_url ?? ""}
+                  src={generic_item.image_url ?? ""}
                   fill={true}
                   className="aspect-square object-contain"
-                  alt={clothing.name}
+                  alt={generic_item.name}
                 />
               </div>
             </div>
@@ -98,27 +92,8 @@ function Content({
                 value={count}
                 setValue={setCount}
                 minValue={0}
-                maxValue={currentSize?.max_order}
+                maxValue={generic_item.max_order}
               />
-            </div>
-            <div className="flex flex-row w-full justify-between py-2 items-center">
-              <Typography variant="p">Size</Typography>
-              <div className="flex flex-row gap-2 h-full items-center">
-                {sizes?.map((size) => (
-                  <Button
-                    key={size.size}
-                    variant="outline"
-                    onClick={() => handleSizeSelect(size.size)}
-                    className={cn(
-                      "min-w-16 rounded-full h-fit py-2 px-4 border-primary-700 font-book text-primary-700 hover:bg-primary-700 hover:border-primary-700 hover:text-neutral-50 transition-colors duration-200",
-                      selectedSize !== size.size &&
-                        "border-neutral-100 bg-neutral-100 text-neutral-900",
-                    )}
-                  >
-                    {size.size}
-                  </Button>
-                ))}
-              </div>
             </div>
             <hr className="border border-1" />
             <div className="flex flex-row w-full justify-between py-3 items-center">
@@ -166,52 +141,48 @@ function Content({
   );
 }
 
-export function ClothingSelection({
-  clothing,
+export function GenericSelection({
+  generic_item: orig,
   children,
-  onAddToCart,
   onBuyNow,
-}: ClothingSelectionProps) {
-  const sizes = clothing?.sizes?.map((size) => size);
-
+}: GenericSelectionProps) {
   const [open, setOpen] = useState(false);
   const [count, setCount] = useState(0);
-  const [selectedSize, setSelectedSize] = useState<string | undefined>(
-    undefined,
-  );
+
+  const { addToCart } = useCartStore();
+  const onAddToCart = () => {
+    addToCart({
+      item_id: orig.item_id,
+      quantity: count,
+    });
+  };
+
+  const { data: generic_item } = useQuery({
+    queryKey: ["generic", orig.item_id],
+    queryFn: () => fetchGenericDetails(orig.item_id),
+    enabled: open,
+  });
+
+  // clear data on open
+  useEffect(() => {
+    if (open) {
+      setCount(0);
+    }
+  }, [open]);
 
   const isDesktop = useMediaQuery(`(min-width: ${DESKTOP_MIN_WIDTH}px)`);
 
-  const handleSizeSelect = (size: string) => {
-    if (size === selectedSize) {
-      setSelectedSize(undefined);
-      setCount(0);
-    } else {
-      // set count tto max(count, new size max order)
-      const newSizeMaxOrder = clothing.sizes?.find(
-        (sizeObj) => sizeObj.size === size,
-      )?.max_order;
-
-      if (newSizeMaxOrder !== undefined && count > newSizeMaxOrder) {
-        setCount(newSizeMaxOrder);
-      }
-
-      setSelectedSize(size);
-    }
-  };
-
-  const content = (
+  const content = generic_item ? (
     <Content
-      clothing={clothing}
+      generic_item={generic_item}
       count={count}
       setOpen={setOpen}
       setCount={setCount}
-      handleSizeSelect={handleSizeSelect}
       onAddToCart={onAddToCart}
       onBuyNow={onBuyNow}
-      selectedSize={selectedSize}
-      sizes={sizes}
     />
+  ) : (
+    <LoadingSelection />
   );
 
   if (!isDesktop) {

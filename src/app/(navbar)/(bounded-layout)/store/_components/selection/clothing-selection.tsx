@@ -1,26 +1,26 @@
 "use client";
 
+import { fetchClothingDetails } from "@/api/shop";
 import { DESKTOP_MIN_WIDTH } from "@/consts/size.consts";
 import { useMediaQuery } from "@/hooks/use-media-query";
-import { cn, stringToCurrency } from "@/lib/utils";
-import { ClientShowItem } from "@/types/items";
-import { useState } from "react";
+import { cn, sortSizes } from "@/lib/utils";
+import { useCartStore } from "@/store/cart";
+import { ClientClothingItem, ClientClothingSizes } from "@/types/items";
+import { DialogTitle } from "@radix-ui/react-dialog";
+import { useQuery } from "@tanstack/react-query";
+import Image from "next/image";
+import { useEffect, useState } from "react";
 
 import { Counter } from "@/components/counter";
-import { SeatCategory } from "@/components/store/seat-category";
 import Typography from "@/components/typography/typography";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
 
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogTrigger,
-} from "../ui/dialog";
-import { Drawer, DrawerContent, DrawerTrigger } from "../ui/drawer";
+import { LoadingSelection } from "./loading-selection";
 
-type TicketSelectionProps = {
-  show: ClientShowItem;
+type ClothingSelectionProps = {
+  clothing: ClientClothingItem;
   children: React.ReactNode;
   // TODO: Add input type
   onAddToCart?: () => void;
@@ -28,51 +28,41 @@ type TicketSelectionProps = {
 };
 
 type ContentProps = {
-  show: ClientShowItem;
+  clothing: ClientClothingItem;
   count: number;
   setCount: (value: number) => void;
   setOpen: (value: boolean) => void;
-  handleCategorySelect: (category: string) => void;
+  handleSizeSelect: (category: string) => void;
   onAddToCart?: () => void;
   onBuyNow?: () => void;
-  selectedCategory: string | undefined;
-  categories: string[] | undefined;
+  selectedSize: string | undefined;
+  sizes: ClientClothingSizes[] | undefined;
 };
 
 function Content({
-  show,
+  clothing,
   count,
   setCount,
   setOpen,
-  handleCategorySelect,
+  handleSizeSelect,
   onAddToCart,
   onBuyNow,
-  selectedCategory,
-  categories,
+  selectedSize,
+  sizes,
 }: ContentProps) {
-  const safeCategory: "A" | "B" | "C" | undefined = (() => {
-    if (
-      selectedCategory === "A" ||
-      selectedCategory === "B" ||
-      selectedCategory === "C"
-    ) {
-      return selectedCategory;
-    }
-    return undefined;
-  })();
-
-  const currentTicket = show.tickets?.find(
-    (ticket) => ticket.category === safeCategory,
+  const currentSize = clothing?.sizes?.find(
+    (size) => size.size === selectedSize,
   );
 
-  const currentCost = currentTicket?.price ?? 0 * count;
-
-  const disableButton = selectedCategory === undefined || count <= 0;
+  const currentCost = (currentSize?.price ?? 0) * count;
+  const disableButton = selectedSize === undefined || count <= 0;
 
   const costString = [
     (currentCost / 100).toString(),
     (currentCost % 100).toString().padStart(2, "0"),
   ];
+
+  const sortedSizes = sortSizes(sizes ?? []);
 
   const onAddToCartHandler = () => {
     onAddToCart?.();
@@ -86,50 +76,47 @@ function Content({
 
   return (
     <>
-      <div className="flex flex-col mt-6 items-center">
-        <Typography variant="h4" className="font-safira-march mb-2">
-          {show.name}
-        </Typography>
-      </div>
-      <hr className="border border-1" />
       <div className="flex flex-col w-full items-center">
         <div className="w-full max-w-4xl ">
           <div className="px-4 pt-2 md:pt-0">
-            <SeatCategory selectedCategory={safeCategory} />
+            {/* Image */}
+            <div className="w-full h-fit flex items-center justify-center py-3">
+              <div className="relative w-52 h-52 rounded-2xl">
+                <Image
+                  src={clothing.image_url ?? ""}
+                  fill={true}
+                  className="aspect-square object-contain"
+                  alt={clothing.name}
+                />
+              </div>
+            </div>
             <hr className="border border-1" />
             <div className="flex flex-row w-full justify-between py-2 items-center">
               <div>
-                <Typography variant="p">Number of pax</Typography>
-                <Typography
-                  variant="p2"
-                  color="icn-icon-info"
-                  className={cn("font-book", count % 5 < 3 && "hidden")}
-                >
-                  Add {5 - (count % 5)} more to get Bundle Price
-                </Typography>
+                <Typography variant="p">Number of items</Typography>
               </div>
               <Counter
                 value={count}
                 setValue={setCount}
                 minValue={0}
-                maxValue={currentTicket?.max_order}
+                maxValue={currentSize?.max_order}
               />
             </div>
             <div className="flex flex-row w-full justify-between py-2 items-center">
-              <Typography variant="p">Select your CAT</Typography>
+              <Typography variant="p">Size</Typography>
               <div className="flex flex-row gap-2 h-full items-center">
-                {categories?.map((category) => (
+                {sortedSizes?.map((size) => (
                   <Button
-                    key={category}
+                    key={size.size}
                     variant="outline"
-                    onClick={() => handleCategorySelect(category)}
+                    onClick={() => handleSizeSelect(size.size)}
                     className={cn(
-                      "rounded-full h-fit py-2 px-4 border-primary-700 font-book text-primary-700 hover:bg-primary-700 hover:border-primary-700 hover:text-neutral-50 transition-colors duration-200",
-                      selectedCategory !== category &&
+                      "min-w-16 rounded-full h-fit py-2 px-4 border-primary-700 font-book text-primary-700 hover:bg-primary-700 hover:border-primary-700 hover:text-neutral-50 transition-colors duration-200",
+                      selectedSize !== size.size &&
                         "border-neutral-100 bg-neutral-100 text-neutral-900",
                     )}
                   >
-                    CAT {category}
+                    {size.size}
                   </Button>
                 ))}
               </div>
@@ -180,50 +167,81 @@ function Content({
   );
 }
 
-export function TicketSelection({
-  show,
+export function ClothingSelection({
+  clothing: orig,
   children,
-  onAddToCart,
   onBuyNow,
-}: TicketSelectionProps) {
-  const categories = show.tickets?.map((ticket) => ticket.category);
-
+}: ClothingSelectionProps) {
   const [open, setOpen] = useState(false);
   const [count, setCount] = useState(0);
-  const [selectedCategory, setSelectedCategory] = useState<string | undefined>(
+  const [selectedSize, setSelectedSize] = useState<string | undefined>(
     undefined,
   );
 
-  const isDesktop = useMediaQuery(`(min-width: ${DESKTOP_MIN_WIDTH}px)`);
+  const { addToCart } = useCartStore();
+  const onAddToCart = () => {
+    const size = clothing?.sizes?.find(
+      (sizeObj) => sizeObj.size === selectedSize,
+    );
 
-  const handleCategorySelect = (category: string) => {
-    if (category === selectedCategory) {
-      setCount(0);
-      setSelectedCategory(undefined);
-    } else {
-      const newCategoryMaxOrder = show.tickets?.find(
-        (ticket) => ticket.category === category,
-      )?.max_order;
-      if (newCategoryMaxOrder !== undefined && count > newCategoryMaxOrder) {
-        setCount(newCategoryMaxOrder);
-      }
-
-      setSelectedCategory(category);
+    if (size) {
+      addToCart({
+        item_id: size.item_id,
+        quantity: count,
+      });
     }
   };
 
-  const content = (
+  const { data: clothing } = useQuery({
+    queryKey: ["clothing", orig.clothing_id],
+    queryFn: () => fetchClothingDetails(orig.clothing_id),
+    enabled: open,
+  });
+
+  // clear data on open
+  useEffect(() => {
+    if (open) {
+      setCount(0);
+      setSelectedSize(undefined);
+    }
+  }, [open]);
+
+  const sizes = clothing?.sizes?.map((size) => size);
+
+  const isDesktop = useMediaQuery(`(min-width: ${DESKTOP_MIN_WIDTH}px)`);
+
+  const handleSizeSelect = (size: string) => {
+    if (size === selectedSize) {
+      setSelectedSize(undefined);
+      setCount(0);
+    } else {
+      // set count tto max(count, new size max order)
+      const newSizeMaxOrder = clothing?.sizes?.find(
+        (sizeObj) => sizeObj.size === size,
+      )?.max_order;
+
+      if (newSizeMaxOrder !== undefined && count > newSizeMaxOrder) {
+        setCount(newSizeMaxOrder);
+      }
+
+      setSelectedSize(size);
+    }
+  };
+
+  const content = clothing ? (
     <Content
-      show={show}
+      clothing={clothing}
       count={count}
       setOpen={setOpen}
       setCount={setCount}
-      handleCategorySelect={handleCategorySelect}
+      handleSizeSelect={handleSizeSelect}
       onAddToCart={onAddToCart}
       onBuyNow={onBuyNow}
-      selectedCategory={selectedCategory}
-      categories={categories}
+      selectedSize={selectedSize}
+      sizes={sizes}
     />
+  ) : (
+    <LoadingSelection />
   );
 
   if (!isDesktop) {

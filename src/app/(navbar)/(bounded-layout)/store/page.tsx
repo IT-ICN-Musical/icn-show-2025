@@ -1,9 +1,13 @@
 "use client";
 
 import { fetchShopItems } from "@/api/shop";
+import { useCartStore } from "@/store/cart";
 import { useQuery } from "@tanstack/react-query";
+import { ShoppingCart } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 import Typography from "@/components/typography/typography";
+import { Button } from "@/components/ui/button";
 
 import { BundleCards } from "./_components/bundle-cards";
 import { ClothingCards } from "./_components/clothing-cards";
@@ -17,13 +21,20 @@ export default function Shop() {
     queryFn: fetchShopItems,
   });
 
+  const router = useRouter();
   return (
     <>
+      <Button
+        className="relative fixed bottom-[5%] right-[5%] h-12 w-12 bg-primary-800 px-2 py-2 rounded-full aspect-square z-40"
+        onClick={() => router.push("/store/cart")}
+      >
+        <ShoppingCart />
+      </Button>
       <PromotionBanner />
       <Typography variant="h4" className="font-safira-march mt-10 mb-6">
         Ticketing
       </Typography>
-      <div className="w-full flex flex-col gap-4 items-center justify-center rounded-3xl relative overflow-hidden py-4 px-4">
+      <div className="w-full flex flex-col gap-4 items-center justify-center rounded-t-3xl relative overflow-hidden py-4 px-4">
         <div className="absolute h-full w-full bg-gradient-to-b from-[#FF2F3F99] to-white top-0 left-0 -z-10"></div>
         <div className="flex items-center gap-4 w-full">
           {/* Not the final form of countdown component, but might be replaced by some library component. Therefore, it will be hardcoded for now */}

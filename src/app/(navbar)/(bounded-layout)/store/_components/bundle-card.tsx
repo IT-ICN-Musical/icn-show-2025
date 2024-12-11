@@ -20,8 +20,8 @@ export function BundleCard({ bundle }: BundleCardProps) {
           <Image
             src={bundle.image_url ?? ""}
             alt="ticket-image"
-            width={20}
-            height={20}
+            width={100}
+            height={100}
             className="rounded-lg sm:h-32 sm:w-32 h-20 w-20"
           />
         </div>

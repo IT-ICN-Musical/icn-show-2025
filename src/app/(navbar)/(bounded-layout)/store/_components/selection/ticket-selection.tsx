@@ -73,11 +73,6 @@ function Content({
 
   const disableButton = selectedCategory === undefined || count <= 0;
 
-  const costString = [
-    (currentCost / 100).toString(),
-    (currentCost % 100).toString().padStart(2, "0"),
-  ];
-
   const onAddToCartHandler = () => {
     onAddToCart?.();
     setOpen(false);
@@ -151,7 +146,7 @@ function Content({
                   variant="p"
                   className="font-semibold leading-[1rem]"
                 >
-                  {costString[0]}.{costString[1]}
+                  {(currentCost / 100).toFixed(2)}
                 </Typography>
               </div>
             </div>

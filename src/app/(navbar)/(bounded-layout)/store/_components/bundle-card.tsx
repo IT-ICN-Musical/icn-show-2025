@@ -9,7 +9,7 @@ import { LeftTicketBorder, RightTicketBorder } from "./ticket-borders";
 
 export function BundleCard({ bundle }: BundleCardProps) {
   return (
-    <div className="w-full flex bg-inherit h-[166px]">
+    <div className="w-full flex bg-inherit h-[166px] item-start text-start">
       <LeftTicketBorder />
 
       <div className="flex items-center justify-center sm:gap-2 gap-0 flex-grow bg-white px-3 border-y border-[#D9D9D9]">

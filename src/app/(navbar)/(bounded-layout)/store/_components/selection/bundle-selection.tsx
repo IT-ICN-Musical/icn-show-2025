@@ -46,6 +46,10 @@ type BundleSelectionProps = {
 type ContentProps = {
   bundle: ClientBundleItem;
   setOpen: (value: boolean) => void;
+  bundleOptions?: Record<string, number>[];
+  setBundleOptions: (value: Record<string, number>[]) => void;
+  currentPage: number;
+  setCurrentPage: (value: number) => void;
 };
 
 export type BundleSelection = {
@@ -155,12 +159,15 @@ const generateContent = ({
   }
 };
 
-function Content({ bundle, setOpen }: ContentProps) {
+function Content({
+  bundle,
+  setOpen,
+  bundleOptions,
+  setBundleOptions,
+  currentPage,
+  setCurrentPage,
+}: ContentProps) {
   const { addToCart } = useCartStore();
-  const [bundleOptions, setBundleOptions] =
-    useState<Array<Record<string, number>>>();
-  // for page navigation
-  const [currentPage, setCurrentPage] = useState(0);
   // current item_id is not undefined and quantity is not 0
 
   const bundleItems = bundle?.items?.filter((item) => {
@@ -179,13 +186,6 @@ function Content({ bundle, setOpen }: ContentProps) {
       });
     }
   }, [bundleItems, currentPage, bundleOptions, setBundleOptions]);
-
-  useEffect(() => {
-    if (bundleItems) {
-      // an array of empty arrays with size of bundleItems
-      setBundleOptions(new Array(bundleItems.length).fill({}));
-    }
-  }, [JSON.stringify(bundleItems)]);
 
   if (!bundleItems || !bundleOptions) {
     return undefined;
@@ -269,6 +269,9 @@ export function BundleSelection({
   children,
 }: BundleSelectionProps) {
   const [open, setOpen] = useState(false);
+  const [bundleOptions, setBundleOptions] =
+    useState<Record<string, number>[]>();
+  const [currentPage, setCurrentPage] = useState(0);
 
   const { data: bundleData } = useQuery({
     queryFn: () => fetchBundleDetails(orig.item_id),
@@ -278,8 +281,25 @@ export function BundleSelection({
 
   const isDesktop = useMediaQuery(`(min-width: ${DESKTOP_MIN_WIDTH}px)`);
 
+  useEffect(() => {
+    if (bundleData) {
+      // an array of empty arrays with size of bundleItems
+      const bundleItems = bundleData?.items?.filter((item) => {
+        return item.clothing || item.show;
+      });
+      setBundleOptions(new Array(bundleItems?.length ?? 0).fill({}));
+    }
+  }, [JSON.stringify(bundleData)]);
+
   const content = bundleData ? (
-    <Content bundle={bundleData} setOpen={setOpen} />
+    <Content
+      bundle={bundleData}
+      setOpen={setOpen}
+      bundleOptions={bundleOptions}
+      setBundleOptions={setBundleOptions}
+      currentPage={currentPage}
+      setCurrentPage={setCurrentPage}
+    />
   ) : (
     <LoadingSelection />
   );

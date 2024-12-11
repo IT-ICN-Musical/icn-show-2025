@@ -9,7 +9,7 @@ import { LeftTicketBorder, RightTicketBorder } from "./ticket-borders";
 
 export function ShowCard({ show }: BundleCardProps) {
   return (
-    <div className="w-full flex bg-inherit h-[166px] item-start text-start">
+    <div className="w-full flex bg-inherit h-[124px] sm:h-[166px] item-start text-start">
       <LeftTicketBorder />
       <div className="flex items-center justify-center sm:gap-2 gap-0 bg-white flex-grow px-3 border-y border-[#D9D9D9]">
         <div>
@@ -33,16 +33,10 @@ export function ShowCard({ show }: BundleCardProps) {
               <Clock12 size={12} />
               {formatTimeRange(show.start_time, show.end_time)}
             </Typography>
-            <Typography
-              className="text-[#71717As] flex gap-2 items-center text-xs sm:text-base"
-              variant="p"
-            >
-              <Info size={12} />
-              Description placeholder
-            </Typography>
           </div>
           <div className="flex justify-between">
             <div className="text-sm sm:text-lg">
+              <span className="font-book text-xs sm:text-md">from </span>
               SGD{" "}
               <span className="font-bold">
                 {(show.min_price / 100).toFixed(2)}

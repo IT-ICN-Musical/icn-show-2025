@@ -81,12 +81,15 @@ interface ClientShowItemGeneric<T> {
 export interface ClientBundleItem {
   item_id: ItemUUID;
   name: string;
+  description?: string;
   old_min_price: number;
   min_price: number;
   max_order: number;
   image_url?: string | null;
   fixed_price: boolean;
   items?: ClientBundleDetail[];
+  start_time?: string;
+  end_time?: string;
 }
 
 export type ClientClothingItem = ClientClothingItemGeneric<ClientClothingSizes>;

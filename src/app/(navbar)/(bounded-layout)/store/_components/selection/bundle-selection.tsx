@@ -282,14 +282,15 @@ export function BundleSelection({
   const isDesktop = useMediaQuery(`(min-width: ${DESKTOP_MIN_WIDTH}px)`);
 
   useEffect(() => {
-    if (bundleData) {
+    if (bundleData && open) {
       // an array of empty arrays with size of bundleItems
       const bundleItems = bundleData?.items?.filter((item) => {
         return item.clothing || item.show;
       });
       setBundleOptions(new Array(bundleItems?.length ?? 0).fill({}));
+      setCurrentPage(0);
     }
-  }, [JSON.stringify(bundleData)]);
+  }, [JSON.stringify(bundleData), open]);
 
   const content = bundleData ? (
     <Content

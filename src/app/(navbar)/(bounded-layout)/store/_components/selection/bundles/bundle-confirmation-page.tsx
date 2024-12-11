@@ -91,13 +91,14 @@ export function ConfirmationPage({
 
   // match each option
   return (
-    <>
+    <div className="flex flex-col min-h-[160px] justify-end">
       <div className="flex justify-center mb-3">
         <Typography variant="h3" className="font-book">
           Confirmation
         </Typography>
       </div>
       <hr className="border border-1" />
+
       <div className="flex flex-col">
         {dynamicItems.map((item, idx) => {
           // for each item in option
@@ -165,6 +166,6 @@ export function ConfirmationPage({
           </Typography>
         </div>
       </div>
-    </>
+    </div>
   );
 }

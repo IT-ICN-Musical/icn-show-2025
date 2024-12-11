@@ -8,8 +8,11 @@ import Typography from "@/components/typography/typography";
 import { LeftTicketBorder, RightTicketBorder } from "./ticket-borders";
 
 export function BundleCard({ bundle }: BundleCardProps) {
+  const startDate = bundle.start_time ? new Date(bundle.start_time) : undefined;
+  const endDate = bundle.end_time ? new Date(bundle.end_time) : undefined;
+
   return (
-    <div className="w-full flex bg-inherit h-[166px] item-start text-start">
+    <div className="w-full flex bg-inherit h-[124px] sm:h-[166px] item-start text-start">
       <LeftTicketBorder />
 
       <div className="flex items-center justify-center sm:gap-2 gap-0 flex-grow bg-white px-3 border-y border-[#D9D9D9]">
@@ -32,15 +35,26 @@ export function BundleCard({ bundle }: BundleCardProps) {
               variant="p"
             >
               <Clock12 size={12} />
-              Time placeholder
+              {startDate?.toLocaleString("en-SG", {
+                timeZone: "Asia/Singapore",
+                dateStyle: "short",
+                timeStyle: "short",
+              })}{" "}
+              - {/* ASSUMING THAT THE SHOW WILL END ON THE SAME DAY */}
+              {endDate?.toLocaleString("en-SG", {
+                timeZone: "Asia/Singapore",
+                timeStyle: "short",
+              })}
             </Typography>
-            <Typography
-              className="text-[#71717As] flex gap-2 items-center text-xs sm:text-base"
-              variant="p"
-            >
-              <Info size={12} />
-              Description placeholder
-            </Typography>
+            {bundle.description && (
+              <Typography
+                className="text-[#71717As] flex gap-2 items-center text-xs sm:text-base"
+                variant="p"
+              >
+                <Info size={12} />
+                {bundle.description}
+              </Typography>
+            )}
           </div>
           <div className="flex justify-between">
             <BundleCardPrice
@@ -60,13 +74,14 @@ function BundleCardPrice({ minPrice, oldMinPrice }: BundleCardPriceProps) {
   const isDiscounted = oldMinPrice !== minPrice;
   return (
     <div className="text-sm sm:text-lg">
+      <span className="font-book text-xs sm:text-md">from </span>
       <span className={cn(isDiscounted && "text-[#DC2626]")}>SGD</span>{" "}
+      <span className={cn("font-bold", isDiscounted && "text-[#DC2626]")}>
+        {minPrice}
+      </span>{" "}
       {isDiscounted && (
         <span className="line-through text-[#A1A1AA]">{oldMinPrice}</span>
       )}{" "}
-      <span className={cn("font-bold", isDiscounted && "text-[#DC2626]")}>
-        {minPrice}
-      </span>
     </div>
   );
 }

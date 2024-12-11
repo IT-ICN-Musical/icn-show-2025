@@ -68,11 +68,14 @@ export function BundleTicketContent({
 
   const availableQuota = maxAmount - addedAmount;
 
-  const availableStock =
-    (currentTicket?.max_order ?? 0) -
-    (safeCategory ? (options[safeCategory] ?? 0) : 0);
+  const availableStock: number | undefined =
+    safeCategory && currentTicket
+      ? currentTicket.max_order - options[safeCategory]
+      : undefined;
 
-  const maxCounterValue = Math.min(availableQuota, availableStock);
+  const maxCounterValue = availableStock
+    ? Math.min(availableQuota, availableStock)
+    : availableQuota;
 
   const handleAddItem = () => {
     if (safeCategory && count > 0) {

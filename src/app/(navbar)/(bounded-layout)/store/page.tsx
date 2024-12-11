@@ -3,8 +3,11 @@
 import { fetchShopItems } from "@/api/shop";
 import { useCartStore } from "@/store/cart";
 import { useQuery } from "@tanstack/react-query";
+import { ShoppingCart } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 import Typography from "@/components/typography/typography";
+import { Button } from "@/components/ui/button";
 
 import { BundleCards } from "./_components/bundle-cards";
 import { ClothingCards } from "./_components/clothing-cards";
@@ -18,8 +21,15 @@ export default function Shop() {
     queryFn: fetchShopItems,
   });
 
+  const router = useRouter();
   return (
     <>
+      <Button
+        className="relative fixed bottom-[5%] right-[5%] h-12 w-12 bg-primary-800 px-2 py-2 rounded-full aspect-square z-40"
+        onClick={() => router.push("/store/cart")}
+      >
+        <ShoppingCart />
+      </Button>
       <PromotionBanner />
       <Typography variant="h4" className="font-safira-march mt-10 mb-6">
         Ticketing

@@ -100,6 +100,9 @@ export function BundleTicketContent({
       <div className="flex flex-row w-full justify-between py-2 items-center">
         <div>
           <Typography variant="p">Number of pax</Typography>
+          <Typography variant="p2" color="icn-icon-info" className="font-book">
+            Maximum Amount: {maxAmount - addedAmount}
+          </Typography>
         </div>
         <Counter
           value={count}

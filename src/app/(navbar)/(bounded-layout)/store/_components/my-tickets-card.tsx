@@ -1,4 +1,4 @@
-import { formatTimeRange } from "@/lib/time";
+import { formatTimeRange, formatTimeRangeSgt } from "@/lib/time";
 import Image from "next/image";
 
 import Typography from "@/components/typography/typography";
@@ -7,7 +7,7 @@ import { LeftTicketBorder, RightTicketBorder } from "./ticket-borders";
 
 type MyTicketsCardProps = {
   name: string;
-  showTime: { startTime: Date; endTime: Date };
+  showTime: { startTime: string; endTime: string };
   show: string;
   category: string;
   viewerId: string;
@@ -41,9 +41,9 @@ export function MyTicketsCard(props: MyTicketsCardProps) {
               variant="p"
             >
               <>
-                {formatTimeRange(
-                  props.showTime.startTime,
-                  props.showTime.endTime,
+                {formatTimeRangeSgt(
+                  new Date(props.showTime.startTime),
+                  new Date(props.showTime.endTime),
                 )}{" "}
                 SGT
               </>

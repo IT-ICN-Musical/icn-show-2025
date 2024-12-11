@@ -1,4 +1,4 @@
-import { formatTimeRange } from "@/lib/time";
+import { formatTimeRange, formatTimeRangeSgt } from "@/lib/time";
 import { Clock12, RulerIcon, ShirtIcon, Ticket } from "lucide-react";
 import Image from "next/image";
 
@@ -42,7 +42,7 @@ export function PurchaseCard(props: PurchaseCardProps) {
                 props.showTimings.endTime !== "" && (
                   <>
                     <Clock12 size={14} />
-                    {formatTimeRange(
+                    {formatTimeRangeSgt(
                       new Date(props.showTimings.startTime),
                       new Date(props.showTimings.endTime),
                     )}{" "}

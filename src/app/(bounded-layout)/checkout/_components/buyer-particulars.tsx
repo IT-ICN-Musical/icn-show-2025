@@ -10,8 +10,8 @@ export function BuyerParticulars() {
       </Typography>
       <div className="flex flex-col gap-2 w-full max-w-[400px]">
         <Input
-          name="name"
-          id="name"
+          name="buyer_name"
+          id="buyer_name"
           placeholder="Name*"
           className=""
           required={true}

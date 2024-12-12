@@ -1,4 +1,4 @@
-import { Ruler, Shirt, Trash } from "lucide-react";
+import { Ban, Ruler, Shirt, Trash } from "lucide-react";
 import Image from "next/image";
 
 import { Button } from "@/components/ui/button";
@@ -8,6 +8,7 @@ export function MerchandiseCardCheckout({
   size,
   quantity,
   image,
+  isAvailable,
   onDelete,
 }: MerchandiseCardCheckoutProps) {
   return (
@@ -23,18 +24,30 @@ export function MerchandiseCardCheckout({
       </div>
       <div>
         <p className="text-sm font-mont font-medium">{name}</p>
-        <div className="flex flex-row items-center">
-          <Ruler strokeWidth={2} className="w-4" color="#71717A" />
-          <p className="font-mont text-xs font-normal ml-1 text-zinc-500">
-            Size {size}
-          </p>
-        </div>
-        <div className="flex flex-row items-center">
-          <Shirt strokeWidth={2} className="w-4" color="#71717A" />
-          <p className="font-mont text-xs font-normal ml-1 text-zinc-500">
-            x {quantity}
-          </p>
-        </div>
+
+        {isAvailable ? (
+          <>
+            <div className="flex flex-row items-center">
+              <Ruler strokeWidth={2} className="w-4" color="#71717A" />
+              <p className="font-mont text-xs font-normal ml-1 text-zinc-500">
+                Size {size}
+              </p>
+            </div>
+            <div className="flex flex-row items-center">
+              <Shirt strokeWidth={2} className="w-4" color="#71717A" />
+              <p className="font-mont text-xs font-normal ml-1 text-zinc-500">
+                x {quantity}
+              </p>
+            </div>
+          </>
+        ) : (
+          <div className="flex flex-row items-center">
+            <Ban strokeWidth={2} className="w-4" color="#71717A" />
+            <p className="font-mont text-xs font-normal ml-1 text-zinc-500">
+              Out of stock
+            </p>
+          </div>
+        )}
       </div>
       <Button
         className="absolute right-[25px] top-2/4 -translate-y-2/4 z-20 w-fit px-2 py-2 aspect-square"
@@ -54,5 +67,6 @@ type MerchandiseCardCheckoutProps = {
   size: string;
   quantity: number;
   image: string;
+  isAvailable: boolean;
   onDelete?: () => void;
 } & React.HTMLAttributes<HTMLDivElement>;

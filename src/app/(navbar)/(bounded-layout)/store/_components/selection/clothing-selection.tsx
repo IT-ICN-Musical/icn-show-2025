@@ -134,7 +134,7 @@ function Content({
                   variant="p"
                   className="font-semibold leading-[1rem]"
                 >
-                  {currentCost.toFixed(2)}
+                  {(currentCost / 100).toFixed(2)}
                 </Typography>
               </div>
             </div>

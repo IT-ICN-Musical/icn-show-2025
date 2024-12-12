@@ -9,6 +9,7 @@ type MyPurchaseBackend = {
   merch_size: string;
   image_url: string;
   merch_quantity: number;
+  generic_quantity: number;
 };
 
 type MyPurchases = {
@@ -26,6 +27,7 @@ const mock: MyPurchases[] = [
         },
         show_quantity: 2,
         merch_quantity: 0,
+        generic_quantity: 0,
         merch_size: "",
         image_url: "https://picsum.photos/id/237/200/300",
       },
@@ -35,6 +37,7 @@ const mock: MyPurchases[] = [
           start_time: "",
           end_time: "",
         },
+        generic_quantity: 0,
         show_quantity: 0,
         merch_quantity: 5,
         merch_size: "XL",
@@ -47,6 +50,7 @@ const mock: MyPurchases[] = [
           end_time: new Date().toUTCString(),
         },
         show_quantity: 1,
+        generic_quantity: 0,
         merch_quantity: 5,
         merch_size: "XL",
         image_url: "https://picsum.photos/id/237/200/300",
@@ -63,6 +67,8 @@ const mock: MyPurchases[] = [
         },
         show_quantity: 2,
         merch_quantity: 0,
+        generic_quantity: 0,
+
         merch_size: "",
         image_url: "https://picsum.photos/id/237/200/300",
       },
@@ -74,6 +80,8 @@ const mock: MyPurchases[] = [
         },
         show_quantity: 0,
         merch_quantity: 5,
+        generic_quantity: 0,
+
         merch_size: "XL",
         image_url: "https://picsum.photos/id/237/200/300",
       },
@@ -84,8 +92,21 @@ const mock: MyPurchases[] = [
           end_time: new Date().toUTCString(),
         },
         show_quantity: 1,
+        generic_quantity: 0,
         merch_quantity: 5,
         merch_size: "XL",
+        image_url: "https://picsum.photos/id/237/200/300",
+      },
+      {
+        title: "Key Chain",
+        show: {
+          start_time: "",
+          end_time: "",
+        },
+        show_quantity: 0,
+        generic_quantity: 1,
+        merch_quantity: 0,
+        merch_size: "",
         image_url: "https://picsum.photos/id/237/200/300",
       },
     ],
@@ -122,6 +143,7 @@ export default async function MyPurchases() {
                 merchQuantity={purchase.merch_quantity}
                 merchSize={purchase.merch_size}
                 imageUrl={purchase.image_url}
+                genericQuantity={purchase.generic_quantity}
               />
             ))}
           </div>

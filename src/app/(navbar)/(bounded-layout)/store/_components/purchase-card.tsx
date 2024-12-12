@@ -1,5 +1,5 @@
 import { formatTimeRange, formatTimeRangeSgt } from "@/lib/time";
-import { Clock12, RulerIcon, ShirtIcon, Ticket } from "lucide-react";
+import { BoxIcon, Clock12, RulerIcon, ShirtIcon, Ticket } from "lucide-react";
 import Image from "next/image";
 
 import Typography from "@/components/typography/typography";
@@ -13,6 +13,7 @@ type PurchaseCardProps = {
   merchQuantity: number;
   merchSize: string;
   imageUrl: string;
+  genericQuantity: number;
 };
 
 export function PurchaseCard(props: PurchaseCardProps) {
@@ -79,6 +80,16 @@ export function PurchaseCard(props: PurchaseCardProps) {
               {props.merchQuantity !== 0 && (
                 <>
                   <ShirtIcon size={14} />x {props.merchQuantity}
+                </>
+              )}
+            </Typography>
+            <Typography
+              className="text-slate-600  flex gap-2 items-center text-xs sm:text-base"
+              variant="p"
+            >
+              {props.genericQuantity !== 0 && (
+                <>
+                  <BoxIcon size={14} />x {props.genericQuantity}
                 </>
               )}
             </Typography>

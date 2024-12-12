@@ -73,12 +73,12 @@ export function ConfirmationPage({
           const [oldPrice, newPrice] = (() => {
             if (item.clothing) {
               const clothing_size = item.clothing.sizes?.find(
-                (size) => size.size === key,
+                (size) => size.item_id === key,
               );
               return [clothing_size?.old_price ?? 0, clothing_size?.price ?? 0];
             } else if (item.show) {
               const ticket = item.show.tickets?.find(
-                (ticket) => ticket.category === key,
+                (ticket) => ticket.item_id === key,
               );
               return [ticket?.old_price ?? 0, ticket?.price ?? 0];
             }
@@ -109,7 +109,7 @@ export function ConfirmationPage({
                 const [name, oldPrice, newPrice] = (() => {
                   if (item.clothing) {
                     const clothing_size = item.clothing.sizes?.find(
-                      (size) => size.size === key,
+                      (size) => size.item_id === key,
                     );
                     const name = item.clothing.name + ` ${clothing_size?.size}`;
                     return [
@@ -119,7 +119,7 @@ export function ConfirmationPage({
                     ];
                   } else if (item.show) {
                     const ticket = item.show.tickets?.find(
-                      (ticket) => ticket.category === key,
+                      (ticket) => ticket.item_id === key,
                     );
                     const name = item.show.name + ` (CAT ${ticket?.category})`;
                     return [name, ticket?.old_price ?? 0, ticket?.price ?? 0];

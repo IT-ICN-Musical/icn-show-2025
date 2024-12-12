@@ -1,11 +1,14 @@
-import { Clock12, Ticket } from "lucide-react";
+import { Clock12, Ticket, Trash } from "lucide-react";
 import Image from "next/image";
+
+import { Button } from "@/components/ui/button";
 
 export function ShowCardCheckout({
   name,
   time,
   quantity,
   image,
+  onDelete,
 }: ShowCardCheckoutProps) {
   return (
     <div className="px-2 w-full mb-2">
@@ -72,6 +75,15 @@ export function ShowCardCheckout({
             />
           </svg>
         </div>
+        <Button
+          className="absolute right-[32px] top-2/4 -translate-y-2/4 z-20 w-fit px-2 py-2 aspect-square"
+          variant="destructive"
+          size="sm"
+          type="button"
+          onClick={onDelete}
+        >
+          <Trash />
+        </Button>
       </div>
     </div>
   );
@@ -82,4 +94,5 @@ type ShowCardCheckoutProps = {
   time: string;
   quantity: number;
   image: string;
+  onDelete?: () => void;
 } & React.HTMLAttributes<HTMLDivElement>;

@@ -75,10 +75,15 @@ export function BundleClothingContent({
 
   const handleAddItem = () => {
     if (selectedSize && count > 0) {
-      setOption({
-        ...option,
-        [selectedSize]: count + (option[selectedSize] ?? 0),
-      });
+      const item_id = clothing.sizes?.find(
+        (sizeObj) => sizeObj.size === selectedSize,
+      )?.item_id;
+      if (item_id) {
+        setOption({
+          ...option,
+          [item_id]: count + (option[item_id] ?? 0),
+        });
+      }
 
       setCount(0);
     }
@@ -151,12 +156,14 @@ export function BundleClothingContent({
               </Typography>
               {Object.keys(option).map((key, idx) => {
                 const value = option[key];
-                const ticket = clothing.sizes?.find(
-                  (size) => size.size === key,
+                const clothing_size = clothing.sizes?.find(
+                  (size) => size.item_id === key,
                 );
 
-                const oldPrice = ticket?.old_price ?? 0;
-                const newPrice = ticket?.price ?? 0;
+                const size_str = clothing_size?.size;
+
+                const oldPrice = clothing_size?.old_price ?? 0;
+                const newPrice = clothing_size?.price ?? 0;
 
                 const onClickDelete = () => {
                   const newOptions = { ...option };
@@ -178,7 +185,7 @@ export function BundleClothingContent({
                     </Button>
                     <div className="flex justify-between py-2 flex-grow items-center">
                       <Typography variant="p" className="font-light">
-                        CAT {key} ×{value}
+                        CAT {size_str} ×{value}
                       </Typography>
                       <div className="flex flex-row gap-2 h-full items-end items-center">
                         <Typography variant="p2" className="font-light">

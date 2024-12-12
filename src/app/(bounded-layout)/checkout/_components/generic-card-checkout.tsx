@@ -1,13 +1,16 @@
-import { Shirt } from "lucide-react";
+import { Box, Shirt, Trash } from "lucide-react";
 import Image from "next/image";
+
+import { Button } from "@/components/ui/button";
 
 export function GenericCardCheckout({
   name,
   quantity,
   image,
+  onDelete,
 }: GenericCardCheckoutProps) {
   return (
-    <div className="bg-white p-4 rounded-lg border-[#E4E4E7] border-[0.75px] flex flex-row mb-2 h-[88px] items-center">
+    <div className="relative bg-white p-4 rounded-lg border-[#E4E4E7] border-[0.75px] flex flex-row mb-2 h-[88px] items-center">
       <div>
         <Image
           className="w-16 h-16 rounded-sm mr-4"
@@ -20,12 +23,21 @@ export function GenericCardCheckout({
       <div>
         <p className="text-sm font-mont font-medium">{name}</p>
         <div className="flex flex-row items-center">
-          <Shirt strokeWidth={2} className="w-4" color="#71717A" />
+          <Box strokeWidth={2} className="w-4" color="#71717A" />
           <p className="font-mont text-xs font-normal ml-1 text-zinc-500">
             x {quantity}
           </p>
         </div>
       </div>
+      <Button
+        className="absolute right-[25px] top-2/4 -translate-y-2/4 z-20 w-fit px-2 py-2 aspect-square"
+        variant="destructive"
+        size="sm"
+        type="button"
+        onClick={onDelete}
+      >
+        <Trash />
+      </Button>
     </div>
   );
 }
@@ -34,4 +46,5 @@ type GenericCardCheckoutProps = {
   name: string;
   quantity: number;
   image: string;
+  onDelete?: () => void;
 } & React.HTMLAttributes<HTMLDivElement>;

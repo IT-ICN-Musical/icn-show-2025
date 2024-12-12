@@ -79,11 +79,16 @@ export function BundleTicketContent({
 
   const handleAddItem = () => {
     if (safeCategory && count > 0) {
-      setOptions({
-        ...options,
-        [safeCategory]: count + (options[safeCategory] ?? 0),
-      });
+      const ticket_item_id = show.tickets?.find(
+        (ticket) => ticket.category === safeCategory,
+      )?.item_id;
 
+      if (ticket_item_id) {
+        setOptions({
+          ...options,
+          [ticket_item_id]: count + (options[ticket_item_id] ?? 0),
+        });
+      }
       setCount(0);
     }
   };
@@ -151,8 +156,10 @@ export function BundleTicketContent({
               {Object.keys(options).map((key, idx) => {
                 const value = options[key];
                 const ticket = show.tickets?.find(
-                  (ticket) => ticket.category === key,
+                  (ticket) => ticket.item_id === key,
                 );
+
+                const CAT = ticket?.category ?? "";
 
                 const oldPrice = ticket?.old_price ?? 0;
                 const newPrice = ticket?.price ?? 0;
@@ -177,7 +184,7 @@ export function BundleTicketContent({
                     </Button>
                     <div className="flex justify-between py-2 flex-grow items-center">
                       <Typography variant="p" className="font-light">
-                        CAT {key} ×{value}
+                        CAT {CAT} ×{value}
                       </Typography>
                       <div className="flex flex-row gap-2 h-full items-end items-center">
                         <Typography variant="p2" className="font-light">

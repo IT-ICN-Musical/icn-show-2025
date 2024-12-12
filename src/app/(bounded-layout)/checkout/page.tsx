@@ -1,59 +1,105 @@
 "use client";
 
+import { submitCheckout } from "@/api/checkout";
+import { generateOTP } from "@/api/otp";
 import { previewOrder } from "@/api/preview-order";
 import { useCartStore } from "@/store/cart";
+import {
+  CheckoutItemOrderRequest,
+  ViewerDetails as ViewerDetailsType,
+} from "@/types/checkout";
 import { ItemOrderPreview, PreviewOrderResponse } from "@/types/preview-order";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
+import Typography from "@/components/typography/typography";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { PhoneInput } from "@/components/ui/phone-input";
 
 import { AppliedPromotionBanner } from "./_components/applied-promotion-banner";
+import { BuyerParticulars } from "./_components/buyer-particulars";
 import { GenericCardCheckout } from "./_components/generic-card-checkout";
 import { MerchandiseCardCheckout } from "./_components/merchandise-card-checkout";
+import { PreviewItems } from "./_components/preview-items";
 import { ShowCardCheckout } from "./_components/show-card-checkout";
+import { VerifyEmailDialog } from "./_components/verify-email";
+import { ViewerDetails } from "./_components/viewer-details";
+
+function retrieveItemsWithViewers(items: ItemOrderPreview[]): {
+  quantities: Record<string, number>;
+  name: Record<string, string>;
+} {
+  const itemQuantities: Record<string, number> = {};
+  const itemNames: Record<string, string> = {};
+
+  items.forEach((item) => {
+    if (item.with_viewers) {
+      if (item.item_id in itemQuantities) {
+        itemQuantities[item.item_id] += item.quantity;
+      } else {
+        itemQuantities[item.item_id] = item.quantity;
+        itemNames[item.item_id] = item.name;
+      }
+    } else if (item.bundle_items) {
+      item.bundle_items.forEach((bundleItem) => {
+        if (bundleItem.with_viewers) {
+          if (bundleItem.item_id in itemQuantities) {
+            itemQuantities[bundleItem.item_id] += bundleItem.quantity;
+          } else {
+            itemQuantities[bundleItem.item_id] = bundleItem.quantity;
+            itemNames[bundleItem.item_id] = bundleItem.name;
+          }
+        }
+      });
+    }
+  });
+
+  return { quantities: itemQuantities, name: itemNames };
+}
 
 export default function Checkout() {
   const router = useRouter();
   const promoInputRef = useRef<HTMLInputElement>(null);
   // const cart = useCartStore((state) => state.cart);
-  const [cart, setCart] = useState([
-    // night tickets
-    {
-      item_id: "3fae913a-4e42-49d3-ba14-5f99bc8ca12a",
-      quantity: 2,
-    },
-    // rose flower
-    {
-      item_id: "51945a6b-7aea-4ef0-9320-8db35a23e6e0",
-      quantity: 2,
-    },
-    //  night ticket + 1 clothes
-    {
-      item_id: "e7b78f79-a337-43e2-8e7e-c3f8efa0ced5",
-      quantity: 1,
-      bundle_option: [
-        {
-          item_id: "45367ac5-8a9e-4ae0-98c7-62310d3d091c",
-          quantity: 1,
-        },
-        {
-          item_id: "cd39fb52-a808-4fe8-8602-e3bd7c74bdc2",
-          quantity: 1,
-        },
-        {
-          item_id: "02caa0e6-ae75-4923-a2b8-3fbefe65fe83",
-          quantity: 1,
-        },
-      ],
-    },
-  ]);
+  const { cart, removeFromCart } = useCartStore();
 
   const [isPromoApplied, setIsPromoApplied] = useState(false);
   const [promoCode, setPromoCode] = useState("");
   const [promoError, setPromoError] = useState("");
 
+  // dialog
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+  // form details
+  const [buyerDetails, setBuyerDetails] = useState({
+    name: "",
+    phone: "",
+    email: "",
+  });
+
+  // const viewer details
+  const [viewerDetails, setViewerDetails] = useState<ViewerDetailsType[]>();
+  const viewerDetailsCompleted =
+    viewerDetails &&
+    viewerDetails.every((x) => x.viewers.every((viewer) => viewer !== ""));
+
+  const {
+    mutate: generateOTPMutate,
+    error: generateOTPError,
+    isPending,
+  } = useMutation({
+    mutationFn: generateOTP,
+    onSuccess: () => setDialogOpen(true),
+  });
+
+  const { mutate: submitCheckoutMutate, data: checkoutData } = useMutation({
+    mutationFn: submitCheckout,
+    onSuccess: (data) => router.push(data.payment_url),
+  });
+
+  const hidePromo = cart.length === 0 || isPromoApplied;
   const {
     data: orderPreview,
     isLoading,
@@ -72,7 +118,6 @@ export default function Checkout() {
         })),
         ...(promoCode && { promo_code: promoCode }),
       }),
-    enabled: cart.length > 0,
     retry: 1,
     staleTime: 30000,
     refetchOnWindowFocus: false,
@@ -108,30 +153,67 @@ export default function Checkout() {
     }
   };
 
-  const isMerchandise = (item: ItemOrderPreview) => "size" in item;
+  const tickets = useMemo(() => {
+    const itemWithViewers = retrieveItemsWithViewers(orderPreview?.items ?? []);
 
-  if (isLoading) return <div>Loading...</div>;
+    return Object.entries(itemWithViewers.quantities).map(
+      ([item_id, quantity]) => ({
+        item_id,
+        quantity,
+        name: itemWithViewers.name[item_id],
+      }),
+    );
+  }, [orderPreview]);
+
+  // update to empty arrays
+  useEffect(() => {
+    // empty array of size tickets
+
+    setViewerDetails(
+      tickets.map((x) => {
+        return {
+          ticket_item_id: x.item_id,
+          viewers: Array(x.quantity).fill(""),
+        };
+      }),
+    );
+  }, [tickets]);
+
+  if (
+    isLoading ||
+    viewerDetails === undefined ||
+    (viewerDetails.length === 0 && tickets.length > 0)
+  )
+    return <div>Loading...</div>;
   if (error || !orderPreview)
     return <div>Error loading order details. Please try again.</div>;
-  const ticketItems = orderPreview?.items.filter(
-    (item) => !isMerchandise(item),
-  );
-  const isTicketItem = (
-    item: ItemOrderPreview,
-  ): item is ItemOrderPreview & {
-    start_time?: number;
-    end_time?: number;
-    is_selling_fast?: boolean;
-  } => !("size" in item);
-  const merchItems = orderPreview?.items.filter((item) => isMerchandise(item));
-  const isMerchandiseItem = (
-    item: ItemOrderPreview,
-  ): item is ItemOrderPreview & {
-    size?: string;
-  } => "size" in item;
 
   return (
     <div className="relative flex flex-col min-h-screen h-screen bg-zinc-50">
+      <VerifyEmailDialog
+        open={dialogOpen}
+        setOpen={setDialogOpen}
+        email={buyerDetails.email}
+        onSuccess={(token) => {
+          const checkoutItems: CheckoutItemOrderRequest[] = cart.map(
+            (items) => {
+              return {
+                item_id: items.item_id,
+                quantity: items.quantity,
+                bundle_options: items.bundle_option,
+              };
+            },
+          );
+
+          submitCheckoutMutate({
+            buyer_email_token: token,
+            buyer_name: buyerDetails.name,
+            buyer_phone: buyerDetails.phone,
+            items: checkoutItems,
+            viewer_details: viewerDetails,
+          });
+        }}
+      />
       <div className="w-full overflow-y-auto pt-[60px] pb-[72px]">
         <div className="absolute top-0 left-0 w-full bg-white shadow-sm py-4 z-20">
           <button
@@ -143,128 +225,137 @@ export default function Checkout() {
           </button>
           <h1 className="font-safira-march text-center">Checkout</h1>
         </div>
-        <div className="px-4 my-2">
-          {isPromoApplied && <AppliedPromotionBanner />}
-        </div>
-        {ticketItems.map((item, index) => {
-          const hasValidTime =
-            isTicketItem(item) && item.start_time && item.end_time;
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            const name = e.currentTarget.buyer_name.value;
+            const phone = e.currentTarget.phone.value;
+            const email = e.currentTarget.email.value;
+            setBuyerDetails({ name, phone, email });
 
-          if (hasValidTime) {
-            return (
-              <div key={`ticket-${index}`}>
-                <ShowCardCheckout
-                  name={item.name}
-                  time={`${new Date((item.start_time ?? 0) * 1000).toLocaleString()} - ${new Date((item.end_time ?? 0) * 1000).toLocaleString()}`}
-                  quantity={item.quantity}
-                  image={item.image_url ?? ""}
-                />
-              </div>
-            );
-          }
+            generateOTPMutate({ email });
 
-          return (
-            <div key={`generic-${index}`} className="px-4">
-              <GenericCardCheckout
-                name={item.name}
-                quantity={item.quantity}
-                image={item.image_url ?? ""}
-              />
-            </div>
-          );
-        })}
-        <div className="px-4">
-          {merchItems.map((item, index) => (
-            <div key={index}>
-              <MerchandiseCardCheckout
-                name={item.name}
-                size={
-                  isMerchandiseItem(item) && item.size
-                    ? item.size
-                    : "Size not available"
-                }
-                quantity={item.quantity}
-                image={item.image_url ?? ""}
-              />
-            </div>
-          ))}
-          {!isPromoApplied && (
-            <div>
-              <div className="bg-white rounded-lg shadow-sm flex flex-col h-[102px] p-4">
-                <p className="font-mont text-sm font-medium mb-1">Promo Code</p>
-                <div className="flex-row flex justify-between">
-                  <input
-                    type="text"
-                    placeholder="Enter the Promo Code"
-                    className="p-3 rounded-lg border-gray-200 border text-sm font-mont font-normal w-9/12"
-                    ref={promoInputRef}
-                  />
-                  <Button
-                    className="bg-primary-700 h-full"
-                    onClick={handleApplyPromoCode}
-                  >
-                    Apply
-                  </Button>
-                </div>
-              </div>
-            </div>
-          )}
-          <div className="my-4 p-4 bg-white rounded-lg shadow">
-            <p className="text-sm font-mont font-medium mb-3">Price Details</p>
-            {orderPreview.items.map((item, index) => (
-              <div key={index} className="flex flex-row justify-between">
-                <p className="text-sm font-mont font-normal my-1">
-                  {item.name}
-                </p>
-                <div className="flex items-center gap-2">
-                  {"old_unit_price" in item ? (
-                    <>
-                      <p className="text-sm font-mont font-normal my-1 text-red-600">
-                        SGD {(item.unit_price / 100).toFixed(2)}
-                      </p>
-                      <p className="text-sm font-mont font-normal my-1 line-through text-gray-500">
-                        SGD {(item.old_unit_price / 100).toFixed(2)}
-                      </p>
-                      <p className="text-sm font-mont font-normal my-1">
-                        x {item.quantity}
-                      </p>
-                    </>
-                  ) : (
-                    <p className="text-sm font-mont font-normal my-1">
-                      SGD {(item.unit_price / 100).toFixed(2)} x {item.quantity}
-                    </p>
-                  )}
-                </div>
-              </div>
-            ))}
-
-            <div className="flex flex-row justify-between border-t mt-2 py-2">
-              <p className="text-sm font-mont font-semibold">Total</p>
-              <div className="flex items-center gap-2">
-                {orderPreview.old_total &&
-                orderPreview.old_total !== orderPreview.total ? (
-                  <>
-                    <p className="text-sm font-mont font-semibold text-red-600">
-                      SGD {(orderPreview.total / 100).toFixed(2)}
-                    </p>
-                    <p className="text-sm font-mont font-normal line-through text-gray-500">
-                      SGD {(orderPreview.old_total / 100).toFixed(2)}
-                    </p>
-                  </>
-                ) : (
-                  <p className="text-sm font-mont font-semibold">
-                    SGD {(orderPreview.total / 100).toFixed(2)}
-                  </p>
-                )}
-              </div>
-            </div>
+            setDialogOpen(true);
+          }}
+        >
+          <div className="px-4 my-2">
+            {isPromoApplied && <AppliedPromotionBanner />}
           </div>
-        </div>
-        <div className="bg-white shadow-xl p-4 absolute left-0 bottom-0 w-full">
-          <Button className="bg-primary-700 rounded-lg w-full text-white text-center h-11">
-            Pay Now
-          </Button>
-        </div>
+          <PreviewItems
+            orderPreview={orderPreview}
+            removeFromCart={removeFromCart}
+          />
+          <div className="px-4">
+            {orderPreview.items === null && (
+              <div className="flex flex-col w-full items-center justify-center py-16">
+                <Typography
+                  variant="h5"
+                  className="text-center text-secondary-300 font-book"
+                >
+                  Your cart is empty
+                </Typography>
+              </div>
+            )}
+
+            {!hidePromo && (
+              <div>
+                <div className="bg-white rounded-lg shadow-sm flex flex-col h-[102px] p-4">
+                  <p className="font-mont text-sm font-medium mb-1">
+                    Promo Code
+                  </p>
+                  <div className="flex-row flex justify-between">
+                    <input
+                      type="text"
+                      placeholder="Enter the Promo Code"
+                      className="p-3 rounded-lg border-gray-200 border text-sm font-mont font-normal w-9/12"
+                      ref={promoInputRef}
+                    />
+                    <Button
+                      className="bg-primary-700 h-full"
+                      onClick={handleApplyPromoCode}
+                    >
+                      Apply
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            )}
+            {cart.length > 0 && (
+              <div className="my-4 p-4 bg-white rounded-lg shadow">
+                <p className="text-sm font-mont font-medium mb-3">
+                  Price Details
+                </p>
+                {(orderPreview.items ?? []).map((item, index) => (
+                  <div key={index} className="flex flex-row justify-between">
+                    <p className="text-sm font-mont font-normal my-1">
+                      {item.name}
+                    </p>
+                    <div className="flex items-center gap-2">
+                      {item.old_unit_price ? (
+                        <>
+                          <p className="text-sm font-mont font-normal my-1 text-red-600">
+                            SGD {(item.unit_price / 100).toFixed(2)}
+                          </p>
+                          <p className="text-sm font-mont font-normal my-1 line-through text-gray-500">
+                            SGD {(item.old_unit_price / 100).toFixed(2)}
+                          </p>
+                          <p className="text-sm font-mont font-normal my-1">
+                            x {item.quantity}
+                          </p>
+                        </>
+                      ) : (
+                        <p className="text-sm font-mont font-normal my-1">
+                          SGD {(item.unit_price / 100).toFixed(2)} x{" "}
+                          {item.quantity}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                ))}
+
+                <div className="flex flex-row justify-between border-t mt-2 py-2">
+                  <p className="text-sm font-mont font-semibold">Total</p>
+                  <div className="flex items-center gap-2">
+                    {orderPreview.old_total &&
+                    orderPreview.old_total !== orderPreview.total ? (
+                      <>
+                        <p className="text-sm font-mont font-semibold text-red-600">
+                          SGD {(orderPreview.total / 100).toFixed(2)}
+                        </p>
+                        <p className="text-sm font-mont font-normal line-through text-gray-500">
+                          SGD {(orderPreview.old_total / 100).toFixed(2)}
+                        </p>
+                      </>
+                    ) : (
+                      <p className="text-sm font-mont font-semibold">
+                        SGD {(orderPreview.total / 100).toFixed(2)}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+          <div className="px-4">{cart.length > 0 && <BuyerParticulars />}</div>
+          <div className="px-4">
+            {tickets.length > 0 && (
+              <ViewerDetails
+                tickets={tickets}
+                viewerDetails={viewerDetails ?? []}
+                setViewerDetails={setViewerDetails}
+              />
+            )}
+          </div>
+          <div className="bg-white shadow-xl p-4 absolute left-0 bottom-0 w-full">
+            <Button
+              type="submit"
+              className="bg-primary-700 rounded-lg w-full text-white text-center h-11"
+              disabled={cart.length === 0 || !viewerDetailsCompleted}
+            >
+              Checkout
+            </Button>
+          </div>
+        </form>
       </div>
     </div>
   );

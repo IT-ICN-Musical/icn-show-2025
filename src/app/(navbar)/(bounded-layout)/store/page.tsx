@@ -26,7 +26,7 @@ export default function Shop() {
     <>
       <Button
         className="relative fixed bottom-[5%] right-[5%] h-12 w-12 bg-primary-800 px-2 py-2 rounded-full aspect-square z-40"
-        onClick={() => router.push("/store/cart")}
+        onClick={() => router.push("/checkout")}
       >
         <ShoppingCart />
       </Button>

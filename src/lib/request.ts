@@ -30,7 +30,7 @@ export async function request<T>({
   const base = process.env.NEXT_PUBLIC_BACKEND_API_URL;
 
   const requestUrl = `${base}/${path}`;
-  console.log(base);
+
   const headers: Record<string, string> = {};
 
   if (method === "POST") {
@@ -43,14 +43,24 @@ export async function request<T>({
     body: body ? JSON.stringify(body) : undefined,
   });
 
+  // Handle empty responses
+  const contentLength = response.headers.get("content-length");
+  const hasNoContent = contentLength === "0" || response.status === 204;
+
+  if (hasNoContent) {
+    return {
+      success: true,
+      data: undefined as T,
+    };
+  }
+  const data: Response<T> = await response.json();
+
   if (!response.ok) {
     return {
       success: false,
-      message: response.statusText,
+      message: data.message,
     };
   }
-
-  const data: Response<T> = await response.json();
 
   return {
     success: true,

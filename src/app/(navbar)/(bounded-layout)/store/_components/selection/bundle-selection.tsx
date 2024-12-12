@@ -1,9 +1,8 @@
 "use client";
 
-import { fetchBundleDetails, fetchShowDetails } from "@/api/shop";
+import { fetchBundleDetails } from "@/api/shop";
 import { DESKTOP_MIN_WIDTH } from "@/consts/size.consts";
 import { useMediaQuery } from "@/hooks/use-media-query";
-import { cn, sortSizes } from "@/lib/utils";
 import { useCartStore } from "@/store/cart";
 import {
   ClientBundleClothing,
@@ -157,6 +156,8 @@ const generateContent = ({
       />
     );
   }
+
+  return <></>;
 };
 
 function Content({

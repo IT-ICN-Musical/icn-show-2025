@@ -28,7 +28,7 @@ type TicketSelectionProps = {
   children: React.ReactNode;
   // TODO: Add input type
   onAddToCart?: () => void;
-  onBuyNow?: () => void;
+  cartAmount: Record<string, number>;
 };
 
 type ContentProps = {
@@ -38,9 +38,9 @@ type ContentProps = {
   setOpen: (value: boolean) => void;
   handleCategorySelect: (category: string) => void;
   onAddToCart?: () => void;
-  onBuyNow?: () => void;
   selectedCategory: string | undefined;
   categories: string[] | undefined;
+  cartAmount: Record<string, number>;
 };
 
 function Content({
@@ -50,9 +50,9 @@ function Content({
   setOpen,
   handleCategorySelect,
   onAddToCart,
-  onBuyNow,
   selectedCategory,
   categories,
+  cartAmount,
 }: ContentProps) {
   const safeCategory: "A" | "B" | "C" | undefined = (() => {
     if (
@@ -78,10 +78,9 @@ function Content({
     setOpen(false);
   };
 
-  const onBuyNowHandler = () => {
-    onBuyNow?.();
-    setOpen(false);
-  };
+  const maxAmount = currentTicket
+    ? currentTicket?.max_order - (cartAmount[currentTicket.item_id] ?? 0)
+    : undefined;
 
   return (
     <>
@@ -111,7 +110,7 @@ function Content({
                 value={count}
                 setValue={setCount}
                 minValue={0}
-                maxValue={currentTicket?.max_order}
+                maxValue={maxAmount}
               />
             </div>
             <div className="flex flex-row w-full justify-between py-2 items-center">
@@ -154,22 +153,12 @@ function Content({
             <hr className="border border-1" />
             <div className="flex flex-row gap-2 h-full items-center my-3">
               <Button
-                variant="outline"
                 size="lg"
                 disabled={disableButton}
-                className="border-primary-700 text-primary-700 font-book w-full h-fit py-[10px]"
+                className="font-book w-full h-fit py-[10px]"
                 onClick={onAddToCartHandler}
               >
                 Add to Cart
-              </Button>
-              <Button
-                variant="default"
-                size="lg"
-                disabled={disableButton}
-                className="border-primary-700  w-full font-semibold h-fit py-[10px]"
-                onClick={onBuyNowHandler}
-              >
-                Buy Now
               </Button>
             </div>
           </div>
@@ -182,7 +171,7 @@ function Content({
 export function TicketSelection({
   show: orig,
   children,
-  onBuyNow,
+  cartAmount,
 }: TicketSelectionProps) {
   const [open, setOpen] = useState(false);
   const [count, setCount] = useState(0);
@@ -245,9 +234,9 @@ export function TicketSelection({
       setCount={setCount}
       handleCategorySelect={handleCategorySelect}
       onAddToCart={onAddToCart}
-      onBuyNow={onBuyNow}
       selectedCategory={selectedCategory}
       categories={categories}
+      cartAmount={cartAmount}
     />
   ) : (
     <LoadingSelection />

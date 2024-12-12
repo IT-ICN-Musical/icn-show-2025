@@ -85,16 +85,12 @@ export default function Checkout() {
     viewerDetails &&
     viewerDetails.every((x) => x.viewers.every((viewer) => viewer !== ""));
 
-  const {
-    mutate: generateOTPMutate,
-    error: generateOTPError,
-    isPending,
-  } = useMutation({
+  const { mutate: generateOTPMutate } = useMutation({
     mutationFn: generateOTP,
     onSuccess: () => setDialogOpen(true),
   });
 
-  const { mutate: submitCheckoutMutate, data: checkoutData } = useMutation({
+  const { mutate: submitCheckoutMutate } = useMutation({
     mutationFn: submitCheckout,
     onSuccess: (data) => router.push(data.payment_url),
   });
@@ -209,6 +205,7 @@ export default function Checkout() {
             buyer_email_token: token,
             buyer_name: buyerDetails.name,
             buyer_phone: buyerDetails.phone,
+            promo_code: promoCode,
             items: checkoutItems,
             viewer_details: viewerDetails,
           });

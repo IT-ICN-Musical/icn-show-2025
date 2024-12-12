@@ -5,6 +5,7 @@ import { useCartStore } from "@/store/cart";
 import { useQuery } from "@tanstack/react-query";
 import { ShoppingCart } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useMemo } from "react";
 
 import Typography from "@/components/typography/typography";
 import { Button } from "@/components/ui/button";
@@ -20,6 +21,23 @@ export default function Shop() {
     queryKey: ["shopItems"],
     queryFn: fetchShopItems,
   });
+
+  const { cart } = useCartStore();
+  // create Record<string, number> for each item in cart
+  // aggregate
+  const cartItemRecords = useMemo(() => {
+    const tmp: Record<string, number> = {};
+    cart.forEach((item) => {
+      tmp[item.item_id] = (tmp[item.item_id] ?? 0) + 1;
+      if (item.bundle_option) {
+        item.bundle_option.forEach((option) => {
+          tmp[option.item_id] = (tmp[option.item_id] ?? 0) + 1;
+        });
+      }
+    });
+
+    return tmp;
+  }, [JSON.stringify(cart)]);
 
   const router = useRouter();
   return (
@@ -42,17 +60,26 @@ export default function Shop() {
             BUNDLES TIME!
           </div>
         </div>
-        <BundleCards bundles={data?.bundles ?? []} />
+        <BundleCards
+          cartItems={cartItemRecords}
+          bundles={data?.bundles ?? []}
+        />
       </div>
       <div className="w-full flex flex-col gap-4 items-center justify-center rounded-3xl relative overflow-hidden py-4 px-4">
-        <ShowCards shows={data?.shows ?? []} />
+        <ShowCards cartItems={cartItemRecords} shows={data?.shows ?? []} />
       </div>
       <Typography variant="h4" className="font-safira-march mt-10 mb-6">
         Merchandise
       </Typography>
       <div className="flex gap-4 flex-wrap">
-        <ClothingCards clothings={data?.clothings ?? []} />
-        <GenericCards generics={data?.generics ?? []} />
+        <ClothingCards
+          cartItems={cartItemRecords}
+          clothings={data?.clothings ?? []}
+        />
+        <GenericCards
+          cartItems={cartItemRecords}
+          generics={data?.generics ?? []}
+        />
       </div>
     </>
   );

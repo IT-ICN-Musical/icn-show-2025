@@ -14,6 +14,7 @@ type BundletTicketContentProps = {
   show: ClientBundleShow;
   maxAmount: number;
   options: Record<string, number>;
+  cartAmount: Record<string, number>;
   setOptions: (value: Record<string, number>) => void;
 };
 
@@ -22,6 +23,7 @@ export function BundleTicketContent({
   maxAmount,
   options,
   setOptions,
+  cartAmount,
 }: BundletTicketContentProps) {
   const [count, setCount] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState<string | undefined>(
@@ -70,7 +72,9 @@ export function BundleTicketContent({
 
   const availableStock: number | undefined =
     safeCategory && currentTicket
-      ? currentTicket.max_order - options[safeCategory]
+      ? currentTicket.max_order -
+        options[safeCategory] -
+        (cartAmount[currentTicket.item_id] ?? 0)
       : undefined;
 
   const maxCounterValue = availableStock

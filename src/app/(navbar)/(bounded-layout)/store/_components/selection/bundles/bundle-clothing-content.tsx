@@ -17,6 +17,7 @@ type ClothingContentProps = {
   option: Record<string, number>;
   setOption: (value: Record<string, number>) => void;
   maxAmount: number;
+  cartAmount: Record<string, number>;
 };
 
 export function BundleClothingContent({
@@ -24,6 +25,7 @@ export function BundleClothingContent({
   option,
   setOption,
   maxAmount,
+  cartAmount,
 }: ClothingContentProps) {
   const sizes = clothing.sizes;
   const [count, setCount] = useState(0);
@@ -66,7 +68,9 @@ export function BundleClothingContent({
 
   const availableStock: number | undefined =
     selectedSize && currentSize
-      ? currentSize.max_order - option[selectedSize]
+      ? currentSize.max_order -
+        option[selectedSize] -
+        (cartAmount[currentSize.item_id] ?? 0)
       : undefined;
 
   const maxCounterValue = availableStock

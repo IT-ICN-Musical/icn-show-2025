@@ -26,9 +26,8 @@ import { LoadingSelection } from "./loading-selection";
 type GenericSelectionProps = {
   generic_item: ClientGenericItem;
   children: React.ReactNode;
-  // TODO: Add input type
+  cartAmount: number;
   onAddToCart?: () => void;
-  onBuyNow?: () => void;
 };
 
 type ContentProps = {
@@ -37,7 +36,7 @@ type ContentProps = {
   setCount: (value: number) => void;
   setOpen: (value: boolean) => void;
   onAddToCart?: () => void;
-  onBuyNow?: () => void;
+  cartAmount: number;
 };
 
 function Content({
@@ -46,24 +45,14 @@ function Content({
   setCount,
   setOpen,
   onAddToCart,
-  onBuyNow,
+  cartAmount,
 }: ContentProps) {
   const currentCost = (generic_item?.price ?? 0) * count;
 
   const disableButton = count <= 0;
 
-  const costString = [
-    (currentCost / 100).toString(),
-    (currentCost % 100).toString().padStart(2, "0"),
-  ];
-
   const onAddToCartHandler = () => {
     onAddToCart?.();
-    setOpen(false);
-  };
-
-  const onBuyNowHandler = () => {
-    onBuyNow?.();
     setOpen(false);
   };
 
@@ -92,7 +81,7 @@ function Content({
                 value={count}
                 setValue={setCount}
                 minValue={0}
-                maxValue={generic_item.max_order}
+                maxValue={generic_item.max_order - cartAmount}
               />
             </div>
             <hr className="border border-1" />
@@ -108,7 +97,7 @@ function Content({
                   variant="p"
                   className="font-semibold leading-[1rem]"
                 >
-                  {costString[0]}.{costString[1]}
+                  {currentCost.toFixed(2)}
                 </Typography>
               </div>
             </div>
@@ -116,22 +105,12 @@ function Content({
             <hr className="border border-1" />
             <div className="flex flex-row gap-2 h-full items-center my-3">
               <Button
-                variant="outline"
                 size="lg"
                 disabled={disableButton}
-                className="border-primary-700 text-primary-700 font-book w-full h-fit py-[10px]"
+                className="font-book w-full h-fit py-[10px]"
                 onClick={onAddToCartHandler}
               >
                 Add to Cart
-              </Button>
-              <Button
-                variant="default"
-                size="lg"
-                disabled={disableButton}
-                className="border-primary-700  w-full font-semibold h-fit py-[10px]"
-                onClick={onBuyNowHandler}
-              >
-                Buy Now
               </Button>
             </div>
           </div>
@@ -144,7 +123,7 @@ function Content({
 export function GenericSelection({
   generic_item: orig,
   children,
-  onBuyNow,
+  cartAmount,
 }: GenericSelectionProps) {
   const [open, setOpen] = useState(false);
   const [count, setCount] = useState(0);
@@ -175,11 +154,11 @@ export function GenericSelection({
   const content = generic_item ? (
     <Content
       generic_item={generic_item}
+      cartAmount={cartAmount}
       count={count}
       setOpen={setOpen}
       setCount={setCount}
       onAddToCart={onAddToCart}
-      onBuyNow={onBuyNow}
     />
   ) : (
     <LoadingSelection />

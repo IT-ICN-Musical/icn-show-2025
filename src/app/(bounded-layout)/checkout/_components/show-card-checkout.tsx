@@ -1,4 +1,4 @@
-import { Clock12, Ticket, Trash } from "lucide-react";
+import { Ban, Clock12, Ticket, Trash } from "lucide-react";
 import Image from "next/image";
 
 import { Button } from "@/components/ui/button";
@@ -8,6 +8,7 @@ export function ShowCardCheckout({
   time,
   quantity,
   image,
+  isAvailable,
   onDelete,
 }: ShowCardCheckoutProps) {
   return (
@@ -23,18 +24,29 @@ export function ShowCardCheckout({
           />
           <div>
             <p className="text-sm font-mont font-medium">{name}</p>
-            <div className="flex flex-row items-center">
-              <Clock12 strokeWidth={2} className="w-4" color="#71717A" />
-              <p className="font-mont text-xs font-normal ml-1 text-zinc-500">
-                {time}
-              </p>
-            </div>
-            <div className="flex flex-row items-center">
-              <Ticket strokeWidth={2} className="w-4" color="#71717A" />
-              <p className="font-mont text-xs font-normal ml-1 text-zinc-500">
-                x {quantity}
-              </p>
-            </div>
+            {isAvailable ? (
+              <>
+                <div className="flex flex-row items-center">
+                  <Clock12 strokeWidth={2} className="w-4" color="#71717A" />
+                  <p className="font-mont text-xs font-normal ml-1 text-zinc-500">
+                    {time}
+                  </p>
+                </div>
+                <div className="flex flex-row items-center">
+                  <Ticket strokeWidth={2} className="w-4" color="#71717A" />
+                  <p className="font-mont text-xs font-normal ml-1 text-zinc-500">
+                    x {quantity}
+                  </p>
+                </div>
+              </>
+            ) : (
+              <div className="flex flex-row items-center">
+                <Ban strokeWidth={2} className="w-4" color="#71717A" />
+                <p className="font-mont text-xs font-normal ml-1 text-zinc-500">
+                  Out of stock
+                </p>
+              </div>
+            )}
           </div>
         </div>
         <div className="absolute z-0 w-full h-[124px] flex justify-between">
@@ -94,5 +106,6 @@ type ShowCardCheckoutProps = {
   time: string;
   quantity: number;
   image: string;
+  isAvailable: boolean;
   onDelete?: () => void;
 } & React.HTMLAttributes<HTMLDivElement>;

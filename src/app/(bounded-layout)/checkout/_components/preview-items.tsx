@@ -1,4 +1,6 @@
+import { formatTimeRange } from "@/lib/time";
 import { ItemOrderPreview, PreviewOrderResponse } from "@/types/preview-order";
+import { start } from "repl";
 
 import { GenericCardCheckout } from "./generic-card-checkout";
 import { MerchandiseCardCheckout } from "./merchandise-card-checkout";
@@ -45,13 +47,17 @@ export function PreviewItems({
         const onDelete = () => removeFromCart(item.index);
 
         if (hasValidTime) {
+          const startTime = new Date((item.start_time ?? 0) / 1_000_000);
+          const endTime = new Date((item.end_time ?? 0) / 1_000_000);
+
           return (
             <div key={`ticket-${index}`}>
               <ShowCardCheckout
                 name={item.name}
-                time={`${new Date((item.start_time ?? 0) * 1000).toLocaleString()} - ${new Date((item.end_time ?? 0) * 1000).toLocaleString()}`}
+                time={formatTimeRange(startTime, endTime)}
                 quantity={item.quantity}
                 image={item.image_url ?? ""}
+                isAvailable={item.item_available}
                 onDelete={onDelete}
               />
             </div>
@@ -64,6 +70,7 @@ export function PreviewItems({
               name={item.name}
               quantity={item.quantity}
               image={item.image_url ?? ""}
+              isAvailable={item.item_available}
               onDelete={onDelete}
             />
           </div>
@@ -78,6 +85,7 @@ export function PreviewItems({
                 ? item.size
                 : "Size not available"
             }
+            isAvailable={item.item_available}
             quantity={item.quantity}
             image={item.image_url ?? ""}
             onDelete={() => removeFromCart(item.index)}

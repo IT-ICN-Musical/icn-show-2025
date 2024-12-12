@@ -39,7 +39,7 @@ type BundleSelectionProps = {
   children: React.ReactNode;
   // TODO: Add input type
   onAddToCart?: () => void;
-  onBuyNow?: () => void;
+  cartAmount: Record<string, number>;
 };
 
 type ContentProps = {
@@ -49,6 +49,7 @@ type ContentProps = {
   setBundleOptions: (value: Record<string, number>[]) => void;
   currentPage: number;
   setCurrentPage: (value: number) => void;
+  cartAmount: Record<string, number>;
 };
 
 export type BundleSelection = {
@@ -112,12 +113,14 @@ const generateContent = ({
   currentPage,
   bundleOptions,
   setBundleOptions,
+  cartAmount,
 }: {
   curItem?: ClientBundleDetail;
   currentPage: number;
 
   bundleOptions: Record<string, number>[];
   setBundleOptions: (value: Record<string, number>[]) => void;
+  cartAmount: Record<string, number>;
 }) => {
   if (curItem?.clothing) {
     const option = bundleOptions[currentPage];
@@ -135,6 +138,7 @@ const generateContent = ({
         option={option}
         setOption={setOption}
         maxAmount={curItem.amount}
+        cartAmount={cartAmount}
       />
     );
   } else if (curItem?.show) {
@@ -153,6 +157,7 @@ const generateContent = ({
         options={option}
         setOptions={setOption}
         maxAmount={curItem.amount}
+        cartAmount={cartAmount}
       />
     );
   }
@@ -167,6 +172,7 @@ function Content({
   setBundleOptions,
   currentPage,
   setCurrentPage,
+  cartAmount,
 }: ContentProps) {
   const { addToCart } = useCartStore();
   // current item_id is not undefined and quantity is not 0
@@ -177,16 +183,20 @@ function Content({
 
   // only enable next if total sum in bundleOptions[currentPage] is equal to curItem.amount
 
-  const generateContentFn = useCallback(() => {
-    if (bundleItems && bundleOptions) {
-      return generateContent({
-        curItem: bundleItems[currentPage],
-        currentPage,
-        bundleOptions,
-        setBundleOptions,
-      });
-    }
-  }, [bundleItems, currentPage, bundleOptions, setBundleOptions]);
+  const generateContentFn = useCallback(
+    (cartAmount: Record<string, number>) => {
+      if (bundleItems && bundleOptions) {
+        return generateContent({
+          curItem: bundleItems[currentPage],
+          currentPage,
+          bundleOptions,
+          setBundleOptions,
+          cartAmount,
+        });
+      }
+    },
+    [bundleItems, currentPage, bundleOptions, setBundleOptions],
+  );
 
   if (!bundleItems || !bundleOptions) {
     return undefined;
@@ -205,7 +215,7 @@ function Content({
     currentPage == bundleItems?.length ? (
       <ConfirmationPage bundle={bundle} bundleOptions={bundleOptions} />
     ) : (
-      generateContentFn()
+      generateContentFn(cartAmount)
     );
 
   const handleAddToCart = () => {
@@ -268,6 +278,7 @@ function Content({
 export function BundleSelection({
   bundle: orig,
   children,
+  cartAmount,
 }: BundleSelectionProps) {
   const [open, setOpen] = useState(false);
   const [bundleOptions, setBundleOptions] =
@@ -301,6 +312,7 @@ export function BundleSelection({
       setBundleOptions={setBundleOptions}
       currentPage={currentPage}
       setCurrentPage={setCurrentPage}
+      cartAmount={cartAmount}
     />
   ) : (
     <LoadingSelection />

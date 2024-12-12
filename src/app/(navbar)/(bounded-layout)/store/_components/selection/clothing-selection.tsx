@@ -23,8 +23,8 @@ type ClothingSelectionProps = {
   clothing: ClientClothingItem;
   children: React.ReactNode;
   // TODO: Add input type
+  cartAmount: Record<string, number>;
   onAddToCart?: () => void;
-  onBuyNow?: () => void;
 };
 
 type ContentProps = {
@@ -37,6 +37,7 @@ type ContentProps = {
   onBuyNow?: () => void;
   selectedSize: string | undefined;
   sizes: ClientClothingSizes[] | undefined;
+  cartAmount: Record<string, number>;
 };
 
 function Content({
@@ -46,9 +47,9 @@ function Content({
   setOpen,
   handleSizeSelect,
   onAddToCart,
-  onBuyNow,
   selectedSize,
   sizes,
+  cartAmount,
 }: ContentProps) {
   const currentSize = clothing?.sizes?.find(
     (size) => size.size === selectedSize,
@@ -69,10 +70,9 @@ function Content({
     setOpen(false);
   };
 
-  const onBuyNowHandler = () => {
-    onBuyNow?.();
-    setOpen(false);
-  };
+  const maxAmount = currentSize
+    ? currentSize?.max_order - (cartAmount[currentSize?.item_id] ?? 0)
+    : undefined;
 
   return (
     <>
@@ -99,7 +99,7 @@ function Content({
                 value={count}
                 setValue={setCount}
                 minValue={0}
-                maxValue={currentSize?.max_order}
+                maxValue={maxAmount}
               />
             </div>
             <div className="flex flex-row w-full justify-between py-2 items-center">
@@ -134,7 +134,7 @@ function Content({
                   variant="p"
                   className="font-semibold leading-[1rem]"
                 >
-                  {costString[0]}.{costString[1]}
+                  {currentCost.toFixed(2)}
                 </Typography>
               </div>
             </div>
@@ -142,22 +142,12 @@ function Content({
             <hr className="border border-1" />
             <div className="flex flex-row gap-2 h-full items-center my-3">
               <Button
-                variant="outline"
                 size="lg"
                 disabled={disableButton}
-                className="border-primary-700 text-primary-700 font-book w-full h-fit py-[10px]"
+                className="font-book w-full h-fit py-[10px]"
                 onClick={onAddToCartHandler}
               >
                 Add to Cart
-              </Button>
-              <Button
-                variant="default"
-                size="lg"
-                disabled={disableButton}
-                className="border-primary-700  w-full font-semibold h-fit py-[10px]"
-                onClick={onBuyNowHandler}
-              >
-                Buy Now
               </Button>
             </div>
           </div>
@@ -170,7 +160,7 @@ function Content({
 export function ClothingSelection({
   clothing: orig,
   children,
-  onBuyNow,
+  cartAmount,
 }: ClothingSelectionProps) {
   const [open, setOpen] = useState(false);
   const [count, setCount] = useState(0);
@@ -236,7 +226,7 @@ export function ClothingSelection({
       setCount={setCount}
       handleSizeSelect={handleSizeSelect}
       onAddToCart={onAddToCart}
-      onBuyNow={onBuyNow}
+      cartAmount={cartAmount}
       selectedSize={selectedSize}
       sizes={sizes}
     />

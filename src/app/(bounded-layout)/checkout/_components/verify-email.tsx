@@ -2,7 +2,7 @@
 
 import { verifyOTP } from "@/api/otp";
 import { useMutation } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Typography from "@/components/typography/typography";
 import { Button } from "@/components/ui/button";
@@ -34,13 +34,17 @@ export function VerifyEmailDialog({
 }) {
   const [successMessage, setSuccessMessage] = useState<string>();
 
-  const { mutate, error, isPending, isSuccess } = useMutation({
+  const { mutate, error, isPending, isSuccess, reset } = useMutation({
     mutationFn: verifyOTP,
     onSuccess: (data) => {
       setSuccessMessage("Redirecting to Stripe...");
       onSuccess(data.token);
     },
   });
+
+  useEffect(() => {
+    if (open) reset();
+  }, [open, reset]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>

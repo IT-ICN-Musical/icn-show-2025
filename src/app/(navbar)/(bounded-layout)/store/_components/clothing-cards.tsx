@@ -11,11 +11,17 @@ import { ClothingSelection } from "./selection/clothing-selection";
 
 function ClothingItem({
   clothing,
+  cartItems,
 }: {
   clothing: RetrieveClothingDetailsResponse;
+  cartItems: Record<string, number>;
 }) {
   return (
-    <ClothingSelection clothing={clothing} key={clothing.clothing_id}>
+    <ClothingSelection
+      cartAmount={cartItems}
+      clothing={clothing}
+      key={clothing.clothing_id}
+    >
       <button className="hover:scale-[1.05] duration-300 transition-scale">
         <ClothingCard clothing={clothing} />
       </button>
@@ -23,11 +29,15 @@ function ClothingItem({
   );
 }
 
-export function ClothingCards({ clothings }: ClothingCardsProps) {
+export function ClothingCards({ clothings, cartItems }: ClothingCardsProps) {
   return (
     <>
       {clothings.map((clothing) => (
-        <ClothingItem clothing={clothing} key={clothing.clothing_id} />
+        <ClothingItem
+          cartItems={cartItems}
+          clothing={clothing}
+          key={clothing.clothing_id}
+        />
       ))}
     </>
   );
@@ -35,4 +45,5 @@ export function ClothingCards({ clothings }: ClothingCardsProps) {
 
 type ClothingCardsProps = {
   clothings: RetrieveClothingDetailsResponse[];
+  cartItems: Record<string, number>;
 };

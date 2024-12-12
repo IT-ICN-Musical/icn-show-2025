@@ -732,14 +732,12 @@ export default function LandingPage() {
             >
               <img src={IcnLogo.src} alt="logo" />
               <p
-                className={
-                  (cn(
-                    "font-safira-march text-primary-800 items-center text-center pt-5",
-                  ),
+                className={cn(
+                  "font-safira-march text-primary-800 items-center text-center pt-5",
                   autoAnimationComplete
                     ? "opacity-100 duration-1000 transition-opacity"
-                    : "opacity-0")
-                }
+                    : "opacity-0",
+                )}
               >
                 Scroll Down
               </p>

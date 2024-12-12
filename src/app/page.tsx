@@ -1,5 +1,6 @@
 "use client";
 
+import { cn } from "@/lib/utils";
 import {
   MotionConfig,
   type Variants,
@@ -14,6 +15,8 @@ import {
 import { ReactLenis } from "lenis/dist/lenis-react";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+
+import { Navbar } from "@/components/navbar";
 
 import Background1 from "./_assets/background.png";
 import Cave from "./_assets/cave.png";
@@ -602,6 +605,15 @@ export default function LandingPage() {
   return (
     <MotionConfig reducedMotion="never">
       <ReactLenis root>
+        <Navbar
+          desktopClassName={autoAnimationComplete ? "" : "-translate-y-full"}
+          mobileClassName={cn(
+            autoAnimationComplete
+              ? "opacity-100 transition-opacity duration-1000"
+              : "opacity-0",
+          )}
+          landingMode={true}
+        />
         <section ref={targetRef}>
           <div className="relative h-[1000vh] bg-primary-800 overflow-hidden">
             {/* Background Image */}
@@ -719,7 +731,16 @@ export default function LandingPage() {
               -translate-x-1/2 overflow-hidden flex flex-col ${isMobile ? "w-[70vw] h-auto" : ""}`}
             >
               <img src={IcnLogo.src} alt="logo" />
-              <p className="font-safira-march text-primary-800 items-center text-center pt-5">
+              <p
+                className={
+                  (cn(
+                    "font-safira-march text-primary-800 items-center text-center pt-5",
+                  ),
+                  autoAnimationComplete
+                    ? "opacity-100 duration-1000 transition-opacity"
+                    : "opacity-0")
+                }
+              >
                 Scroll Down
               </p>
             </motion.div>

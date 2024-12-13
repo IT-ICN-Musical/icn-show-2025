@@ -30,16 +30,16 @@ const navItems = [
     href: "/store",
     icon: <Store width={20} />,
   },
-  {
-    name: "Show",
-    href: "/show",
-    icon: <Clapperboard width={20} />,
-  },
-  {
-    name: "About Us",
-    href: "/about-us",
-    icon: <Info width={20} />,
-  },
+  //   {
+  //     name: "Show",
+  //     href: "/show",
+  //     icon: <Clapperboard width={20} />,
+  //   },
+  //   {
+  //     name: "About Us",
+  //     href: "/about-us",
+  //     icon: <Info width={20} />,
+  //   },
 ];
 
 export function Navbar({

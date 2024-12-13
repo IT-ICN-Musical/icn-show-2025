@@ -2,6 +2,7 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { useEffect, useRef } from "react";
 
+import Typography from "@/components/typography/typography";
 import { Progress } from "@/components/ui/progress";
 
 import Senjakala from "../_assets/senjakala.webp";
@@ -18,7 +19,6 @@ export function LoadingPage({
   finished,
 }: LoadingPageProps) {
   const perc = (currentValue / maxValue) * 100;
-
   return (
     <div
       className={cn(
@@ -33,6 +33,9 @@ export function LoadingPage({
           className="w-full h-64 object-contain animate-pulse"
         />
         <Progress value={perc} className="w-full" />
+        <Typography variant="p" className="text-center text-white">
+          Please wait while we prepare the stage for you.
+        </Typography>
       </div>
     </div>
   );

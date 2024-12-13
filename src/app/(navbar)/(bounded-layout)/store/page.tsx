@@ -46,9 +46,12 @@ export default function Shop() {
   return (
     <>
       <Button
-        className="relative fixed bottom-[5%] right-[5%] h-12 w-12 bg-primary-800 px-2 py-2 rounded-full aspect-square z-40"
+        className="flex relative fixed bottom-[5%] right-[5%] h-12 w-fit bg-primary-800 px-4 sm:px-6 py-6 sm:py-8 rounded-full gap-4 z-40"
         onClick={() => router.push("/checkout")}
       >
+        <Typography variant="h6" className="text-white">
+          Checkout
+        </Typography>
         <ShoppingCart />
       </Button>
       {/* TODO: Add promotion banner in the future */}

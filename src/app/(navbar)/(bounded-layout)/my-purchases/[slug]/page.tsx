@@ -25,7 +25,7 @@ export default async function MyPurchases({
 }) {
   const emailToken = (await params).slug;
   const response = await request<MyPurchases[]>({
-    method: "POST",
+    method: "GET",
     path: `v2/order/my-purchases?emailToken=${emailToken}`,
   });
 

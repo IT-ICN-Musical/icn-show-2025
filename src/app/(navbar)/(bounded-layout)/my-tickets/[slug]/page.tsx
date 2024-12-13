@@ -17,7 +17,7 @@ export default async function MyTickets({
 }) {
   const emailToken = (await params).slug;
   const response = await request<MyTicketsBackend[]>({
-    method: "POST",
+    method: "GET",
     path: `v2/order/my-tickets?emailToken=${emailToken}`,
   });
 

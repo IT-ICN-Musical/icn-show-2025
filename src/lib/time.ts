@@ -9,5 +9,16 @@ export const formatTimeRangeSgt = (startTime: Date, endTime: Date) => {
   const start = new Date(startTime);
   const end = new Date(endTime);
 
-  return `${start.getDate()}/${start.getMonth()}/${start.getFullYear()} ${start.getHours() + 8}:${start.getMinutes()} - ${end.getHours() + 8}:${end.getMinutes()}`;
+  return `${startTime.toLocaleString("en-SG", {
+    timeZone: "Asia/Singapore",
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  })} - ${endTime.toLocaleString("en-SG", {
+    timeZone: "Asia/Singapore",
+    hour: "2-digit",
+    minute: "2-digit",
+  })}`;
 };

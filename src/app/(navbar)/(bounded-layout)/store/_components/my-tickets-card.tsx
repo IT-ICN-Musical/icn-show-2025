@@ -3,6 +3,7 @@ import Image from "next/image";
 
 import Typography from "@/components/typography/typography";
 
+import { QRCode } from "../../my-tickets/[slug]/_components/qr-code";
 import { LeftTicketBorder, RightTicketBorder } from "./ticket-borders";
 
 type MyTicketsCardProps = {
@@ -65,8 +66,9 @@ export function MyTicketsCard(props: MyTicketsCardProps) {
           </div>
           <div className="flex justify-between"></div>
         </div>
+
         <div>
-          <p>{props.viewerId}</p>
+          <QRCode data={props.viewerId} size={200} />
         </div>
       </div>
       <RightTicketBorder />

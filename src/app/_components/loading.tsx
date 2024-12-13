@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import Image from "next/image";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import Typography from "@/components/typography/typography";
 import { Progress } from "@/components/ui/progress";
@@ -19,6 +19,16 @@ export function LoadingPage({
   finished,
 }: LoadingPageProps) {
   const perc = (currentValue / maxValue) * 100;
+  const [longer, setLonger] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLonger(true);
+    }, 10_000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <div
       className={cn(
@@ -33,8 +43,10 @@ export function LoadingPage({
           className="w-full h-64 object-contain animate-pulse"
         />
         <Progress value={perc} className="w-full" />
-        <Typography variant="p" className="text-center text-white">
-          Please wait while we prepare the stage for you.
+        <Typography variant="p" className="text-center text-white -mt-2">
+          {longer
+            ? "The preparation takes longer than usual, refreshing the page might help."
+            : "Please wait while we prepare the stage for you."}
         </Typography>
       </div>
     </div>

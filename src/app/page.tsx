@@ -3,18 +3,24 @@
 import { cn } from "@/lib/utils";
 import {
   MotionConfig,
-  type Variants,
   animate,
   motion,
-  useAnimate,
   useMotionValue,
-  useMotionValueEvent,
   useScroll,
   useTransform,
 } from "framer-motion";
 import { ReactLenis } from "lenis/dist/lenis-react";
-import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import Image, { ImageProps } from "next/image";
+import {
+  ForwardRefRenderFunction,
+  ForwardedRef,
+  forwardRef,
+  use,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 import { Navbar } from "@/components/navbar";
 
@@ -30,6 +36,7 @@ import TopForegroundMobile from "./_assets/foreground-top-mobile.png";
 import IcnLogo from "./_assets/icn-logo.png";
 import Countdown from "./_components/countdown";
 import Descriptions from "./_components/descriptions";
+import { LoadingPage } from "./_components/loading";
 import Sponsors from "./_components/sponsors";
 
 const animationOrder = {
@@ -46,6 +53,63 @@ const animationOrder = {
   scrollSpace4: 1,
 };
 
+// addRef: (ref: HTMLImageElement) => void
+const BaseImage = forwardRef<
+  HTMLImageElement,
+  ImageProps & { onLoadOnce: () => void }
+>((props, ref) => {
+  const [isHydrated, setIsHydrated] = useState(false);
+  const hydrationReported = useRef(false);
+  const executed = useRef(false);
+
+  useEffect(() => {
+    if (!hydrationReported.current) {
+      setIsHydrated(true);
+      hydrationReported.current = true;
+      // alert(`${props.src.src}: ${hydrationReported.current}`);
+    }
+  }, []);
+
+  if (!isHydrated) {
+    return (
+      <div
+        style={{
+          width: props.fill ? "100%" : props.width,
+          height: props.fill ? "100%" : props.height,
+          position: props.fill ? "relative" : "static",
+        }}
+        className="placeholder-base-image"
+      />
+    );
+  }
+
+  const { onLoad: onLoadProps, onLoadOnce, ...rest } = props;
+
+  return (
+    <Image
+      onLoad={(e) => {
+        if (!executed.current && onLoadOnce) {
+          //alert(`before  ${executed.current}`);
+          executed.current = true;
+          //alert(`after  ${executed.current}`);
+          onLoadOnce();
+        }
+        if (onLoadProps) {
+          onLoadProps(e);
+        }
+      }}
+      ref={ref}
+      {...rest}
+      loading="eager"
+      priority
+    />
+  );
+});
+
+BaseImage.displayName = "BaseImage";
+
+const MotionImage = motion(BaseImage);
+
 export default function LandingPage() {
   const targetRef = useRef<HTMLDivElement | null>(null);
   const autoScrollProgress = useMotionValue(0);
@@ -60,6 +124,93 @@ export default function LandingPage() {
     offset: ["start end", "end end"],
   });
 
+  // Loading image assets
+  const [imagesLoaded, setImagesLoaded] = useState(0);
+  const [totalImages, setTotalImages] = useState<number>();
+  const [loading, setLoading] = useState(true);
+  const placeholderImageCounter = useRef(0);
+  const totalPlaceholderImages = useRef<number>();
+  const imagesInitialized = useRef(false);
+
+  // Initial count of placeholder images
+  useEffect(() => {
+    if (targetRef.current && !totalPlaceholderImages.current) {
+      const placeholderImageElements = targetRef.current.querySelectorAll(
+        "div.placeholder-base-image",
+      );
+      totalPlaceholderImages.current = placeholderImageElements.length;
+      alert("Placeholder images: " + totalPlaceholderImages.current);
+      // check if all images are ready
+      initializeImageLoading();
+    }
+  }, []);
+
+  // Image loading initialization function
+  const initializeImageLoading = useCallback(() => {
+    if (!targetRef.current) return;
+
+    const imageElements = targetRef.current.querySelectorAll("img");
+    const loadedImages = new Set<string>();
+    setTotalImages(
+      imageElements.length + (totalPlaceholderImages.current ?? 0),
+    );
+
+    const imagePromises = Array.from(imageElements).map((img) => {
+      return new Promise<void>((resolve, reject) => {
+        const imageId = img.src;
+
+        if (img.complete) {
+          alert("briggssa");
+          loadedImages.add(imageId);
+          setImagesLoaded(loadedImages.size);
+          resolve();
+        } else {
+          const loadHandler = () => {
+            loadedImages.add(imageId);
+            setImagesLoaded(loadedImages.size);
+            resolve();
+          };
+
+          const errorHandler = (error: ErrorEvent) => {
+            console.error(`Error loading image ${imageId}:`, error);
+            reject(error);
+          };
+
+          img.addEventListener("load", loadHandler, { once: true });
+          img.addEventListener("error", errorHandler, { once: true });
+        }
+      });
+    });
+
+    Promise.all(imagePromises)
+      .then(() => {})
+      .catch((error) => {
+        console.error("Error loading images:", error);
+        setLoading(false);
+      });
+
+    // // safeguard after 10 seconds
+    // const timer = setTimeout(() => {
+    //   if (loading) {
+    //     setLoading(false);
+    //   }
+    // }, 10000);
+
+    // return () => clearTimeout(timer);
+  }, []);
+
+  // set loading to false after all images are loaded
+  useEffect(() => {
+    alert(
+      `Images loaded: ${imagesLoaded}, Total images: ${totalImages}, Loading: ${loading}`,
+    );
+    if (imagesLoaded === totalImages && loading) {
+      // print image loaded total images and loading
+
+      setLoading(false);
+    }
+  }, [imagesLoaded, totalImages, loading]);
+
   // Responsive check
   useEffect(() => {
     const checkMobile = () => {
@@ -73,21 +224,23 @@ export default function LandingPage() {
 
   // Automatic animation at first reload
   useEffect(() => {
-    const startAutoAnimation = async () => {
-      await animate(autoScrollProgress, animationOrder.showLogo, {
-        duration: 4,
-        ease: [0.25, 0.1, 0, 1],
-        onUpdate: (value) => {
-          combinedScrollProgress.set(value);
-        },
-        onComplete: () => {
-          setAutoAnimationComplete(true);
-        },
-      });
-    };
+    if (!loading) {
+      const startAutoAnimation = async () => {
+        await animate(autoScrollProgress, animationOrder.showLogo, {
+          duration: 4,
+          ease: [0.25, 0.1, 0, 1],
+          onUpdate: (value) => {
+            combinedScrollProgress.set(value);
+          },
+          onComplete: () => {
+            setAutoAnimationComplete(true);
+          },
+        });
+      };
 
-    startAutoAnimation();
-  }, []);
+      startAutoAnimation();
+    }
+  }, [loading]);
 
   // Scroll progress handling
   useEffect(() => {
@@ -602,9 +755,16 @@ export default function LandingPage() {
     ["-50%", "-50%", "-50%"],
   );
 
+  const onLoadOnce = () => setImagesLoaded((prev) => prev + 1);
+
   return (
     <MotionConfig reducedMotion="never">
       <ReactLenis root>
+        <LoadingPage
+          finished={!loading}
+          currentValue={imagesLoaded}
+          maxValue={totalImages ?? 0}
+        />
         <Navbar
           desktopClassName={autoAnimationComplete ? "" : "-translate-y-full"}
           mobileClassName={cn(
@@ -617,8 +777,10 @@ export default function LandingPage() {
         <section ref={targetRef}>
           <div className="relative h-[1000vh] bg-primary-800 overflow-hidden">
             {/* Background Image */}
-            <motion.img
-              src={Background1.src}
+            <MotionImage
+              loading="eager"
+              src={Background1}
+              quality={100}
               alt="backround-image"
               style={{
                 scale: initialBgScale,
@@ -626,6 +788,7 @@ export default function LandingPage() {
                 y: bgY,
                 opacity: bgOpacity,
               }}
+              onLoadOnce={onLoadOnce}
               className="h-screen w-screen object-cover object-bottom top-0"
             />
             {/* Cave Image */}
@@ -633,14 +796,17 @@ export default function LandingPage() {
               className={`fixed z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center 
                 ${isMobile ? "h-[70vh] w-screen" : "h-screen w-screen"}`}
             >
-              <motion.img
-                src={Cave.src}
+              <MotionImage
+                src={Cave}
                 alt="cave"
+                quality={100}
+                loading="eager"
                 style={{
                   scale: caveScale,
                   opacity: caveOpacity,
                   position: cavePosition,
                 }}
+                onLoadOnce={onLoadOnce}
                 className={`
                      h-full w-auto object-cover object-center
                     `}
@@ -651,14 +817,17 @@ export default function LandingPage() {
               className={`fixed top-1/2 left-1/2 z-0 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center 
                 ${isMobile ? "h-[70vh] w-screen" : "h-screen w-screen"}`}
             >
-              <motion.img
-                src={LeftFog.src}
+              <MotionImage
+                src={LeftFog}
+                quality={100}
+                loading="eager"
                 alt="left-fog"
                 style={{
                   scale: leftFogScale,
                   x: leftFogX,
                   opacity: leftFogOpacity,
                 }}
+                onLoadOnce={onLoadOnce}
                 className={`
                      h-full w-auto object-cover object-center
                     `}
@@ -669,33 +838,41 @@ export default function LandingPage() {
               className={`fixed top-1/2 left-1/2 z-0 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center 
                 ${isMobile ? "h-[70vh] w-screen" : "h-screen w-screen"}`}
             >
-              <motion.img
-                src={RightFog.src}
+              <MotionImage
+                src={RightFog}
                 alt="left-fog"
+                loading="eager"
+                quality={100}
                 style={{
                   scale: rightFogScale,
                   x: rightFogX,
                   opacity: rightFogOpacity,
                 }}
+                onLoadOnce={onLoadOnce}
                 className={`
                      h-full w-auto object-cover object-center
                     `}
               />
             </div>
             {/* Right Foreground Image */}
-            <motion.img
-              src={isMobile ? RightForegroundMobile.src : RightForeground.src}
+            <MotionImage
+              src={isMobile ? RightForegroundMobile : RightForeground}
               alt="right-foreground"
+              loading="eager"
+              quality={100}
               style={{
                 y: rightForegroundY,
                 x: rightForegroundX,
                 scale: rightForegroundScale,
               }}
+              onLoadOnce={onLoadOnce}
               className="fixed h-screen z-20 w-auto object-cover object-right right-0 bottom-0 overflow-hidden"
             />
             {/* Left Foreground Image */}
-            <motion.img
-              src={isMobile ? LeftForegroundMobile.src : LeftForeground.src}
+            <MotionImage
+              src={isMobile ? LeftForegroundMobile : LeftForeground}
+              loading="eager"
+              quality={100}
               alt="left-foreground"
               style={{
                 y: leftForegroundY,
@@ -703,18 +880,22 @@ export default function LandingPage() {
                 opacity: leftForegroundOpacity,
                 scale: leftForegroundScale,
               }}
+              onLoadOnce={onLoadOnce}
               className="fixed z-20 left-0 bottom-0
                     h-screen w-auto object-cover object-left overflow-hidden"
             />
             {isMobile && (
-              <motion.img
-                src={TopForegroundMobile.src}
+              <MotionImage
+                src={TopForegroundMobile}
                 alt="top-foreground"
+                loading="eager"
+                quality={100}
                 style={{
                   y: topForegroundY,
                   x: topForegroundX,
                   scale: topForegroundScale,
                 }}
+                onLoadOnce={onLoadOnce}
                 className="fixed right-0 top-0
                     w-screen h-auto z-20 object-cover object-left overflow-hidden"
               />

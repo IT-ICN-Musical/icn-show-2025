@@ -12,7 +12,7 @@ const Countdown: React.FC<MyComponentProps> = ({ isMobile }) => {
   return (
     <>
       <div className="absolute top-0 right-0 w-screen h-screen flex items-center justify-center hour-glass">
-        <Image src={HourGlass} alt="hour-glass" />
+        <Image src={HourGlass} alt="hour-glass" loading="eager" />
       </div>
       <div
         className={`absolute top-0 z-10 main-foreground font-safira-march h-screen w-screen 

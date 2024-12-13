@@ -1,8 +1,11 @@
 import { request } from "@/lib/request";
+import { redirect } from "next/navigation";
 
 import Typography from "@/components/typography/typography";
 
 import { PurchaseCard } from "../../store/_components/purchase-card";
+
+export const dynamic = "force-dynamic";
 
 type MyPurchaseBackend = {
   title: string;
@@ -15,7 +18,9 @@ type MyPurchaseBackend = {
 };
 
 type MyPurchases = {
-  [date: string]: MyPurchaseBackend[];
+  purchases: {
+    [date: string]: MyPurchaseBackend[];
+  };
 };
 
 export default async function MyPurchases({
@@ -24,24 +29,30 @@ export default async function MyPurchases({
   params: Promise<{ slug: string }>;
 }) {
   const emailToken = (await params).slug;
-  const response = await request<MyPurchases[]>({
+  const response = await request<MyPurchases>({
     method: "GET",
     path: `v2/order/my-purchases?emailToken=${emailToken}`,
   });
 
-  let myPurchases: MyPurchases[] | undefined;
+  let myPurchases: MyPurchases;
 
   if (response.success) {
     myPurchases = response.data;
+  } else {
+    redirect("/orders");
   }
+
+  console.log(myPurchases);
 
   return (
     <main className="font-safira-march">
       <div className="text-center">My Purchases</div>
 
-      {myPurchases?.map((dateEntry, index) => {
-        const date = Object.keys(dateEntry)[0];
-        const purchases = dateEntry[date];
+      {Object.entries(myPurchases.purchases).map((dateEntry, index) => {
+        const date = dateEntry[0];
+        const purchases = dateEntry[1];
+        console.log(date);
+        console.log(purchases[0].show);
 
         return (
           <div key={index} className="mt-10 space-y-2">

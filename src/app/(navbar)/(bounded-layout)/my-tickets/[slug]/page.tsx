@@ -1,6 +1,9 @@
 import { request } from "@/lib/request";
+import { redirect } from "next/navigation";
 
 import { MyTicketsCard } from "../../store/_components/my-tickets-card";
+
+export const dynamic = "force-dynamic";
 
 type MyTicketsBackend = {
   name: string;
@@ -9,7 +12,6 @@ type MyTicketsBackend = {
   category: string;
   viewer_id: string;
 };
-
 export default async function MyTickets({
   params,
 }: {
@@ -24,6 +26,8 @@ export default async function MyTickets({
   let myTickets: MyTicketsBackend[] | undefined;
   if (response.success) {
     myTickets = response.data;
+  } else {
+    redirect("/orders");
   }
 
   return (
@@ -37,6 +41,7 @@ export default async function MyTickets({
               startTime: data.show_time.start_time,
               endTime: data.show_time.end_time,
             }}
+            key={data.viewer_id}
             show={data.show}
             category={data.category}
             viewerId={data.viewer_id}

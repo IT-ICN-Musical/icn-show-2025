@@ -98,13 +98,13 @@ function Content({
             <div className="flex flex-row w-full justify-between py-2 items-center">
               <div>
                 <Typography variant="p">Number of pax</Typography>
-                <Typography
+                {/* <Typography
                   variant="p2"
                   color="icn-icon-info"
                   className={cn("font-book", count % 5 < 3 && "hidden")}
                 >
                   Add {5 - (count % 5)} more to get Bundle Price
-                </Typography>
+                </Typography> */}
               </div>
               <Counter
                 value={count}

@@ -1,4 +1,5 @@
 import { request } from "@/lib/request";
+import { redirect } from "next/navigation";
 
 import Typography from "@/components/typography/typography";
 
@@ -33,6 +34,8 @@ export default async function MyPurchases({
 
   if (response.success) {
     myPurchases = response.data;
+  } else {
+    redirect("/orders");
   }
 
   return (

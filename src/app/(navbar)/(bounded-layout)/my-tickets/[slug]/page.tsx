@@ -41,6 +41,7 @@ export default async function MyTickets({
               startTime: data.show_time.start_time,
               endTime: data.show_time.end_time,
             }}
+            key={data.viewer_id}
             show={data.show}
             category={data.category}
             viewerId={data.viewer_id}

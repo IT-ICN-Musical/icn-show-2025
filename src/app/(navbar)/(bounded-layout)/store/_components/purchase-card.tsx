@@ -1,4 +1,4 @@
-import { formatTimeRange, formatTimeRangeSgt } from "@/lib/time";
+import { formatTimeRangeSgt } from "@/lib/time";
 import { BoxIcon, Clock12, RulerIcon, ShirtIcon, Ticket } from "lucide-react";
 import Image from "next/image";
 

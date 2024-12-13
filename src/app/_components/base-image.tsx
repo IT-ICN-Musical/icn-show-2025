@@ -48,7 +48,6 @@ export const BaseImage = forwardRef<
       ref={ref}
       {...rest}
       loading="eager"
-      priority
     />
   );
 });

@@ -1,4 +1,5 @@
 import { request } from "@/lib/request";
+import { redirect } from "next/navigation";
 
 import { MyTicketsCard } from "../../store/_components/my-tickets-card";
 
@@ -24,6 +25,8 @@ export default async function MyTickets({
   let myTickets: MyTicketsBackend[] | undefined;
   if (response.success) {
     myTickets = response.data;
+  } else {
+    redirect("/orders");
   }
 
   return (

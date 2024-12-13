@@ -139,7 +139,6 @@ export default function LandingPage() {
         "div.placeholder-base-image",
       );
       totalPlaceholderImages.current = placeholderImageElements.length;
-      alert("Placeholder images: " + totalPlaceholderImages.current);
       // check if all images are ready
       initializeImageLoading();
     }
@@ -160,7 +159,6 @@ export default function LandingPage() {
         const imageId = img.src;
 
         if (img.complete) {
-          alert("briggssa");
           loadedImages.add(imageId);
           setImagesLoaded(loadedImages.size);
           resolve();
@@ -201,9 +199,6 @@ export default function LandingPage() {
 
   // set loading to false after all images are loaded
   useEffect(() => {
-    alert(
-      `Images loaded: ${imagesLoaded}, Total images: ${totalImages}, Loading: ${loading}`,
-    );
     if (imagesLoaded === totalImages && loading) {
       // print image loaded total images and loading
 

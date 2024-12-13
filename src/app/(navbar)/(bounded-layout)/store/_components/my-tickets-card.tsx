@@ -1,5 +1,4 @@
-import { formatTimeRange, formatTimeRangeSgt } from "@/lib/time";
-import Image from "next/image";
+import { formatTimeRangeSgt } from "@/lib/time";
 
 import Typography from "@/components/typography/typography";
 

@@ -1,6 +1,5 @@
 import { formatTimeRange } from "@/lib/time";
 import { ItemOrderPreview, PreviewOrderResponse } from "@/types/preview-order";
-import { start } from "repl";
 
 import { GenericCardCheckout } from "./generic-card-checkout";
 import { MerchandiseCardCheckout } from "./merchandise-card-checkout";

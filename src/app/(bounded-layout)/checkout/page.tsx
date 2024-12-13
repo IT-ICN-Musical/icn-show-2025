@@ -15,15 +15,10 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 import Typography from "@/components/typography/typography";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { PhoneInput } from "@/components/ui/phone-input";
 
 import { AppliedPromotionBanner } from "./_components/applied-promotion-banner";
 import { BuyerParticulars } from "./_components/buyer-particulars";
-import { GenericCardCheckout } from "./_components/generic-card-checkout";
-import { MerchandiseCardCheckout } from "./_components/merchandise-card-checkout";
 import { PreviewItems } from "./_components/preview-items";
-import { ShowCardCheckout } from "./_components/show-card-checkout";
 import { VerifyEmailDialog } from "./_components/verify-email";
 import { ViewerDetails } from "./_components/viewer-details";
 

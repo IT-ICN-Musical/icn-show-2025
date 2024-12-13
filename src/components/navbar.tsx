@@ -1,7 +1,7 @@
 import ICNLogo from "@/_assets/logo.png";
 import { cn } from "@/lib/utils";
 import { HamburgerMenuIcon } from "@radix-ui/react-icons";
-import { Clapperboard, House, Info, Store } from "lucide-react";
+import { House, Store } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 

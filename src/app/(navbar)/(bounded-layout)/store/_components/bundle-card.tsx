@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import { RetrieveBundleDetailsResponse } from "@/types/items";
-import { Clock12, Info, ShoppingCart } from "lucide-react";
+import { Clock12, Info } from "lucide-react";
 import Image from "next/image";
 
 import Typography from "@/components/typography/typography";

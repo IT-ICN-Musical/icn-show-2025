@@ -5,6 +5,8 @@ import Typography from "@/components/typography/typography";
 
 import { PurchaseCard } from "../../store/_components/purchase-card";
 
+export const dynamic = "force-dynamic";
+
 type MyPurchaseBackend = {
   title: string;
   show: { start_time: string; end_time: string };

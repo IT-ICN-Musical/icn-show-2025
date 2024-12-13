@@ -80,8 +80,15 @@ export default function Sponsors({ onLoadOnce }: { onLoadOnce: () => void }) {
   return (
     <>
       <div className="flex-col flex gap-20 items-center justify-center">
-        <Typography variant="h2" className="font-safira-march text-white">
-          Sponsors
+        <Typography
+          variant="h3"
+          as="h3"
+          className="font-safira-march text-white text-3xl text-center"
+          style={{
+            lineHeight: "3.25rem",
+          }}
+        >
+          Sponsors & Partners
         </Typography>
         <div className="flex gap-4 flex-wrap w-full justify-center">
           {sponsors.map((data, index) => (

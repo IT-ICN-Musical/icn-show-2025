@@ -16,8 +16,8 @@ export function ShowCard({ show }: BundleCardProps) {
           <Image
             src={show.image_url ?? ""}
             alt="ticket-image"
-            width={20}
-            height={20}
+            width={166}
+            height={166}
             className="rounded-lg sm:h-32 sm:w-32 h-20 w-20"
           />
         </div>

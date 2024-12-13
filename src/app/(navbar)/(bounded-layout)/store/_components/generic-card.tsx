@@ -8,8 +8,8 @@ export function GenericCard({ generic }: GenericCardProps) {
     <div className="flex flex-col gap-1 shadow p-4 items-start">
       <Image
         src={generic.image_url ?? ""}
-        width={80}
-        height={80}
+        width={166}
+        height={166}
         alt="merchandise-image"
         className="object-cover w-full"
       />

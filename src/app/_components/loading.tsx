@@ -22,8 +22,8 @@ export function LoadingPage({
   return (
     <div
       className={cn(
-        "flex items-center justify-center fixed bg-secondary-950 w-screen h-screen z-[999]",
-        finished && "transition-opacity duration-500 opacity-0",
+        "flex items-center justify-center fixed bg-secondary-950 w-screen h-screen z-[999] transition-opacity duration-500",
+        finished && "opacity-0",
       )}
     >
       <div className="flex flex-col w-full max-w-md px-6 gap-8">

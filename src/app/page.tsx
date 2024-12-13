@@ -128,6 +128,8 @@ export default function LandingPage() {
   const [imagesLoaded, setImagesLoaded] = useState(0);
   const [totalImages, setTotalImages] = useState<number>();
   const [loading, setLoading] = useState(true);
+  const [loadingAnimationComplete, setLoadingAnimationComplete] =
+    useState(false);
   const placeholderImageCounter = useRef(0);
   const totalPlaceholderImages = useRef<number>();
   const imagesInitialized = useRef(false);
@@ -229,6 +231,7 @@ export default function LandingPage() {
           },
           onComplete: () => {
             setAutoAnimationComplete(true);
+            setLoadingAnimationComplete(true);
           },
         });
       };
@@ -755,11 +758,13 @@ export default function LandingPage() {
   return (
     <MotionConfig reducedMotion="never">
       <ReactLenis root>
-        <LoadingPage
-          finished={!loading}
-          currentValue={imagesLoaded}
-          maxValue={totalImages ?? 0}
-        />
+        {!loadingAnimationComplete && (
+          <LoadingPage
+            finished={!loading}
+            currentValue={imagesLoaded}
+            maxValue={totalImages ?? 0}
+          />
+        )}
         <Navbar
           desktopClassName={autoAnimationComplete ? "" : "-translate-y-full"}
           mobileClassName={cn(

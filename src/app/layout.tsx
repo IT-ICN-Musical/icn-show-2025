@@ -1,4 +1,5 @@
 import { mont, safiraMarch } from "@/fonts/font";
+import { Analytics } from "@vercel/analytics/react";
 import type { Metadata } from "next";
 
 import "./globals.css";
@@ -20,6 +21,7 @@ export default function RootLayout({
         <div className="relative min-h-screen w-full flex flex-col">
           <QueryProviders>{children}</QueryProviders>
         </div>
+        <Analytics />
       </body>
     </html>
   );

@@ -1,9 +1,5 @@
 import { cn, sortSizes } from "@/lib/utils";
-import {
-  ClientBundleClothing,
-  ClientClothingItem,
-  ClientClothingSizes,
-} from "@/types/items";
+import { ClientBundleClothing } from "@/types/items";
 import { Minus } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";

@@ -1,6 +1,5 @@
 import { cn } from "@/lib/utils";
-import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 import Typography from "@/components/typography/typography";
 import { Progress } from "@/components/ui/progress";

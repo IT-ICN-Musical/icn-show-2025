@@ -1,5 +1,4 @@
 import { request } from "@/lib/request";
-import { CheckoutRequest, CheckoutResponse } from "@/types/checkout";
 import { CheckOrderRequest, CheckOrderResponse } from "@/types/order";
 
 export async function checkOrder(

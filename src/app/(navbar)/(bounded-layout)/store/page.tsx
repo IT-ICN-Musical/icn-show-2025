@@ -14,7 +14,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { BundleCards } from "./_components/bundle-cards";
 import { ClothingCards } from "./_components/clothing-cards";
 import { GenericCards } from "./_components/generic-cards";
-import { PromotionBanner } from "./_components/promotion-banner";
 import { ShowCards } from "./_components/show-cards";
 
 export default function Shop() {

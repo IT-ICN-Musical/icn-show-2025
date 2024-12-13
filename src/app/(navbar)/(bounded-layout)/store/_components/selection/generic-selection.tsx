@@ -1,15 +1,10 @@
 "use client";
 
-import { fetchClothingDetails, fetchGenericDetails } from "@/api/shop";
+import { fetchGenericDetails } from "@/api/shop";
 import { DESKTOP_MIN_WIDTH } from "@/consts/size.consts";
 import { useMediaQuery } from "@/hooks/use-media-query";
-import { cn, sortSizes } from "@/lib/utils";
 import { useCartStore } from "@/store/cart";
-import {
-  ClientClothingItem,
-  ClientClothingSizes,
-  ClientGenericItem,
-} from "@/types/items";
+import { ClientGenericItem } from "@/types/items";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";

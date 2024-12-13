@@ -1,9 +1,7 @@
 import { cn } from "@/lib/utils";
 import { ClientBundleItem } from "@/types/items";
-import { Minus } from "lucide-react";
 
 import Typography from "@/components/typography/typography";
-import { Button } from "@/components/ui/button";
 
 type ConfirmationPageProps = {
   bundle: ClientBundleItem;

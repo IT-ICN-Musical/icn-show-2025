@@ -1,6 +1,6 @@
 import { PartyPopper } from "lucide-react";
 
-import { Card, CardDescription } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 
 export function AppliedPromotionBanner() {
   return (

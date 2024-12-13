@@ -1,10 +1,4 @@
-import { fetchClothingDetails } from "@/api/shop";
-import { useCartStore } from "@/store/cart";
-import {
-  ClientClothingItem,
-  RetrieveClothingDetailsResponse,
-} from "@/types/items";
-import { useQuery } from "@tanstack/react-query";
+import { RetrieveClothingDetailsResponse } from "@/types/items";
 
 import { ClothingCard } from "./clothing-card";
 import { ClothingSelection } from "./selection/clothing-selection";

@@ -1,6 +1,6 @@
 import { formatTimeRange } from "@/lib/time";
 import { RetrieveShowDetailsResponse } from "@/types/items";
-import { Clock12, Info, ShoppingCart } from "lucide-react";
+import { Clock12 } from "lucide-react";
 import Image from "next/image";
 
 import Typography from "@/components/typography/typography";

@@ -4,20 +4,10 @@ import { fetchBundleDetails } from "@/api/shop";
 import { DESKTOP_MIN_WIDTH } from "@/consts/size.consts";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { useCartStore } from "@/store/cart";
-import {
-  ClientBundleClothing,
-  ClientBundleClothingSize,
-  ClientBundleDetail,
-  ClientBundleItem,
-  ClientClothingItem,
-  ClientClothingSizes,
-  ClientShowItem,
-} from "@/types/items";
+import { ClientBundleDetail, ClientBundleItem } from "@/types/items";
 import { useQuery } from "@tanstack/react-query";
-import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
 
-import { Counter } from "@/components/counter";
 import Typography from "@/components/typography/typography";
 import { Button } from "@/components/ui/button";
 import {
@@ -32,7 +22,6 @@ import { BundleClothingContent } from "./bundles/bundle-clothing-content";
 import { ConfirmationPage } from "./bundles/bundle-confirmation-page";
 import { BundleTicketContent } from "./bundles/bundle-ticket-content";
 import { LoadingSelection } from "./loading-selection";
-import { SeatCategory } from "./seat-category";
 
 type BundleSelectionProps = {
   bundle: ClientBundleItem;

@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { ClientBundleShow, ClientShowItem } from "@/types/items";
+import { ClientBundleShow } from "@/types/items";
 import { Minus } from "lucide-react";
 import { useState } from "react";
 
@@ -7,7 +7,6 @@ import { Counter } from "@/components/counter";
 import Typography from "@/components/typography/typography";
 import { Button } from "@/components/ui/button";
 
-import { BundleSelection } from "../bundle-selection";
 import { SeatCategory } from "../seat-category";
 
 type BundletTicketContentProps = {

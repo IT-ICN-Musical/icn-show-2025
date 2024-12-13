@@ -1,5 +1,6 @@
 "use client";
 
+import { SHOW_TIME_UTC } from "@/consts/show.consts";
 import { cn } from "@/lib/utils";
 import {
   MotionConfig,
@@ -10,17 +11,8 @@ import {
   useTransform,
 } from "framer-motion";
 import { ReactLenis } from "lenis/dist/lenis-react";
-import Image, { ImageProps } from "next/image";
-import {
-  ForwardRefRenderFunction,
-  ForwardedRef,
-  forwardRef,
-  use,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { useRouter } from "next/navigation";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { Navbar } from "@/components/navbar";
 
@@ -34,6 +26,7 @@ import RightForegroundMobile from "./_assets/foreground-right-mobile.png";
 import RightForeground from "./_assets/foreground-right.png";
 import TopForegroundMobile from "./_assets/foreground-top-mobile.png";
 import IcnLogo from "./_assets/icn-logo.png";
+import { BaseImage } from "./_components/base-image";
 import Countdown from "./_components/countdown";
 import Descriptions from "./_components/descriptions";
 import { LoadingPage } from "./_components/loading";
@@ -52,61 +45,6 @@ const animationOrder = {
   animation4: 0.94,
   scrollSpace4: 1,
 };
-
-// addRef: (ref: HTMLImageElement) => void
-const BaseImage = forwardRef<
-  HTMLImageElement,
-  ImageProps & { onLoadOnce: () => void }
->((props, ref) => {
-  const [isHydrated, setIsHydrated] = useState(false);
-  const hydrationReported = useRef(false);
-  const executed = useRef(false);
-
-  useEffect(() => {
-    if (!hydrationReported.current) {
-      setIsHydrated(true);
-      hydrationReported.current = true;
-      // alert(`${props.src.src}: ${hydrationReported.current}`);
-    }
-  }, []);
-
-  if (!isHydrated) {
-    return (
-      <div
-        style={{
-          width: props.fill ? "100%" : props.width,
-          height: props.fill ? "100%" : props.height,
-          position: props.fill ? "relative" : "static",
-        }}
-        className="placeholder-base-image"
-      />
-    );
-  }
-
-  const { onLoad: onLoadProps, onLoadOnce, ...rest } = props;
-
-  return (
-    <Image
-      onLoad={(e) => {
-        if (!executed.current && onLoadOnce) {
-          //alert(`before  ${executed.current}`);
-          executed.current = true;
-          //alert(`after  ${executed.current}`);
-          onLoadOnce();
-        }
-        if (onLoadProps) {
-          onLoadProps(e);
-        }
-      }}
-      ref={ref}
-      {...rest}
-      loading="eager"
-      priority
-    />
-  );
-});
-
-BaseImage.displayName = "BaseImage";
 
 const MotionImage = motion(BaseImage);
 
@@ -155,6 +93,7 @@ export default function LandingPage() {
     setTotalImages(
       imageElements.length + (totalPlaceholderImages.current ?? 0),
     );
+    console.log("Total images:", totalImages);
 
     const imagePromises = Array.from(imageElements).map((img) => {
       return new Promise<void>((resolve, reject) => {
@@ -661,6 +600,14 @@ export default function LandingPage() {
       : "fixed",
   );
 
+  const descriptionZIndex = useTransform(combinedScrollProgress, (pos) =>
+    // halfway 1 to 2 + 2 to half 3
+    pos >= (animationOrder.scrollSpace1 + animationOrder.animation2) / 2 &&
+    pos < (animationOrder.scrollSpace2 + animationOrder.animation3) / 2
+      ? 30
+      : 0,
+  );
+
   const descriptionOpacity = useTransform(
     combinedScrollProgress,
     [
@@ -752,6 +699,17 @@ export default function LandingPage() {
     ],
     ["-50%", "-50%", "-50%"],
   );
+
+  const progressWidth = useTransform(
+    combinedScrollProgress,
+    [animationOrder.scrollSpace1, animationOrder.scrollSpace4],
+    ["0%", "100%"],
+  );
+
+  const router = useRouter();
+  const onClickBuy = () => {
+    router.push("/store");
+  };
 
   const onLoadOnce = () => setImagesLoaded((prev) => prev + 1);
 
@@ -868,6 +826,20 @@ export default function LandingPage() {
               onLoadOnce={onLoadOnce}
               className="fixed h-screen z-20 w-auto object-cover object-right right-0 bottom-0 overflow-hidden"
             />
+            {/* Description */}
+            <motion.div
+              style={{
+                y: descriptionY,
+                x: descriptionX,
+                position: descriptionPosition,
+                opacity: descriptionOpacity,
+                scale: descriptionScale,
+                zIndex: descriptionZIndex,
+              }}
+              className={`top-1/2 ${isMobile ? "left-1/2 w-[80vw]" : "left-[10vw] w-[40vw]"}`}
+            >
+              <Descriptions onClickBuy={onClickBuy} />
+            </motion.div>
             {/* Left Foreground Image */}
             <MotionImage
               src={isMobile ? LeftForegroundMobile : LeftForeground}
@@ -914,7 +886,7 @@ export default function LandingPage() {
               <img src={IcnLogo.src} alt="logo" />
               <p
                 className={cn(
-                  "font-safira-march text-primary-800 items-center text-center pt-5",
+                  "font-safira-march text-primary-800 items-center text-center pt-5 animate-pulse",
                   autoAnimationComplete
                     ? "opacity-100 duration-1000 transition-opacity"
                     : "opacity-0",
@@ -923,19 +895,7 @@ export default function LandingPage() {
                 Scroll Down
               </p>
             </motion.div>
-            {/* Description */}
-            <motion.div
-              style={{
-                y: descriptionY,
-                x: descriptionX,
-                position: descriptionPosition,
-                opacity: descriptionOpacity,
-                scale: descriptionScale,
-              }}
-              className={`top-1/2 ${isMobile ? "left-1/2 w-[80vw]" : "left-[10vw] w-[40vw]"}`}
-            >
-              <Descriptions />
-            </motion.div>
+
             {/* Sponsor */}
             <motion.div
               style={{
@@ -947,7 +907,7 @@ export default function LandingPage() {
               }}
               className={`top-1/2 ${isMobile ? "w-[80vw] h-auto left-1/2" : "w-[50vw] h-auto right-[25vw]"}`}
             >
-              <Sponsors />
+              <Sponsors onLoadOnce={onLoadOnce} />
             </motion.div>
             {/* Countdown */}
             <motion.div
@@ -959,9 +919,29 @@ export default function LandingPage() {
               }}
               className="w-screen h-screen top-1/2 z-30"
             >
-              <Countdown isMobile={isMobile} />
+              <Countdown isMobile={isMobile} showTime={SHOW_TIME_UTC} />
             </motion.div>
           </div>
+
+          <motion.div
+            className={cn(
+              "fixed z-50 bg-white bottom-0 left-0 h-1 sm:h-2",
+              autoAnimationComplete
+                ? "transition-opacity duration-1000 opacity-100"
+                : "opacity-0",
+            )}
+            style={{
+              width: progressWidth,
+            }}
+          ></motion.div>
+          <div
+            className={cn(
+              "w-screen fixed bottom-0 left-0 bg-white/30 h-1 sm:h-2 z-50",
+              autoAnimationComplete
+                ? "transition-opacity duration-1000 opacity-100"
+                : "opacity-0",
+            )}
+          />
         </section>
       </ReactLenis>
     </MotionConfig>

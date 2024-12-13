@@ -3,6 +3,8 @@ import { redirect } from "next/navigation";
 
 import { MyTicketsCard } from "../../store/_components/my-tickets-card";
 
+export const dynamic = "force-dynamic";
+
 type MyTicketsBackend = {
   name: string;
   show_time: { start_time: string; end_time: string };
@@ -10,7 +12,6 @@ type MyTicketsBackend = {
   category: string;
   viewer_id: string;
 };
-
 export default async function MyTickets({
   params,
 }: {

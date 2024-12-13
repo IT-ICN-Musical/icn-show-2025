@@ -1,4 +1,5 @@
 import { request } from "@/lib/request";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { MyTicketsCard } from "../../store/_components/my-tickets-card";
@@ -32,7 +33,14 @@ export default async function MyTickets({
 
   return (
     <main className="font-safira-march">
-      <div className="text-center">My Tickets</div>
+      <div className="text-center text-lg">My Tickets</div>
+      <div className="font-mont text-[1rem] mt-1 text-center">
+        Go back to{" "}
+        <Link className="text-blue-500 " href={`/my-purchases/${emailToken}`}>
+          My Tickets
+        </Link>
+        ?
+      </div>
       <div className="mt-10 space-y-2">
         {myTickets?.map((data) => (
           <MyTicketsCard

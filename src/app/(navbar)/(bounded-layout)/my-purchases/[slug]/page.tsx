@@ -1,4 +1,5 @@
 import { request } from "@/lib/request";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import Typography from "@/components/typography/typography";
@@ -46,13 +47,18 @@ export default async function MyPurchases({
 
   return (
     <main className="font-safira-march">
-      <div className="text-center">My Purchases</div>
+      <div className="text-center text-lg">My Purchases</div>
+      <div className="font-mont text-[1rem] mt-1 text-center">
+        Go back to{" "}
+        <Link className="text-blue-500 " href={`/my-tickets/${emailToken}`}>
+          My Tickets
+        </Link>
+        ?
+      </div>
 
       {Object.entries(myPurchases.purchases).map((dateEntry, index) => {
         const date = dateEntry[0];
         const purchases = dateEntry[1];
-        console.log(date);
-        console.log(purchases[0].show);
 
         return (
           <div key={index} className="mt-10 space-y-2">

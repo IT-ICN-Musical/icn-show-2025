@@ -57,10 +57,16 @@ export function BundleCard({ bundle }: BundleCardProps) {
             )}
           </div>
           <div className="flex justify-between">
-            <BundleCardPrice
-              minPrice={(bundle.min_price / 100).toFixed(2)}
-              oldMinPrice={(bundle.old_min_price / 100).toFixed(2)}
-            />
+            {bundle.max_order ? (
+              <BundleCardPrice
+                minPrice={(bundle.min_price / 100).toFixed(2)}
+                oldMinPrice={(bundle.old_min_price / 100).toFixed(2)}
+              />
+            ) : (
+              <div className="text-sm sm:text-lg font-semibold">
+                Out of stock
+              </div>
+            )}
           </div>
         </div>
       </div>

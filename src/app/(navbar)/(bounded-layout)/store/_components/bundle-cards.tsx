@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import { type RetrieveBundleDetailsResponse } from "@/types/items";
 
 import { BundleCard } from "./bundle-card";
@@ -13,7 +14,13 @@ export function BundleCards({ bundles, cartItems }: BundleCardsProps) {
             bundle={bundle}
             key={bundle.item_id}
           >
-            <button className="hover:scale-[1.01] duration-300 transition-scale">
+            <button
+              disabled={bundle.max_order <= 0}
+              className={cn(
+                "duration-300 transition-scale",
+                bundle.max_order <= 0 ? "grayscale" : "hover:scale-[1.01] ",
+              )}
+            >
               <BundleCard bundle={bundle} />
             </button>
           </BundleSelection>

@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import { RetrieveGenericDetailsResponse } from "@/types/items";
 
 import { GenericCard } from "./generic-card";
@@ -12,7 +13,13 @@ export function GenericCards({ generics, cartItems }: GenericCardsProps) {
           generic_item={generic}
           key={generic.item_id}
         >
-          <button className="hover:scale-[1.05] duration-300 transition-scale">
+          <button
+            disabled={generic.max_order <= 0}
+            className={cn(
+              "duration-300 transition-scale",
+              generic.max_order <= 0 ? "grayscale" : "hover:scale-[1.01] ",
+            )}
+          >
             <GenericCard generic={generic} key={generic.item_id} />
           </button>
         </GenericSelection>

@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import { RetrieveClothingDetailsResponse } from "@/types/items";
 
 import { ClothingCard } from "./clothing-card";
@@ -16,7 +17,13 @@ function ClothingItem({
       clothing={clothing}
       key={clothing.clothing_id}
     >
-      <button className="hover:scale-[1.05] duration-300 transition-scale">
+      <button
+        disabled={clothing.max_order <= 0}
+        className={cn(
+          "duration-300 transition-scale",
+          clothing.max_order <= 0 ? "grayscale" : "hover:scale-[1.01] ",
+        )}
+      >
         <ClothingCard clothing={clothing} />
       </button>
     </ClothingSelection>

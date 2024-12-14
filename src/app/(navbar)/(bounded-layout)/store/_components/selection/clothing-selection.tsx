@@ -110,10 +110,14 @@ function Content({
                     key={size.size}
                     variant="outline"
                     onClick={() => handleSizeSelect(size.size)}
+                    disabled={size.max_order === 0}
                     className={cn(
-                      "min-w-16 rounded-full h-fit py-2 px-4 border-primary-700 font-book text-primary-700 hover:bg-primary-700 hover:border-primary-700 hover:text-neutral-50 transition-colors duration-200",
+                      "min-w-16 rounded-full h-fit py-2 px-4 border-primary-700 font-book text-primary-700 transition-colors duration-200",
                       selectedSize !== size.size &&
                         "border-neutral-100 bg-neutral-100 text-neutral-900",
+                      size.max_order === 0
+                        ? "cursor-not-allowed opacity-25 line-through"
+                        : "hover:bg-primary-700 hover:border-primary-700 hover:text-neutral-50",
                     )}
                   >
                     {size.size}

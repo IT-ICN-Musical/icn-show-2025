@@ -1,4 +1,5 @@
 import { formatTimeRange } from "@/lib/time";
+import { cn } from "@/lib/utils";
 import { RetrieveShowDetailsResponse } from "@/types/items";
 import { Clock12 } from "lucide-react";
 import Image from "next/image";
@@ -35,13 +36,21 @@ export function ShowCard({ show }: BundleCardProps) {
             </Typography>
           </div>
           <div className="flex justify-between">
-            <div className="text-sm sm:text-lg">
-              <span className="font-book text-xs sm:text-md">from </span>
-              SGD{" "}
-              <span className="font-bold">
-                {(show.min_price / 100).toFixed(2)}
-              </span>
-            </div>
+            {show.max_order > 0 ? (
+              <>
+                <div className="text-sm sm:text-lg">
+                  <span className="font-book text-xs sm:text-md">from </span>
+                  SGD{" "}
+                  <span className="font-bold">
+                    {(show.min_price / 100).toFixed(2)}
+                  </span>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="text-sm sm:text-lg">Out of Stock</div>
+              </>
+            )}
           </div>
         </div>
       </div>

@@ -1,4 +1,7 @@
+"use client";
+
 import { cn } from "@/lib/utils";
+import { useCartStore } from "@/store/cart";
 import { ClientBundleShow } from "@/types/items";
 import { Minus } from "lucide-react";
 import { useState } from "react";
@@ -13,7 +16,6 @@ type BundletTicketContentProps = {
   show: ClientBundleShow;
   maxAmount: number;
   options: Record<string, number>;
-  cartAmount: Record<string, number>;
   setOptions: (value: Record<string, number>) => void;
 };
 
@@ -22,7 +24,6 @@ export function BundleTicketContent({
   maxAmount,
   options,
   setOptions,
-  cartAmount,
 }: BundletTicketContentProps) {
   const [count, setCount] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState<string | undefined>(
@@ -71,15 +72,10 @@ export function BundleTicketContent({
 
   const availableStock =
     (safeCategory && currentTicket
-      ? currentTicket.max_order -
-        (options[safeCategory] ?? 0) -
-        (cartAmount[currentTicket.item_id] ?? 0)
+      ? currentTicket.max_order - (options[safeCategory] ?? 0)
       : undefined) ?? currentTicket?.max_order;
 
-  const maxCounterValue =
-    availableStock !== undefined
-      ? Math.min(availableQuota, availableStock)
-      : availableQuota;
+  const maxCounterValue = Math.min(availableStock ?? 999, availableQuota);
 
   const handleAddItem = () => {
     if (safeCategory && count > 0) {

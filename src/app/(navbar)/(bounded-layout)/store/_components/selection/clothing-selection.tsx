@@ -144,6 +144,7 @@ function Content({
             </div>
 
             <hr className="border border-1" />
+
             <div className="flex flex-row gap-2 h-full items-center my-3">
               <Button
                 size="lg"

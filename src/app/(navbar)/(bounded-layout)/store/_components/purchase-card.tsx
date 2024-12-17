@@ -1,5 +1,12 @@
 import { formatTimeRangeSgt } from "@/lib/time";
-import { BoxIcon, Clock12, RulerIcon, ShirtIcon, Ticket } from "lucide-react";
+import {
+  BoxIcon,
+  Clock12,
+  RulerIcon,
+  ShirtIcon,
+  ShoppingBagIcon,
+  Ticket,
+} from "lucide-react";
 import Image from "next/image";
 
 import Typography from "@/components/typography/typography";
@@ -14,6 +21,7 @@ type PurchaseCardProps = {
   merchSize: string;
   imageUrl: string;
   genericQuantity: number;
+  bundleQuantity: number;
 };
 
 export function PurchaseCard(props: PurchaseCardProps) {
@@ -50,6 +58,16 @@ export function PurchaseCard(props: PurchaseCardProps) {
                     SGT
                   </>
                 )}
+            </Typography>
+            <Typography
+              className="text-slate-600  flex gap-2 items-center text-xs sm:text-base"
+              variant="p"
+            >
+              {props.bundleQuantity !== 0 && (
+                <>
+                  <ShoppingBagIcon size={14} />x {props.bundleQuantity}
+                </>
+              )}
             </Typography>
             <Typography
               className="text-slate-600  flex gap-2 items-center text-xs sm:text-base"

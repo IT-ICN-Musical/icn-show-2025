@@ -142,7 +142,7 @@ export default function Sponsors({ onLoadOnce }: { onLoadOnce: () => void }) {
               {sponsors.map((data, index) => (
                 <a
                   key={index}
-                  className="w-[16%] lg:w-[17%] xl:w-[17.25%] aspect-square bg-white p-1 hover:opacity-75 duration-250 transition-opacity  "
+                  className="w-[15.5%] lg:w-[16.5%] xl:w-[16.75%] aspect-square bg-white p-1 hover:opacity-75 duration-250 transition-opacity  "
                   href={data.url}
                   target="_blank"
                 >

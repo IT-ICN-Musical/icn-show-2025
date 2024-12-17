@@ -23,6 +23,8 @@ import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
 import { LoadingSelection } from "./loading-selection";
 import { SeatCategory } from "./seat-category";
 
+const MAX_TICKETS_TOTAL = 10;
+
 type TicketSelectionProps = {
   show: ClientShowItem;
   children: React.ReactNode;
@@ -51,7 +53,6 @@ function Content({
   handleCategorySelect,
   onAddToCart,
   selectedCategory,
-  categories,
   cartAmount,
 }: ContentProps) {
   const safeCategory: "A" | "B" | "C" | undefined = (() => {
@@ -81,6 +82,14 @@ function Content({
   const maxAmount = currentTicket
     ? currentTicket?.max_order - (cartAmount[currentTicket.item_id] ?? 0)
     : undefined;
+
+  const { cart } = useCartStore();
+  // HARD CODE
+  const ticketCount = cart
+    .filter((x) => x.is_ticket)
+    .reduce((acc, item) => item.quantity + acc, 0);
+
+  const disableAddToCart = ticketCount + count > MAX_TICKETS_TOTAL;
 
   return (
     <>
@@ -157,10 +166,16 @@ function Content({
             </div>
 
             <hr className="border border-1" />
+            {disableAddToCart && (
+              <Typography variant="p" className="text-rose-700 mt-1">
+                You have added more than the limit for tickets (
+                {MAX_TICKETS_TOTAL} tickets)
+              </Typography>
+            )}
             <div className="flex flex-row gap-2 h-full items-center my-3">
               <Button
                 size="lg"
-                disabled={disableButton}
+                disabled={disableButton || disableAddToCart}
                 className="font-book w-full h-fit py-[10px]"
                 onClick={onAddToCartHandler}
               >
@@ -200,6 +215,7 @@ export function TicketSelection({
       addToCart({
         item_id: itemId,
         quantity: count,
+        is_ticket: true,
       });
     }
   };

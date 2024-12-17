@@ -71,29 +71,49 @@ function PageNavigation({
     }
   };
 
+  const { cart } = useCartStore();
+
+  // HARD CODE
+  const MAX_BUNDLE_TOTAL = 3;
+  const bundleCount = cart
+    .filter((x) => x.bundle_option)
+    .reduce((acc, item) => item.quantity + acc, 0);
+
+  const disableAddToCart = page == lastPage && bundleCount >= MAX_BUNDLE_TOTAL;
+  alert(bundleCount);
+
   return (
-    <div className="flex flex-row gap-2 h-full items-center my-3">
-      {!hidePrevious && (
-        <Button
-          variant="outline"
-          size="lg"
-          disabled={disablePrevious}
-          className="border-primary-700 text-primary-700 font-book w-full h-fit py-[10px]"
-          onClick={() => setPage(page - 1)}
-        >
-          Previous
-        </Button>
+    <>
+      {disableAddToCart && (
+        <Typography variant="p" className="text-rose-700 mt-1">
+          You have added more than the limit for bundle ({MAX_BUNDLE_TOTAL}{" "}
+          bundles)
+        </Typography>
       )}
-      <Button
-        variant="default"
-        size="lg"
-        disabled={disableNext}
-        className="border-primary-700  w-full font-semibold h-fit py-[10px]"
-        onClick={onClickNext}
-      >
-        {page == lastPage ? "Add to Cart" : "Next"}
-      </Button>
-    </div>
+      <div className="flex flex-row gap-2 h-full items-center my-3">
+        {!hidePrevious && (
+          <Button
+            variant="outline"
+            size="lg"
+            disabled={disablePrevious}
+            className="border-primary-700 text-primary-700 font-book w-full h-fit py-[10px]"
+            onClick={() => setPage(page - 1)}
+          >
+            Previous
+          </Button>
+        )}
+
+        <Button
+          variant="default"
+          size="lg"
+          disabled={disableNext || disableAddToCart}
+          className="border-primary-700  w-full font-semibold h-fit py-[10px]"
+          onClick={onClickNext}
+        >
+          {page == lastPage ? "Add to Cart" : "Next"}
+        </Button>
+      </div>
+    </>
   );
 }
 
@@ -146,7 +166,6 @@ const generateContent = ({
         options={option}
         setOptions={setOption}
         maxAmount={curItem.amount}
-        cartAmount={cartAmount}
       />
     );
   }

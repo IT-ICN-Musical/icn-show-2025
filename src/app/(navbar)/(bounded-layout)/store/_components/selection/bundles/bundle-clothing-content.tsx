@@ -1,4 +1,7 @@
+"use client";
+
 import { cn, sortSizes } from "@/lib/utils";
+import { useCartStore } from "@/store/cart";
 import { ClientBundleClothing } from "@/types/items";
 import { Minus } from "lucide-react";
 import Image from "next/image";
@@ -21,7 +24,6 @@ export function BundleClothingContent({
   option,
   setOption,
   maxAmount,
-  cartAmount,
 }: ClothingContentProps) {
   const sizes = clothing.sizes;
   const [count, setCount] = useState(0);
@@ -64,14 +66,10 @@ export function BundleClothingContent({
 
   const availableStock =
     (selectedSize && currentSize
-      ? currentSize.max_order -
-        (option[selectedSize] ?? 0) -
-        (cartAmount[currentSize.item_id] ?? 0)
+      ? currentSize.max_order - (option[selectedSize] ?? 0)
       : undefined) ?? currentSize?.max_order;
 
-  const maxCounterValue = availableStock
-    ? Math.min(availableQuota, availableStock)
-    : availableQuota;
+  const maxCounterValue = Math.min(availableStock ?? 999, availableQuota);
 
   const handleAddItem = () => {
     if (selectedSize && count > 0) {

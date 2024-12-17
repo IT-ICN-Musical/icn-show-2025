@@ -44,8 +44,6 @@ export default async function MyPurchases({
     redirect("/orders");
   }
 
-  console.log(myPurchases);
-
   return (
     <main className="font-safira-march">
       <div className="text-center text-lg">My Purchases</div>

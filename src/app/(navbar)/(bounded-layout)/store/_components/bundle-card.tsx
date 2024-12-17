@@ -90,7 +90,7 @@ function BundleCardPrice({
   ];
   const isTicketBundle = ITEM_TICKET_BUNDLES.includes(itemId);
 
-  return isTicketBundle ? (
+  return !isTicketBundle ? (
     <div className="text-sm sm:text-lg">
       <span className="font-book text-xs sm:text-md">from </span>
       <span className={cn(isDiscounted && "text-[#DC2626]")}>SGD</span>{" "}
@@ -106,11 +106,11 @@ function BundleCardPrice({
       <span className="font-book text-xs sm:text-md">from </span>
       <span className={cn(isDiscounted && "text-[#DC2626]")}>SGD</span>{" "}
       <span className={cn("font-bold", isDiscounted && "text-[#DC2626]")}>
-        {parseFloat(minPrice) / 5}
+        {(parseFloat(minPrice) / 5).toFixed(2)}
       </span>{" "}
       {isDiscounted && oldMinPrice && (
         <span className="line-through text-[#A1A1AA]">
-          {parseFloat(oldMinPrice) / 5}
+          {(parseFloat(oldMinPrice) / 5).toFixed(2)}
         </span>
       )}
       {" each"}

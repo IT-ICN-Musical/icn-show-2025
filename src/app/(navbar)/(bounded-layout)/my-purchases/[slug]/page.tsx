@@ -8,7 +8,7 @@ import { PurchaseCard } from "../../store/_components/purchase-card";
 
 export const dynamic = "force-dynamic";
 
-type MyPurchaseBackend = {
+type PurchasesOnDate = {
   title: string;
   show: { start_time: string; end_time: string };
   show_quantity: number;
@@ -16,11 +16,12 @@ type MyPurchaseBackend = {
   image_url: string;
   merch_quantity: number;
   generic_quantity: number;
+  bundle_quantity: number;
 };
 
 type MyPurchases = {
   purchases: {
-    [date: string]: MyPurchaseBackend[];
+    [date: string]: PurchasesOnDate[];
   };
 };
 
@@ -82,6 +83,7 @@ export default async function MyPurchases({
                 merchSize={purchase.merch_size}
                 imageUrl={purchase.image_url}
                 genericQuantity={purchase.generic_quantity}
+                bundleQuantity={purchase.bundle_quantity}
               />
             ))}
           </div>

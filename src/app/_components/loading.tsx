@@ -23,7 +23,7 @@ export function LoadingPage({
   useEffect(() => {
     const timer = setTimeout(() => {
       setLonger(true);
-    }, 10_000);
+    }, 7_500);
 
     return () => clearTimeout(timer);
   }, []);
@@ -44,7 +44,7 @@ export function LoadingPage({
         <Progress value={perc} className="w-full" />
         <Typography variant="p" className="text-center text-white -mt-2">
           {longer
-            ? "The preparation takes longer than usual, refreshing the page might help."
+            ? "The preparation takes longer than usual, refreshing the page or opening it on a browser might help."
             : "Please wait while we prepare the stage for you."}
         </Typography>
       </div>

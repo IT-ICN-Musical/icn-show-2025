@@ -72,13 +72,14 @@ export function BundleTicketContent({
   const availableStock =
     (safeCategory && currentTicket
       ? currentTicket.max_order -
-        options[safeCategory] -
+        (options[safeCategory] ?? 0) -
         (cartAmount[currentTicket.item_id] ?? 0)
       : undefined) ?? currentTicket?.max_order;
 
-  const maxCounterValue = availableStock
-    ? Math.min(availableQuota, availableStock)
-    : availableQuota;
+  const maxCounterValue =
+    availableStock !== undefined
+      ? Math.min(availableQuota, availableStock)
+      : availableQuota;
 
   const handleAddItem = () => {
     if (safeCategory && count > 0) {
@@ -127,10 +128,14 @@ export function BundleTicketContent({
               key={category}
               variant="outline"
               onClick={() => handleCategorySelect(category)}
+              disabled={currentTicket?.max_order === 0}
               className={cn(
-                "rounded-full h-fit py-2 px-4 border-primary-700 font-book text-primary-700 hover:bg-primary-700 hover:border-primary-700 hover:text-neutral-50 transition-colors duration-200",
+                "rounded-full h-fit py-2 px-4 border-primary-700 font-book text-primary-700 transition-colors duration-200",
                 selectedCategory !== category &&
                   "border-neutral-100 bg-neutral-100 text-neutral-900",
+                currentTicket?.max_order === 0
+                  ? "cursor-not-allowed opacity-25 line-through"
+                  : "hover:bg-primary-700 hover:border-primary-700 hover:text-neutral-50",
               )}
             >
               CAT {category}

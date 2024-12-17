@@ -59,6 +59,7 @@ export function BundleCard({ bundle }: BundleCardProps) {
           <div className="flex justify-between">
             {bundle.max_order ? (
               <BundleCardPrice
+                itemId={bundle.item_id}
                 minPrice={(bundle.min_price / 100).toFixed(2)}
                 oldMinPrice={(bundle.old_min_price / 100).toFixed(2)}
               />
@@ -75,9 +76,21 @@ export function BundleCard({ bundle }: BundleCardProps) {
   );
 }
 
-function BundleCardPrice({ minPrice, oldMinPrice }: BundleCardPriceProps) {
+function BundleCardPrice({
+  itemId,
+  minPrice,
+  oldMinPrice,
+}: BundleCardPriceProps) {
   const isDiscounted = oldMinPrice !== minPrice;
-  return (
+
+  // HARDCODE
+  const ITEM_TICKET_BUNDLES = [
+    "e0739c9d-47e3-4c5b-8188-234b395e363c",
+    "d5ba1391-5e0a-4735-815a-89ff04895075",
+  ];
+  const isTicketBundle = ITEM_TICKET_BUNDLES.includes(itemId);
+
+  return isTicketBundle ? (
     <div className="text-sm sm:text-lg">
       <span className="font-book text-xs sm:text-md">from </span>
       <span className={cn(isDiscounted && "text-[#DC2626]")}>SGD</span>{" "}
@@ -88,6 +101,20 @@ function BundleCardPrice({ minPrice, oldMinPrice }: BundleCardPriceProps) {
         <span className="line-through text-[#A1A1AA]">{oldMinPrice}</span>
       )}{" "}
     </div>
+  ) : (
+    <div className="text-sm sm:text-lg">
+      <span className="font-book text-xs sm:text-md">from </span>
+      <span className={cn(isDiscounted && "text-[#DC2626]")}>SGD</span>{" "}
+      <span className={cn("font-bold", isDiscounted && "text-[#DC2626]")}>
+        {parseFloat(minPrice) / 5}
+      </span>{" "}
+      {isDiscounted && oldMinPrice && (
+        <span className="line-through text-[#A1A1AA]">
+          {parseFloat(oldMinPrice) / 5}
+        </span>
+      )}
+      {" each"}
+    </div>
   );
 }
 
@@ -96,6 +123,7 @@ type BundleCardProps = {
 };
 
 type BundleCardPriceProps = {
+  itemId: string;
   minPrice: string;
   oldMinPrice?: string;
 };

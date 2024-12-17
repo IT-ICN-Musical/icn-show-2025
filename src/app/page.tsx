@@ -608,6 +608,14 @@ export default function LandingPage() {
       : 0,
   );
 
+  const sponsorZIndex = useTransform(combinedScrollProgress, (pos) =>
+    // halfway 2 to 3 + 3 to half 4
+    pos >= (animationOrder.scrollSpace2 + animationOrder.animation3) / 2 &&
+    pos < animationOrder.scrollSpace3 + 0.05
+      ? 40
+      : 0,
+  );
+
   const descriptionOpacity = useTransform(
     combinedScrollProgress,
     [
@@ -904,8 +912,9 @@ export default function LandingPage() {
                 position: sponsorsPosition,
                 x: sponsorsX,
                 y: sponsorsY,
+                zIndex: sponsorZIndex,
               }}
-              className={`top-1/2 ${isMobile ? "w-[80vw] h-auto left-1/2" : "w-[50vw] h-auto right-[25vw]"}`}
+              className={`top-1/2 py-48 ${isMobile ? "w-[80vw] h-auto left-1/2" : "w-[50vw] h-auto right-[25vw]"}`}
             >
               <Sponsors onLoadOnce={onLoadOnce} />
             </motion.div>

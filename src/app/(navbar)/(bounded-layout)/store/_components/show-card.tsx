@@ -48,7 +48,7 @@ export function ShowCard({ show }: BundleCardProps) {
               </>
             ) : (
               <>
-                <div className="text-sm sm:text-lg">Out of Stock</div>
+                <div className="text-sm sm:text-lg">Out of stock</div>
               </>
             )}
           </div>

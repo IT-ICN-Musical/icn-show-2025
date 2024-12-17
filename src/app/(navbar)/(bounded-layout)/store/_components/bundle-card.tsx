@@ -113,7 +113,7 @@ function BundleCardPrice({
           {(parseFloat(oldMinPrice) / 5).toFixed(2)}
         </span>
       )}
-      <span className={cn(isDiscounted && "text-[#DC2626]")}>each</span>{" "}
+      <span className={cn(isDiscounted && "text-[#DC2626]")}> each</span>{" "}
     </div>
   );
 }

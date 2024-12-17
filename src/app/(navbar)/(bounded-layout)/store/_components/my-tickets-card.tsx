@@ -15,29 +15,38 @@ type MyTicketsCardProps = {
 
 export function MyTicketsCard(props: MyTicketsCardProps) {
   return (
-    <div className="w-full flex bg-inherit h-[300px] item-start text-start">
+    <div className="w-full flex bg-inherit h-[300px] item-start text-start relative">
       <LeftTicketBorder />
       <div className="flex items-center justify-center sm:gap-2 gap-0 bg-white flex-grow px-3 border-y border-[#D9D9D9]">
         <div className="flex flex-col py-4 pl-3 flex-grow gap-6">
           <div>
-            <Typography variant="p" className="text-md text-slate-500 mb-1">
+            <Typography
+              variant="p"
+              className="text-sm md:text-md text-slate-500 mb-1"
+            >
               Name
             </Typography>
-            <Typography variant="p" className="text-md  mb-2">
+            <Typography variant="p" className="text-xs md:text-md mb-2">
               {props.name}
             </Typography>
 
-            <Typography variant="p" className="text-md text-slate-500 mb-1">
+            <Typography
+              variant="p"
+              className="text-sm md:text-md text-slate-500 mb-1"
+            >
               Ticket
             </Typography>
-            <Typography variant="p" className="text-md  mb-2">
+            <Typography variant="p" className="text-xs md:text-md  mb-2">
               {props.show} - Cat {props.category}
             </Typography>
-            <Typography variant="p" className="text-md text-slate-500 mb-1">
+            <Typography
+              variant="p"
+              className="text-sm md:text-md text-slate-500 mb-1"
+            >
               Date, Time
             </Typography>
             <Typography
-              className="flex gap-2 items-center text-md mb-2"
+              className="flex w-32 md:w-full gap-2 items-center text-xs md:text-md mb-2"
               variant="p"
             >
               <>
@@ -48,10 +57,13 @@ export function MyTicketsCard(props: MyTicketsCardProps) {
                 SGT
               </>
             </Typography>
-            <Typography variant="p" className="text-md text-slate-500 mb-1">
+            <Typography
+              variant="p"
+              className="text-sm md:text-md text-slate-500 mb-1"
+            >
               Venue
             </Typography>
-            <Typography variant="p" className="text-md mb-1">
+            <Typography variant="p" className="text-xs md:text-md mb-1">
               SOTA,{" "}
               <a
                 href="https://maps.app.goo.gl/sHrNkU3NtSHXUKCaA"
@@ -67,7 +79,7 @@ export function MyTicketsCard(props: MyTicketsCardProps) {
         </div>
 
         <div>
-          <QRCode data={props.viewerId} size={200} />
+          <QRCode data={props.viewerId} className="w-[150px] md:w-[200px]" />
         </div>
       </div>
       <RightTicketBorder />

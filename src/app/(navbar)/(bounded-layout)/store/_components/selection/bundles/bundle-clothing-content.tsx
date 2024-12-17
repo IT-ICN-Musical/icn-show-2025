@@ -62,12 +62,12 @@ export function BundleClothingContent({
 
   const availableQuota = maxAmount - addedAmount;
 
-  const availableStock: number | undefined =
-    selectedSize && currentSize
+  const availableStock =
+    (selectedSize && currentSize
       ? currentSize.max_order -
         option[selectedSize] -
         (cartAmount[currentSize.item_id] ?? 0)
-      : undefined;
+      : undefined) ?? currentSize?.max_order;
 
   const maxCounterValue = availableStock
     ? Math.min(availableQuota, availableStock)

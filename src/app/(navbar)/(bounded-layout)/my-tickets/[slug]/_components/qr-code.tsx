@@ -5,10 +5,10 @@ import { useEffect, useRef } from "react";
 
 type QRProps = {
   data: string;
-  size: number;
+  className?: string;
 };
 
-export function QRCode({ data, size }: QRProps) {
+export function QRCode({ data, className }: QRProps) {
   const ref = useRef<HTMLDivElement>(null);
   const imageRes = 1024;
 
@@ -44,12 +44,5 @@ export function QRCode({ data, size }: QRProps) {
     };
   }, [data]);
 
-  return (
-    <div
-      ref={ref}
-      style={{
-        width: size,
-      }}
-    />
-  );
+  return <div className={className} ref={ref} />;
 }

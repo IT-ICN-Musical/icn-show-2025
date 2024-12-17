@@ -93,7 +93,6 @@ export default function LandingPage() {
     setTotalImages(
       imageElements.length + (totalPlaceholderImages.current ?? 0),
     );
-    console.log("Total images:", totalImages);
 
     const imagePromises = Array.from(imageElements).map((img) => {
       return new Promise<void>((resolve, reject) => {

@@ -69,12 +69,12 @@ export function BundleTicketContent({
 
   const availableQuota = maxAmount - addedAmount;
 
-  const availableStock: number | undefined =
-    safeCategory && currentTicket
+  const availableStock =
+    (safeCategory && currentTicket
       ? currentTicket.max_order -
         options[safeCategory] -
         (cartAmount[currentTicket.item_id] ?? 0)
-      : undefined;
+      : undefined) ?? currentTicket?.max_order;
 
   const maxCounterValue = availableStock
     ? Math.min(availableQuota, availableStock)

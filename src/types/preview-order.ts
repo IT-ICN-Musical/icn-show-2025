@@ -5,7 +5,7 @@ export type PreviewOrderRequest = {
   items: CheckoutItemOrderRequest[]; // Note: orderDto.ItemOrderRequest needs to be defined separately
 };
 
-type BundleItem = {
+export type BundleItem = {
   item_id: string;
   name: string;
   quantity: number;

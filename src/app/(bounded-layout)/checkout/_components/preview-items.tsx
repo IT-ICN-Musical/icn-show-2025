@@ -1,6 +1,7 @@
 import { formatTimeRange, formatTimeRangeSgt } from "@/lib/time";
 import { ItemOrderPreview, PreviewOrderResponse } from "@/types/preview-order";
 
+import { BundleCardCheckout } from "./bundle-card-checkout";
 import { GenericCardCheckout } from "./generic-card-checkout";
 import { MerchandiseCardCheckout } from "./merchandise-card-checkout";
 import { ShowCardCheckout } from "./show-card-checkout";
@@ -58,6 +59,21 @@ export function PreviewItems({
                 image={item.image_url ?? ""}
                 isAvailable={item.item_available}
                 onDelete={onDelete}
+              />
+            </div>
+          );
+        }
+
+        if (item.bundle_items !== undefined || item.bundle_items !== null) {
+          return (
+            <div key={`bundle-${index}`} className="px-4">
+              <BundleCardCheckout
+                name={item.name}
+                quantity={item.quantity}
+                image={item.image_url ?? ""}
+                isAvailable={item.item_available}
+                onDelete={onDelete}
+                bundleItems={item.bundle_items}
               />
             </div>
           );

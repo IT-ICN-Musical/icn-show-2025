@@ -119,24 +119,26 @@ export function BundleTicketContent({
       <div className="flex flex-row w-full justify-between py-2 items-center">
         <Typography variant="p">Select your CAT</Typography>
         <div className="flex flex-row gap-2 h-full items-center">
-          {categories?.sort().map((category) => (
-            <Button
-              key={category}
-              variant="outline"
-              onClick={() => handleCategorySelect(category)}
-              disabled={currentTicket?.max_order === 0}
-              className={cn(
-                "rounded-full h-fit py-2 px-4 border-primary-700 font-book text-primary-700 transition-colors duration-200",
-                selectedCategory !== category &&
-                  "border-neutral-100 bg-neutral-100 text-neutral-900",
-                currentTicket?.max_order === 0
-                  ? "cursor-not-allowed opacity-25 line-through"
-                  : "hover:bg-primary-700 hover:border-primary-700 hover:text-neutral-50",
-              )}
-            >
-              CAT {category}
-            </Button>
-          ))}
+          {(show.tickets ?? [])
+            .sort((a, b) => (a.category < b.category ? -1 : 1))
+            .map((cat, idx) => (
+              <Button
+                key={idx}
+                variant="outline"
+                onClick={() => handleCategorySelect(cat.category)}
+                disabled={currentTicket?.max_order === 0}
+                className={cn(
+                  "rounded-full h-fit py-2 px-4 border-primary-700 font-book text-primary-700 transition-colors duration-200",
+                  selectedCategory !== cat.category &&
+                    "border-neutral-100 bg-neutral-100 text-neutral-900",
+                  cat.max_order <= 0
+                    ? "cursor-not-allowed opacity-25 line-through"
+                    : "hover:bg-primary-700 hover:border-primary-700 hover:text-neutral-50",
+                )}
+              >
+                CAT {cat.category}
+              </Button>
+            ))}
         </div>
       </div>
       <div className="py-2 w-ful flex flex-col gap-2">

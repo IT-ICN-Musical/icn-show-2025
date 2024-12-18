@@ -80,7 +80,6 @@ function PageNavigation({
     .reduce((acc, item) => item.quantity + acc, 0);
 
   const disableAddToCart = page == lastPage && bundleCount >= MAX_BUNDLE_TOTAL;
-  alert(bundleCount);
 
   return (
     <>

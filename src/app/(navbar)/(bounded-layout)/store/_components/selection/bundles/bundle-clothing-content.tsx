@@ -1,7 +1,6 @@
 "use client";
 
 import { cn, sortSizes } from "@/lib/utils";
-import { useCartStore } from "@/store/cart";
 import { ClientBundleClothing } from "@/types/items";
 import { Minus } from "lucide-react";
 import Image from "next/image";

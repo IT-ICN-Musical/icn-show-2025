@@ -126,7 +126,7 @@ export function BundleTicketContent({
                 key={idx}
                 variant="outline"
                 onClick={() => handleCategorySelect(cat.category)}
-                disabled={currentTicket?.max_order === 0}
+                disabled={cat.max_order <= 0}
                 className={cn(
                   "rounded-full h-fit py-2 px-4 border-primary-700 font-book text-primary-700 transition-colors duration-200",
                   selectedCategory !== cat.category &&

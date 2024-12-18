@@ -1,14 +1,18 @@
-import { formatTimeRange } from "@/lib/time";
+import { formatTimeRange, formatTimeRangeSgt } from "@/lib/time";
 import { cn } from "@/lib/utils";
 import { RetrieveShowDetailsResponse } from "@/types/items";
 import { Clock12 } from "lucide-react";
 import Image from "next/image";
+import { format } from "path";
 
 import Typography from "@/components/typography/typography";
 
 import { LeftTicketBorder, RightTicketBorder } from "./ticket-borders";
 
 export function ShowCard({ show }: BundleCardProps) {
+  const startDate = new Date(show.start_time);
+  const endDate = new Date(show.end_time);
+
   return (
     <div className="w-full flex bg-inherit h-[124px] sm:h-[166px] item-start text-start">
       <LeftTicketBorder />
@@ -32,7 +36,7 @@ export function ShowCard({ show }: BundleCardProps) {
               variant="p"
             >
               <Clock12 size={12} />
-              {formatTimeRange(show.start_time, show.end_time)}
+              {formatTimeRangeSgt(startDate, endDate) + " SGT"}
             </Typography>
           </div>
           <div className="flex justify-between">

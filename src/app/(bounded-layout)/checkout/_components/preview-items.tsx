@@ -1,4 +1,4 @@
-import { formatTimeRange } from "@/lib/time";
+import { formatTimeRange, formatTimeRangeSgt } from "@/lib/time";
 import { ItemOrderPreview, PreviewOrderResponse } from "@/types/preview-order";
 
 import { GenericCardCheckout } from "./generic-card-checkout";
@@ -53,7 +53,7 @@ export function PreviewItems({
             <div key={`ticket-${index}`}>
               <ShowCardCheckout
                 name={item.name}
-                time={formatTimeRange(startTime, endTime)}
+                time={formatTimeRangeSgt(startTime, endTime) + " SGT"}
                 quantity={item.quantity}
                 image={item.image_url ?? ""}
                 isAvailable={item.item_available}

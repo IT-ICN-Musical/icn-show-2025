@@ -2,7 +2,7 @@ import { request } from "@/lib/request";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
-import { MyTicketsCard } from "../../store/_components/my-tickets-card";
+import { MyTicketsCard } from "../store/_components/my-tickets-card";
 
 export const dynamic = "force-dynamic";
 
@@ -14,11 +14,11 @@ type MyTicketsBackend = {
   viewer_id: string;
 };
 export default async function MyTickets({
-  params,
+  searchParams,
 }: {
-  params: Promise<{ slug: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
-  const emailToken = (await params).slug;
+  const emailToken = (await searchParams).token;
   const response = await request<MyTicketsBackend[]>({
     method: "GET",
     path: `v2/order/my-tickets?emailToken=${emailToken}`,
@@ -36,7 +36,10 @@ export default async function MyTickets({
       <div className="text-center text-lg">My Tickets</div>
       <div className="font-mont text-[1rem] mt-1 text-center">
         Go back to{" "}
-        <Link className="text-blue-500 " href={`/my-purchases/${emailToken}`}>
+        <Link
+          className="text-blue-500 "
+          href={`/my-purchases?token=${emailToken}`}
+        >
           My Tickets
         </Link>
         ?

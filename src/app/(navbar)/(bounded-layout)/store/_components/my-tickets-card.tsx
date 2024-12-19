@@ -2,7 +2,7 @@ import { formatTimeRangeSgt } from "@/lib/time";
 
 import Typography from "@/components/typography/typography";
 
-import { QRCode } from "../../my-tickets/[slug]/_components/qr-code";
+import { QRCode } from "../../my-tickets/_components/qr-code";
 import { LeftTicketBorder, RightTicketBorder } from "./ticket-borders";
 
 type MyTicketsCardProps = {
@@ -22,31 +22,31 @@ export function MyTicketsCard(props: MyTicketsCardProps) {
           <div>
             <Typography
               variant="p"
-              className="text-sm md:text-md text-slate-500 mb-1"
+              className="text-sm md:text-base text-slate-500 mb-1"
             >
               Name
             </Typography>
-            <Typography variant="p" className="text-xs md:text-md mb-2">
+            <Typography variant="p" className="text-xs md:text-base mb-2">
               {props.name}
             </Typography>
 
             <Typography
               variant="p"
-              className="text-sm md:text-md text-slate-500 mb-1"
+              className="text-sm md:text-base text-slate-500 mb-1"
             >
               Ticket
             </Typography>
-            <Typography variant="p" className="text-xs md:text-md  mb-2">
+            <Typography variant="p" className="text-xs md:text-base  mb-2">
               {props.show} - Cat {props.category}
             </Typography>
             <Typography
               variant="p"
-              className="text-sm md:text-md text-slate-500 mb-1"
+              className="text-sm md:text-base text-slate-500 mb-1"
             >
               Date, Time
             </Typography>
             <Typography
-              className="flex w-32 md:w-full gap-2 items-center text-xs md:text-md mb-2"
+              className="flex w-32 md:w-full gap-2 items-center text-xs md:text-base mb-2"
               variant="p"
             >
               <>
@@ -59,11 +59,11 @@ export function MyTicketsCard(props: MyTicketsCardProps) {
             </Typography>
             <Typography
               variant="p"
-              className="text-sm md:text-md text-slate-500 mb-1"
+              className="text-sm md:text-base text-slate-500 mb-1"
             >
               Venue
             </Typography>
-            <Typography variant="p" className="text-xs md:text-md mb-1">
+            <Typography variant="p" className="text-xs md:text-base mb-1">
               SOTA,{" "}
               <a
                 href="https://maps.app.goo.gl/sHrNkU3NtSHXUKCaA"

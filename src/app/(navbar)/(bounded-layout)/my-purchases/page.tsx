@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 
 import Typography from "@/components/typography/typography";
 
-import { PurchaseCard } from "../../store/_components/purchase-card";
+import { PurchaseCard } from "../store/_components/purchase-card";
 
 export const dynamic = "force-dynamic";
 
@@ -26,11 +26,11 @@ type MyPurchases = {
 };
 
 export default async function MyPurchases({
-  params,
+  searchParams,
 }: {
-  params: Promise<{ slug: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
-  const emailToken = (await params).slug;
+  const emailToken = (await searchParams).token;
   const response = await request<MyPurchases>({
     method: "GET",
     path: `v2/order/my-purchases?emailToken=${emailToken}`,
@@ -49,7 +49,10 @@ export default async function MyPurchases({
       <div className="text-center text-lg">My Purchases</div>
       <div className="font-mont text-[1rem] mt-1 text-center">
         Go back to{" "}
-        <Link className="text-blue-500 " href={`/my-tickets/${emailToken}`}>
+        <Link
+          className="text-blue-500 "
+          href={`/my-tickets?token=${emailToken}`}
+        >
           My Tickets
         </Link>
         ?

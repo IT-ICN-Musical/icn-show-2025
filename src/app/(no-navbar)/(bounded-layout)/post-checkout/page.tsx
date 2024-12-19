@@ -4,15 +4,19 @@ import { useCartStore } from "@/store/cart";
 import { ArrowRight, BadgeCheck, CheckCircle } from "lucide-react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 
 import Typography from "@/components/typography/typography";
 import { Button } from "@/components/ui/button";
 
+function RetrieveOrderID() {
+  const searchParams = useSearchParams();
+  const orderID = searchParams.get("order_id");
+  return <span className="font-mono">{orderID}</span>;
+}
+
 export default function Page() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const orderID = searchParams.get("orderID");
   const { resetCart } = useCartStore();
 
   useEffect(() => {
@@ -41,7 +45,11 @@ export default function Page() {
           className="text-sm text-center font-light"
         >
           Contact us via Telegram/WhatsApp if there are any issues with your
-          purchase (ID: <span className="font-mono">{orderID}</span>)
+          purchase (ID:{" "}
+          <Suspense>
+            <RetrieveOrderID />
+          </Suspense>
+          )
         </Typography>
         <ul className="mb-8">
           <li>

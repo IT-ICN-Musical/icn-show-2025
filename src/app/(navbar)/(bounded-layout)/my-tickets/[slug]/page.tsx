@@ -37,7 +37,7 @@ export default async function MyTickets({
       <div className="font-mont text-[1rem] mt-1 text-center">
         Go back to{" "}
         <Link className="text-blue-500 " href={`/my-purchases/${emailToken}`}>
-          My Tickets
+          My Purchases
         </Link>
         ?
       </div>

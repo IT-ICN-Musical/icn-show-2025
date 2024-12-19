@@ -6,8 +6,8 @@ import "./globals.css";
 import QueryProviders from "./providers";
 
 export const metadata: Metadata = {
-  title: "ICN 2025 Musical",
-  description: "An annual Indonesian musical theatre production",
+  title: "ICN 2025 - Senjakala: A Musical",
+  description: "TICKETS ON SALE! Ride along Arya's path of passion, pride and peril as a Yogyakartan theatre director. @SOTA Drama Theatre, 15/02",
 };
 
 export default function RootLayout({

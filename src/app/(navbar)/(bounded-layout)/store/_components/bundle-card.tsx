@@ -1,3 +1,4 @@
+import { formatTimeRangeSgt } from "@/lib/time";
 import { cn } from "@/lib/utils";
 import { RetrieveBundleDetailsResponse } from "@/types/items";
 import { Clock12, Info } from "lucide-react";
@@ -8,8 +9,10 @@ import Typography from "@/components/typography/typography";
 import { LeftTicketBorder, RightTicketBorder } from "./ticket-borders";
 
 export function BundleCard({ bundle }: BundleCardProps) {
-  const startDate = bundle.start_time ? new Date(bundle.start_time) : undefined;
-  const endDate = bundle.end_time ? new Date(bundle.end_time) : undefined;
+  const startDate = bundle.start_time
+    ? new Date(bundle.start_time)
+    : new Date();
+  const endDate = bundle.end_time ? new Date(bundle.end_time) : new Date();
 
   return (
     <div className="w-full flex bg-inherit h-[124px] sm:h-[166px] item-start text-start">
@@ -35,16 +38,7 @@ export function BundleCard({ bundle }: BundleCardProps) {
               variant="p"
             >
               <Clock12 size={12} />
-              {startDate?.toLocaleString("en-SG", {
-                timeZone: "Asia/Singapore",
-                dateStyle: "short",
-                timeStyle: "short",
-              })}{" "}
-              - {/* ASSUMING THAT THE SHOW WILL END ON THE SAME DAY */}
-              {endDate?.toLocaleString("en-SG", {
-                timeZone: "Asia/Singapore",
-                timeStyle: "short",
-              })}
+              {formatTimeRangeSgt(startDate, endDate) + " SGT"}
             </Typography>
             {bundle.description && (
               <Typography

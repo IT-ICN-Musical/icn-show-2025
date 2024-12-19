@@ -3,6 +3,7 @@
 import { checkOrder } from "@/api/order";
 import { generateOTP, verifyOTP } from "@/api/otp";
 import { useMutation } from "@tanstack/react-query";
+import { Info } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -61,7 +62,11 @@ export function VerifyEmailDialog({
           <DialogHeader>
             <DialogTitle>Verify Email</DialogTitle>
             <DialogDescription>
-              Please enter the OTP code sent to {email}
+              Enter the 6-digit OTP that has been sent to <b>{email}</b>
+              <span className="flex items-center gap-2 text-xs font-light mt-2">
+                <Info size={16} /> Didnt't receive? Make sure to check your
+                junk/spam folder.
+              </span>
             </DialogDescription>
           </DialogHeader>
           <div className="w-full py-4">
@@ -131,7 +136,7 @@ export default function Page() {
   return (
     <main className="flex w-full h-screen -my-6 items-center justify-center">
       <VerifyEmailDialog
-        onSuccess={(token) => router.push(`/my-purchases/${token}`)}
+        onSuccess={(token) => router.push(`/my-purchases?token=${token}`)}
         email={email}
         open={open}
         setOpen={setOpen}

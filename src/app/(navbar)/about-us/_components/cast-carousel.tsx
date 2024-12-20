@@ -16,31 +16,6 @@ import { Button } from "@/components/ui/button";
 import { casts } from "../_constants/casts";
 
 const CastCarousel = () => {
-  const [isLargeScreen, setIsLargeScreen] = useState(false);
-  const swiperRef = useRef<SwiperType | null>(null);
-
-  const checkScreenSize = () => {
-    if (window.innerWidth > 768) {
-      setIsLargeScreen(true);
-    } else {
-      setIsLargeScreen(false);
-    }
-  };
-
-  useEffect(() => {
-    checkScreenSize();
-    window.addEventListener("resize", checkScreenSize);
-    return () => {
-      window.removeEventListener("resize", checkScreenSize);
-    };
-  }, []);
-
-  const handleSlideClick = (index: number) => {
-    if (swiperRef.current) {
-      swiperRef.current.slideToLoop(index);
-    }
-  };
-
   const [currentCast, setCurrentCast] = useState(0);
   const cast = casts[currentCast];
 
@@ -50,8 +25,8 @@ const CastCarousel = () => {
         Featuring Casts
       </Typography>
 
-      <div className="w-full mt-8 flex flex-col items-center overflow-y-auto">
-        <div className="flex flex-row gap-2 md:gap-10 min-w-fit">
+      <div className="w-full mt-8 flex flex-col overflow-x-auto">
+        <div className="flex flex-row gap-2 md:gap-10 min-w-fit w-full">
           {casts.map((cast, idx) => {
             return (
               <Button
@@ -72,16 +47,13 @@ const CastCarousel = () => {
       <div className="w-auto h-fit pt-10 flex justify-center">
         <div className="relative w-[30rem] h-[45rem] g-white border-[16px] border-primary-800 rounded-xl overflow-visible pt-15 group box-border">
           <div className="bg-primary-800 w-full h-[50%] bg-primary-800">
-            <div className="w-full h-full rounded-lg bg-white">
-              <div className="w-full h-full relative">
-                <Image
-                  src={cast.background}
-                  alt={cast.name}
-                  fill
-                  className="object-cover object-center"
-                />
-              </div>
-
+            <div
+              className="w-full h-full rounded-lg bg-white"
+              style={{
+                backgroundImage: `url(${cast.background.src})`,
+                backgroundSize: "cover",
+              }}
+            >
               <div className="absolute inset-x-0 -top-8 h-[calc(65%+3rem)] overflow-visible">
                 <Image
                   src={cast.image}

@@ -25,7 +25,9 @@ export default function RootLayout({
         </div>
         <Analytics />
       </body>
-      <GoogleAnalytics gaId="G-CCLES963YV" />
+      {process.env.GOOGLE_ANALYTICS_ID && (
+        <GoogleAnalytics gaId={process.env.GOOGLE_ANALYTICS_ID} />
+      )}
     </html>
   );
 }

@@ -23,7 +23,6 @@ export function BundleCardCheckout({
   bundleItems,
 }: BundleCardCheckoutProps) {
   const [open, setOpen] = useState<boolean>(false);
-  console.log("bundleItems", bundleItems);
   return (
     <>
       <Accordion collapsible type="single" className="mb-2">

@@ -91,7 +91,7 @@ function Content({
               </div>
             </div>
             <hr className="border border-1" />
-            <div className="flex flex-row w-full justify-between py-2 items-center">
+            <div className="flex flex-row w-full justify-between py-2 items-center gap-16">
               <div>
                 <Typography variant="p">Number of items</Typography>
               </div>
@@ -102,9 +102,9 @@ function Content({
                 maxValue={maxAmount}
               />
             </div>
-            <div className="flex flex-row w-full justify-between py-2 items-center">
+            <div className="flex flex-row w-full justify-between py-2 items-center gap-16">
               <Typography variant="p">Size</Typography>
-              <div className="flex flex-row gap-2 h-full items-center">
+              <div className="flex flex-row gap-2 h-full items-center overflow-x-auto">
                 {sortedSizes?.map((size) => (
                   <Button
                     key={size.size}

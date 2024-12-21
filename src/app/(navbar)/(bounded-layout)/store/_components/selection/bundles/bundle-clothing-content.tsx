@@ -186,7 +186,7 @@ export function BundleClothingContent({
                     </Button>
                     <div className="flex justify-between py-2 flex-grow items-center">
                       <Typography variant="p" className="font-light">
-                        CAT {size_str} ×{value}
+                        Size {size_str} ×{value}
                       </Typography>
                       <div className="flex flex-row gap-2 h-full items-end items-center">
                         <Typography variant="p2" className="font-light">

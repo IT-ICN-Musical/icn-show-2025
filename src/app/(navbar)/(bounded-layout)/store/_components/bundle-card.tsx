@@ -33,13 +33,13 @@ export function BundleCard({ bundle }: BundleCardProps) {
             <Typography variant="p" className="text-base sm:text-xl">
               {bundle.name}
             </Typography>
-            <Typography
+            { bundle.start_time && <Typography
               className="text-[#71717As] flex gap-2 items-center text-xs sm:text-base"
               variant="p"
             >
               <Clock12 size={12} />
               {formatTimeRangeSgt(startDate, endDate) + " SGT"}
-            </Typography>
+            </Typography>}
             {bundle.description && (
               <Typography
                 className="text-[#71717As] flex gap-2 items-center text-xs sm:text-base"

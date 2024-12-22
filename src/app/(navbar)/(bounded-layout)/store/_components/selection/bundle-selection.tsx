@@ -6,7 +6,7 @@ import { useMediaQuery } from "@/hooks/use-media-query";
 import { useCartStore } from "@/store/cart";
 import { ClientBundleDetail, ClientBundleItem } from "@/types/items";
 import { useQuery } from "@tanstack/react-query";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import Typography from "@/components/typography/typography";
 import { Button } from "@/components/ui/button";
@@ -300,14 +300,23 @@ export function BundleSelection({
 
   const isDesktop = useMediaQuery(`(min-width: ${DESKTOP_MIN_WIDTH}px)`);
 
+  const loadedData = useRef<boolean>(false);
   useEffect(() => {
     if (bundleData && open) {
-      // an array of empty arrays with size of bundleItems
-      const bundleItems = bundleData?.items?.filter((item) => {
-        return item.clothing || item.show;
-      });
-      setBundleOptions(new Array(bundleItems?.length ?? 0).fill({}));
-      setCurrentPage(0);
+      if (!loadedData.current) {
+        // an array of empty arrays with size of bundleItems
+        const bundleItems = bundleData?.items?.filter((item) => {
+          return item.clothing || item.show;
+        });
+        setBundleOptions(new Array(bundleItems?.length ?? 0).fill({}));
+
+        setCurrentPage(0);
+      }
+      loadedData.current = true;
+    }
+
+    if (!open) {
+      loadedData.current = false;
     }
   }, [JSON.stringify(bundleData), open]);
 

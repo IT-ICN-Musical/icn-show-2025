@@ -3,7 +3,8 @@
 import { fetchShopItems } from "@/api/shop";
 import { useCartStore } from "@/store/cart";
 import { useQuery } from "@tanstack/react-query";
-import { ShoppingCart } from "lucide-react";
+import { Package, Shirt, ShoppingCart, Ticket } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMemo } from "react";
 
@@ -38,8 +39,19 @@ export default function Shop() {
 
     return tmp;
   }, [JSON.stringify(cart)]);
+
+  const scrolltoId = function (element_id: string) {
+    const element = document.getElementById(element_id);
+    element?.scrollIntoView({
+      behavior: "smooth",
+    });
+  };
+
   const displayMerchandise =
     (data?.clothings ?? []).length > 0 || (data?.generics ?? []).length > 0;
+
+  const displayShow = (data?.shows ?? []).length > 0;
+  const displayBundle = (data?.bundles ?? []).length > 0;
 
   const router = useRouter();
   return (
@@ -55,10 +67,61 @@ export default function Shop() {
       </Button>
       {/* TODO: Add promotion banner in the future */}
       {/*<PromotionBanner />*/}
-      <Typography variant="h4" className="font-safira-march mt-10 mb-6">
-        Ticketing
+      <Typography
+        variant="h4"
+        className="font-safira-march mt-10 mb-6 text-center"
+      >
+        Store
       </Typography>
 
+      {/* Add scroll down to */}
+      <div className="w-full bg-white flex gap-8 justify-center items-center mb-4">
+        {displayBundle && (
+          <div className="flex flex-col items-center gap-1">
+            <Button
+              variant="outline"
+              size="lg"
+              className="aspect-square px-4 py-4 h-fit"
+              onClick={() => scrolltoId("bundle-section")}
+            >
+              <Package size={28} strokeWidth={1} />
+            </Button>
+            <Typography variant="p" className="font-light text-xs">
+              Bundles
+            </Typography>
+          </div>
+        )}
+        {displayShow && (
+          <div className="flex flex-col items-center gap-1">
+            <Button
+              variant="outline"
+              size="lg"
+              className="aspect-square px-4 py-4 h-fit"
+              onClick={() => scrolltoId("show-section")}
+            >
+              <Ticket size={28} strokeWidth={1} />
+            </Button>
+            <Typography variant="p" className="font-light text-xs">
+              Tickets
+            </Typography>
+          </div>
+        )}
+        {displayMerchandise && (
+          <div className="flex flex-col items-center gap-1">
+            <Button
+              variant="outline"
+              size="lg"
+              className="aspect-square px-4 py-4 h-fit"
+              onClick={() => scrolltoId("merchandise-section")}
+            >
+              <Shirt size={28} strokeWidth={1} />
+            </Button>
+            <Typography variant="p" className="font-light text-xs">
+              Merch
+            </Typography>
+          </div>
+        )}
+      </div>
       {isLoading && (
         <div className="flex flex-col w-full gap-4  py-4 px-4">
           <Skeleton className="w-full bg-inherit h-[124px] sm:h-[166px] bg-black/20" />
@@ -66,8 +129,11 @@ export default function Shop() {
         </div>
       )}
 
-      {(data?.bundles ?? []).length > 0 && (
-        <div className="w-full flex flex-col gap-4 items-center justify-center rounded-t-3xl relative overflow-hidden py-4 px-4">
+      {displayBundle && (
+        <div
+          className="w-full flex flex-col gap-4 items-center justify-center rounded-t-3xl relative overflow-hidden py-4 px-4"
+          id="bundle-section"
+        >
           <div className="absolute h-full w-full bg-gradient-to-b from-[#FF2F3F99] to-white top-0 left-0 -z-10"></div>
           <div className="flex items-center gap-4 w-full">
             {/* Not the final form of countdown component, but might be replaced by some library component. Therefore, it will be hardcoded for now */}
@@ -81,8 +147,11 @@ export default function Shop() {
           />
         </div>
       )}
-      {(data?.shows ?? []).length > 0 && (
-        <div className="w-full flex flex-col gap-4 items-center justify-center rounded-3xl relative overflow-hidden py-4 px-4">
+      {displayShow && (
+        <div
+          className="w-full flex flex-col gap-4 items-center justify-center rounded-3xl relative overflow-hidden py-4 px-4"
+          id="show-section"
+        >
           <ShowCards cartItems={cartItemRecords} shows={data?.shows ?? []} />
         </div>
       )}
@@ -91,7 +160,7 @@ export default function Shop() {
           <Typography variant="h4" className="font-safira-march mt-10 mb-6">
             Merchandise
           </Typography>
-          <div className="flex gap-4 flex-wrap">
+          <div className="flex gap-4 flex-wrap" id="merchandise-section">
             <ClothingCards
               cartItems={cartItemRecords}
               clothings={data?.clothings ?? []}

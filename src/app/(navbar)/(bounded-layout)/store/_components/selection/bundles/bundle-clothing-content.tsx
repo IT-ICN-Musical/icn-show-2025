@@ -115,7 +115,7 @@ export function BundleClothingContent({
         />
       </div>
       <div className="flex flex-row w-full justify-between py-2 items-center gap-16">
-        <Typography variant="p">Size</Typography>
+        <Typography variant="p">Type</Typography>
         <div className="flex flex-row gap-2 h-full items-center overflow-x-auto">
           {sortedSizes?.map((size) => (
             <Button
@@ -142,6 +142,7 @@ export function BundleClothingContent({
           variant="outline"
           disabled={count === 0 || selectedSize === undefined}
           onClick={handleAddItem}
+          type="button"
         >
           Add ({availableQuota} more item{availableQuota > 1 ? "s" : ""})
         </Button>
@@ -186,7 +187,7 @@ export function BundleClothingContent({
                     </Button>
                     <div className="flex justify-between py-2 flex-grow items-center">
                       <Typography variant="p" className="font-light">
-                        Size {size_str} ×{value}
+                        Type {size_str} ×{value}
                       </Typography>
                       <div className="flex flex-row gap-2 h-full items-end items-center">
                         <Typography variant="p2" className="font-light">

@@ -33,6 +33,7 @@ export function VerifyEmailDialog({
   onSuccess: (token: string) => void;
 }) {
   const [successMessage, setSuccessMessage] = useState<string>();
+  const [errorMessage, setErrorMessage] = useState<string>();
 
   const { mutate, error, isPending, isSuccess, reset } = useMutation({
     mutationFn: verifyOTP,
@@ -40,10 +41,19 @@ export function VerifyEmailDialog({
       setSuccessMessage("Redirecting to Stripe...");
       onSuccess(data.token);
     },
+    onError: (error) => {
+      setSuccessMessage(undefined);
+      setErrorMessage("An error has occured. Please try again.");
+      console.log(error);
+    },
   });
 
   useEffect(() => {
-    if (open) reset();
+    if (open) {
+      reset();
+      setSuccessMessage(undefined);
+      setErrorMessage(undefined);
+    }
   }, [open, reset]);
 
   return (
@@ -90,6 +100,12 @@ export function VerifyEmailDialog({
               className="mt-4 text-lime-400 text-sm font-book w-full"
             >
               {successMessage}
+            </Typography>
+            <Typography
+              variant="p"
+              className="mt-4 text-red-500 text-sm font-book w-full"
+            >
+              {errorMessage}
             </Typography>
           </div>
 

@@ -30,7 +30,7 @@ export function BundleCard({ bundle }: BundleCardProps) {
         </div>
         <div className="flex flex-col py-4 pl-3 flex-grow gap-6">
           <div>
-            <Typography variant="p" className="text-md sm:text-xl">
+            <Typography variant="p" className="text-base sm:text-xl">
               {bundle.name}
             </Typography>
             <Typography

@@ -75,7 +75,6 @@ function PageNavigation({
   const { cart } = useCartStore();
 
   // HARD CODE
-
   const bundleCount = cart
     .filter((x) => x.bundle_option)
     .reduce((acc, item) => item.quantity + acc, 0);

@@ -142,7 +142,7 @@ export function BundleClothingContent({
                         <Info size={18} />
                       </Button>
                     </PopoverTrigger>
-                    <PopoverContent className="w-fit bg-white/80 backdrop-blur-xl">
+                    <PopoverContent className="w-fit bg-white/80 backdrop-blur-xl max-w-[100vw] overflow-x-auto">
                       <ClothingSizeChart />
                     </PopoverContent>
                   </Popover>

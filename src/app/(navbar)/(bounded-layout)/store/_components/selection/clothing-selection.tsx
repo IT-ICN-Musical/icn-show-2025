@@ -112,27 +112,26 @@ function Content({
               />
             </div>
             <div className="flex flex-row w-full justify-between py-2 items-center gap-16">
-              <Typography variant="p">
-                {isSpecialClothingType ? (
-                  "Type"
-                ) : (
-                  <>
-                    Size{" "}
-                    {ClothingSizeChart !== undefined && (
-                      <Popover>
-                        <PopoverTrigger>
-                          <Button variant="ghost" className="px-0 py-0">
-                            <Info size={18} />
-                          </Button>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-fit bg-white/80 backdrop-blur-xl">
-                          <ClothingSizeChart />
-                        </PopoverContent>
-                      </Popover>
-                    )}
-                  </>
-                )}
-              </Typography>
+              {isSpecialClothingType ? (
+                <Typography variant="p">Type</Typography>
+              ) : (
+                <span className="flex flex-row items-center gap-2">
+                  <Typography variant="p">Size</Typography>
+                  {ClothingSizeChart !== undefined && (
+                    <Popover>
+                      <PopoverTrigger>
+                        <Button variant="ghost" className="px-0 py-0">
+                          <Info size={18} />
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-fit bg-white/80 backdrop-blur-xl max-w-[100vw] overflow-x-auto">
+                        <ClothingSizeChart />
+                      </PopoverContent>
+                    </Popover>
+                  )}
+                </span>
+              )}
+
               <div className="flex flex-row gap-2 h-full items-center overflow-x-auto max-w-[450px]">
                 {sortedSizes?.map((size) => (
                   <Button

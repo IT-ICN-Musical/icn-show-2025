@@ -104,7 +104,7 @@ function Content({
             </div>
             <div className="flex flex-row w-full justify-between py-2 items-center gap-16">
               <Typography variant="p">Size</Typography>
-              <div className="flex flex-row gap-2 h-full items-center overflow-x-auto">
+              <div className="flex flex-row gap-2 h-full items-center overflow-x-auto max-w-[450px]">
                 {sortedSizes?.map((size) => (
                   <Button
                     key={size.size}

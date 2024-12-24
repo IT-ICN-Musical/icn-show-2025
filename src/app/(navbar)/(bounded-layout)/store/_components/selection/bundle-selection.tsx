@@ -1,6 +1,7 @@
 "use client";
 
 import { fetchBundleDetails } from "@/api/shop";
+import { MAX_BUNDLE_TOTAL } from "@/consts/settings.consts";
 import { DESKTOP_MIN_WIDTH } from "@/consts/size.consts";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { useCartStore } from "@/store/cart";
@@ -74,7 +75,7 @@ function PageNavigation({
   const { cart } = useCartStore();
 
   // HARD CODE
-  const MAX_BUNDLE_TOTAL = 3;
+
   const bundleCount = cart
     .filter((x) => x.bundle_option)
     .reduce((acc, item) => item.quantity + acc, 0);

@@ -1,6 +1,7 @@
 "use client";
 
 import { fetchShowDetails } from "@/api/shop";
+import { MAX_TICKETS_TOTAL } from "@/consts/settings.consts";
 import { DESKTOP_MIN_WIDTH } from "@/consts/size.consts";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { cn } from "@/lib/utils";
@@ -22,8 +23,6 @@ import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
 
 import { LoadingSelection } from "./loading-selection";
 import { SeatCategory } from "./seat-category";
-
-const MAX_TICKETS_TOTAL = 10;
 
 type TicketSelectionProps = {
   show: ClientShowItem;

@@ -1,6 +1,7 @@
 "use client";
 
 import { fetchClothingDetails } from "@/api/shop";
+import { SPECIAL_CLOTHING_CATEGORY } from "@/consts/settings.consts";
 import { DESKTOP_MIN_WIDTH } from "@/consts/size.consts";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { cn, sortSizes } from "@/lib/utils";
@@ -8,14 +9,21 @@ import { useCartStore } from "@/store/cart";
 import { ClientClothingItem, ClientClothingSizes } from "@/types/items";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { useQuery } from "@tanstack/react-query";
+import { Info } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
+import clothing_sizes from "@/components/clothing_sizes";
 import { Counter } from "@/components/counter";
 import Typography from "@/components/typography/typography";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 import { LoadingSelection } from "./loading-selection";
 
@@ -58,10 +66,11 @@ function Content({
   const currentCost = (currentSize?.price ?? 0) * count;
   const disableButton = selectedSize === undefined || count <= 0;
 
-  const costString = [
-    (currentCost / 100).toString(),
-    (currentCost % 100).toString().padStart(2, "0"),
-  ];
+  const isSpecialClothingType = SPECIAL_CLOTHING_CATEGORY.includes(
+    clothing.clothing_id,
+  );
+
+  const ClothingSizeChart = clothing_sizes[clothing.clothing_id];
 
   const sortedSizes = sortSizes(sizes ?? []);
 
@@ -103,8 +112,28 @@ function Content({
               />
             </div>
             <div className="flex flex-row w-full justify-between py-2 items-center gap-16">
-              <Typography variant="p">Size</Typography>
-              <div className="flex flex-row gap-2 h-full items-center overflow-x-auto">
+              <Typography variant="p">
+                {isSpecialClothingType ? (
+                  "Type"
+                ) : (
+                  <>
+                    Size{" "}
+                    {ClothingSizeChart !== undefined && (
+                      <Popover>
+                        <PopoverTrigger>
+                          <Button variant="ghost" className="px-0 py-0">
+                            <Info size={18} />
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-fit bg-white/80 backdrop-blur-xl">
+                          <ClothingSizeChart />
+                        </PopoverContent>
+                      </Popover>
+                    )}
+                  </>
+                )}
+              </Typography>
+              <div className="flex flex-row gap-2 h-full items-center overflow-x-auto max-w-[450px]">
                 {sortedSizes?.map((size) => (
                   <Button
                     key={size.size}

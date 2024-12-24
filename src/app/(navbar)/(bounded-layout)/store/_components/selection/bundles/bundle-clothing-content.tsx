@@ -1,14 +1,21 @@
 "use client";
 
+import { SPECIAL_CLOTHING_CATEGORY } from "@/consts/settings.consts";
 import { cn, sortSizes } from "@/lib/utils";
 import { ClientBundleClothing } from "@/types/items";
-import { Minus } from "lucide-react";
+import { Info, Minus } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 
+import clothing_sizes from "@/components/clothing_sizes";
 import { Counter } from "@/components/counter";
 import Typography from "@/components/typography/typography";
 import { Button } from "@/components/ui/button";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 type ClothingContentProps = {
   clothing: ClientBundleClothing;
@@ -32,6 +39,10 @@ export function BundleClothingContent({
 
   const currentSize = clothing?.sizes?.find(
     (size) => size.size === selectedSize,
+  );
+
+  const isSpecialClothingType = SPECIAL_CLOTHING_CATEGORY.includes(
+    clothing.clothing_id,
   );
 
   const sortedSizes = sortSizes(sizes ?? []);
@@ -86,6 +97,8 @@ export function BundleClothingContent({
     }
   };
 
+  const ClothingSizeChart = clothing_sizes[clothing.clothing_id];
+
   return (
     <>
       {/* Image */}
@@ -115,8 +128,30 @@ export function BundleClothingContent({
         />
       </div>
       <div className="flex flex-row w-full justify-between py-2 items-center gap-16">
-        <Typography variant="p">Type</Typography>
-        <div className="flex flex-row gap-2 h-full items-center overflow-x-auto">
+        <div>
+          <Typography variant="p" className="flex items-center gap-2">
+            {isSpecialClothingType ? (
+              "Type"
+            ) : (
+              <>
+                Size{" "}
+                {ClothingSizeChart !== undefined && (
+                  <Popover>
+                    <PopoverTrigger>
+                      <Button variant="ghost" className="px-0 py-0">
+                        <Info size={18} />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-fit bg-white/80 backdrop-blur-xl">
+                      <ClothingSizeChart />
+                    </PopoverContent>
+                  </Popover>
+                )}
+              </>
+            )}
+          </Typography>
+        </div>
+        <div className="flex flex-row gap-2 h-full items-center overflow-x-auto max-w-[450px]">
           {sortedSizes?.map((size) => (
             <Button
               key={size.size}

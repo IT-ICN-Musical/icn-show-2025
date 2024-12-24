@@ -17,7 +17,7 @@ export function currencyToString(currency: number): string {
   return (currency / 100).toFixed(2);
 }
 
-const SIZE_ORDER = ["2XS", "XS", "S", "M", "L", "XL", "2XL", "3XL"];
+const SIZE_ORDER = ["2XS", "XS", "S", "M", "L", "XL", "2XL", "3XL", "4XL"];
 
 export function sortSizes(items: ClientClothingSizes[]): ClientClothingSizes[] {
   return [...items].sort((a, b) => {

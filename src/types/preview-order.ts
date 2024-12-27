@@ -10,6 +10,7 @@ export type BundleItem = {
   name: string;
   quantity: number;
   with_viewers?: true;
+  is_flower?: boolean;
 };
 
 type itemOrderPreviewCommonDetails = {
@@ -39,6 +40,9 @@ type itemOrderAdditionalDetails = {
 
   // bundle
   bundle_items?: BundleItem[];
+
+  // flower
+  is_flower?: boolean;
 };
 
 export type ItemOrderPreview = itemOrderPreviewCommonDetails &

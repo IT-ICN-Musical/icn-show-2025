@@ -64,7 +64,7 @@ export function PreviewItems({
           );
         }
 
-        if (item.bundle_items !== undefined || item.bundle_items !== null) {
+        if (item.bundle_items !== null) {
           return (
             <div key={`bundle-${index}`} className="px-4">
               <BundleCardCheckout

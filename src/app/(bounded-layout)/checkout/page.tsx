@@ -6,6 +6,7 @@ import { previewOrder } from "@/api/preview-order";
 import { useCartStore } from "@/store/cart";
 import {
   CheckoutItemOrderRequest,
+  FlowerDetails as FlowerDetailsType,
   ViewerDetails as ViewerDetailsType,
 } from "@/types/checkout";
 import { ItemOrderPreview, PreviewOrderResponse } from "@/types/preview-order";
@@ -18,6 +19,7 @@ import { Button } from "@/components/ui/button";
 
 import { AppliedPromotionBanner } from "./_components/applied-promotion-banner";
 import { BuyerParticulars } from "./_components/buyer-particulars";
+import { FlowerDetails } from "./_components/flower-details";
 import { PreviewItems } from "./_components/preview-items";
 import { VerifyEmailDialog } from "./_components/verify-email";
 import { ViewerDetails } from "./_components/viewer-details";
@@ -54,6 +56,38 @@ function retrieveItemsWithViewers(items: ItemOrderPreview[]): {
   return { quantities: itemQuantities, name: itemNames };
 }
 
+function retrieveItemsFlowers(items: ItemOrderPreview[]): {
+  quantities: Record<string, number>;
+  name: Record<string, string>;
+} {
+  const itemQuantities: Record<string, number> = {};
+  const itemNames: Record<string, string> = {};
+
+  items.forEach((item) => {
+    if (item.is_flower) {
+      if (item.item_id in itemQuantities) {
+        itemQuantities[item.item_id] += item.quantity;
+      } else {
+        itemQuantities[item.item_id] = item.quantity;
+        itemNames[item.item_id] = item.name;
+      }
+    } else if (item.bundle_items) {
+      item.bundle_items.forEach((bundleItem) => {
+        if (bundleItem.is_flower) {
+          if (bundleItem.item_id in itemQuantities) {
+            itemQuantities[bundleItem.item_id] += bundleItem.quantity;
+          } else {
+            itemQuantities[bundleItem.item_id] = bundleItem.quantity;
+            itemNames[bundleItem.item_id] = bundleItem.name;
+          }
+        }
+      });
+    }
+  });
+
+  return { quantities: itemQuantities, name: itemNames };
+}
+
 export default function Checkout() {
   const router = useRouter();
   const promoInputRef = useRef<HTMLInputElement>(null);
@@ -76,9 +110,19 @@ export default function Checkout() {
 
   // const viewer details
   const [viewerDetails, setViewerDetails] = useState<ViewerDetailsType[]>();
+  const [flowerDetails, setFlowerDetails] = useState<FlowerDetailsType[]>();
   const viewerDetailsCompleted =
     viewerDetails &&
     viewerDetails.every((x) => x.viewers.every((viewer) => viewer !== ""));
+
+  const flowerDetailsCompleted =
+    flowerDetails &&
+    flowerDetails.every((x) =>
+      x.messages.every(
+        (message) =>
+          message.from !== "" && message.to !== "" && message.message !== "",
+      ),
+    );
 
   const { mutate: generateOTPMutate } = useMutation({
     mutationFn: generateOTP,
@@ -156,6 +200,18 @@ export default function Checkout() {
     );
   }, [orderPreview]);
 
+  const flowers = useMemo(() => {
+    const itemFlowers = retrieveItemsFlowers(orderPreview?.items ?? []);
+
+    return Object.entries(itemFlowers.quantities).map(
+      ([item_id, quantity]) => ({
+        item_id,
+        quantity,
+        name: itemFlowers.name[item_id],
+      }),
+    );
+  }, [orderPreview]);
+
   // update to empty arrays
   useEffect(() => {
     // empty array of size tickets
@@ -169,6 +225,25 @@ export default function Checkout() {
       }),
     );
   }, [tickets]);
+
+  // update to empty arrays
+  useEffect(() => {
+    // empty array of size flowers
+
+    setFlowerDetails(
+      flowers.map((x) => {
+        return {
+          item_id: x.item_id,
+          messages: Array(x.quantity).fill({
+            from: "",
+            to: "",
+            message: "",
+            delivery: false,
+          }),
+        };
+      }),
+    );
+  }, [flowers]);
 
   if (
     isLoading ||
@@ -196,14 +271,17 @@ export default function Checkout() {
             },
           );
 
-          submitCheckoutMutate({
-            buyer_email_token: token,
-            buyer_name: buyerDetails.name,
-            buyer_phone: buyerDetails.phone,
-            promo_code: promoCode,
-            items: checkoutItems,
-            viewer_details: viewerDetails,
-          });
+          if (flowerDetails) {
+            submitCheckoutMutate({
+              buyer_email_token: token,
+              buyer_name: buyerDetails.name,
+              buyer_phone: buyerDetails.phone,
+              promo_code: promoCode,
+              items: checkoutItems,
+              viewer_details: viewerDetails,
+              flower_details: flowerDetails,
+            });
+          }
         }}
       />
       <div className="w-full overflow-y-auto pt-[60px] pb-[72px]">
@@ -338,11 +416,24 @@ export default function Checkout() {
               />
             )}
           </div>
+          <div className="px-4">
+            {flowerDetails && flowerDetails.length > 0 && (
+              <FlowerDetails
+                flowers={flowers}
+                flowerDetails={flowerDetails ?? []}
+                setFlowerDetails={setFlowerDetails}
+              />
+            )}
+          </div>
           <div className="bg-white shadow-xl p-4 absolute left-0 bottom-0 w-full">
             <Button
               type="submit"
               className="bg-primary-700 rounded-lg w-full text-white text-center h-11"
-              disabled={cart.length === 0 || !viewerDetailsCompleted}
+              disabled={
+                cart.length === 0 ||
+                !viewerDetailsCompleted ||
+                !flowerDetailsCompleted
+              }
             >
               Checkout
             </Button>

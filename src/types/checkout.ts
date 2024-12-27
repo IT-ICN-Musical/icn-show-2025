@@ -14,6 +14,18 @@ export type ViewerDetails = {
   viewers: string[];
 };
 
+export type FlowerMessage = {
+  from: string;
+  to: string;
+  message: string;
+  delivery: boolean;
+};
+
+export type FlowerDetails = {
+  item_id: UUID;
+  messages: FlowerMessage[];
+};
+
 export type CheckoutRequest = {
   buyer_email_token: string;
   buyer_name: string;
@@ -21,6 +33,7 @@ export type CheckoutRequest = {
   promo_code?: string;
   items: CheckoutItemOrderRequest[];
   viewer_details: ViewerDetails[];
+  flower_details: FlowerDetails[];
 };
 
 export type CheckoutResponse = {

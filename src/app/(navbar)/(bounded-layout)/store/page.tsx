@@ -75,9 +75,9 @@ export default function Shop() {
       </Typography>
 
       {/* Add scroll down to */}
-      <div className="w-full bg-white flex gap-8 justify-center items-center mb-4">
+      <div className="w-full bg-white flex gap-4 justify-center items-center mb-4">
         {displayBundle && (
-          <div className="flex flex-col items-center gap-1">
+          <div className="flex flex-col items-center gap-1 w-24">
             <Button
               variant="outline"
               size="lg"
@@ -92,7 +92,7 @@ export default function Shop() {
           </div>
         )}
         {displayShow && (
-          <div className="flex flex-col items-center gap-1">
+          <div className="flex flex-col items-center gap-1 w-24">
             <Button
               variant="outline"
               size="lg"
@@ -107,7 +107,7 @@ export default function Shop() {
           </div>
         )}
         {displayMerchandise && (
-          <div className="flex flex-col items-center gap-1">
+          <div className="flex flex-col items-center gap-1 w-24">
             <Button
               variant="outline"
               size="lg"
@@ -117,7 +117,7 @@ export default function Shop() {
               <Shirt size={28} strokeWidth={1} />
             </Button>
             <Typography variant="p" className="font-light text-xs">
-              Merch
+              Merch/Flower
             </Typography>
           </div>
         )}
@@ -157,8 +157,11 @@ export default function Shop() {
       )}
       {displayMerchandise && (
         <>
-          <Typography variant="h4" className="font-safira-march mt-10 mb-6">
-            Merchandise
+          <Typography
+            variant="h4"
+            className="font-safira-march mt-10 mb-6 leading-10"
+          >
+            Merchandise/Flowers
           </Typography>
           <div className="flex gap-4 flex-wrap" id="merchandise-section">
             <ClothingCards

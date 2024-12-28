@@ -234,12 +234,12 @@ export default function Checkout() {
       flowers.map((x) => {
         return {
           item_id: x.item_id,
-          messages: Array(x.quantity).fill({
+          messages: Array.from({ length: x.quantity }, () => ({
             from: "",
             to: "",
             message: "",
             delivery: false,
-          }),
+          })),
         };
       }),
     );

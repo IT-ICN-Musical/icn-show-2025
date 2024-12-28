@@ -75,7 +75,7 @@ function FlowerDetailsDialog({
                   <Input
                     value={messages[index]?.from}
                     onChange={(e) => {
-                      const newFlowers = [...messages];
+                      const newFlowers = structuredClone(messages);
                       newFlowers[index].from = e.target.value;
                       setMessages(newFlowers);
                     }}
@@ -84,7 +84,7 @@ function FlowerDetailsDialog({
                   <Input
                     value={messages[index]?.to}
                     onChange={(e) => {
-                      const newFlowers = [...messages];
+                      const newFlowers = structuredClone(message);
                       newFlowers[index].to = e.target.value;
                       setMessages(newFlowers);
                     }}
@@ -93,7 +93,7 @@ function FlowerDetailsDialog({
                   <Textarea
                     value={messages[index]?.message}
                     onChange={(e) => {
-                      const newFlowers = [...messages];
+                      const newFlowers = structuredClone(message);
                       newFlowers[index].message = e.target.value;
                       setMessages(newFlowers);
                     }}
@@ -106,7 +106,7 @@ function FlowerDetailsDialog({
                     <Checkbox
                       checked={messages[index]?.delivery}
                       onCheckedChange={(checked) => {
-                        const newFlowers = [...messages];
+                        const newFlowers = structuredClone(message);
                         newFlowers[index].delivery = checked === true;
                         setMessages(newFlowers);
                       }}

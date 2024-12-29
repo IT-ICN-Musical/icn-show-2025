@@ -180,10 +180,10 @@ export default function Checkout() {
         setPromoError("");
       } else {
         setIsPromoApplied(false);
-        setPromoError("Promo code is invalid or expired");
+        setPromoError("Promo code is invalid, expired or ran out of stocks");
       }
     } catch {
-      setPromoError("Promo code is invalid or expired");
+      setPromoError("Something went wrong. Please try again.");
       setIsPromoApplied(false);
     }
   };
@@ -343,10 +343,17 @@ export default function Checkout() {
                     <Button
                       className="bg-primary-700 h-full"
                       onClick={handleApplyPromoCode}
+                      type="button"
                     >
                       Apply
                     </Button>
                   </div>
+                  <Typography
+                    variant="p"
+                    className="text-red-600 text-xs font-mont font-normal"
+                  >
+                    {promoError}
+                  </Typography>
                 </div>
               </div>
             )}

@@ -33,8 +33,7 @@ export function PurchaseCard(props: PurchaseCardProps) {
           <Image
             src={props.imageUrl}
             alt="ticket-image"
-            width={20}
-            height={20}
+            fill={true}
             className="rounded-lg sm:h-32 sm:w-32 h-20 w-20"
           />
         </div>

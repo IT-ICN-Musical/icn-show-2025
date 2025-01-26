@@ -22,7 +22,7 @@ pnpm install
 To start the application, run:
 
 ```bash
-pnpm start
+pnpm dev
 ```
 
 ### Commit Messages

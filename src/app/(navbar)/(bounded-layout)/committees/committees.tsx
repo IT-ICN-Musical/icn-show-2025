@@ -4,105 +4,138 @@ import Image from "next/image";
 import { useState } from "react";
 import { Button } from "src/components/ui/button";
 
+import Actor from "./_assets/committee/actor.jpg";
+import Cl from "./_assets/committee/cl.jpg";
+import Dancer2 from "./_assets/committee/dancer-2.jpg";
+import Dancer1 from "./_assets/committee/dancer.jpg";
+import Design from "./_assets/committee/design.jpg";
+import It from "./_assets/committee/it.jpg";
+import Mnt from "./_assets/committee/mnt.jpg";
+import Musician from "./_assets/committee/musician.jpg";
+import Muw from "./_assets/committee/muw.jpg";
+import Pubs from "./_assets/committee/pubs.jpg";
+import Setprops from "./_assets/committee/setprops.jpg";
+import Sfd from "./_assets/committee/sfd.jpg";
+import TOPSArtProd from "./_assets/committee/tops-art-prod.jpg";
+// Example imports (one per file).
+import TopsArtProd from "./_assets/committee/tops-art-prod.jpg";
+import TopsDirector from "./_assets/committee/tops-director.jpg";
+import TopsEa from "./_assets/committee/tops-ea.jpg";
+import TopsStageDir from "./_assets/committee/tops-stage-dir.jpg";
+import Welfare from "./_assets/committee/welfare.jpg";
+import Writer from "./_assets/committee/writer.jpg";
+
+// Then build your committees array with the imported images:
 const committees = [
   {
-    type: "artprod",
-    name: "TOPS & MC",
-    image_url:
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/R151_train_at_Tuas_Depot.jpg/450px-R151_train_at_Tuas_Depot.jpg",
-    rows: [
-      "Masihkah kau mengingat di saat kita masih 17?",
-      "Waktu di mana tanggal-tanggal merah terasa sungguh meriah",
-    ],
+    type: "tops",
+    name: "Art Production",
+    image_url: TopsArtProd.src,
+    rows: [],
   },
   {
     type: "artprod",
     name: "Actor/Actress",
-    image_url:
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/C751A_depot.jpg/330px-C751A_depot.jpg",
-    rows: [
-      "Masihkah kauingat cobaan terberat kita, Matematika?",
-      "Masihkah engkau ingat lagu di radio yang merdu mengudara?",
-    ],
+    image_url: Actor.src,
+    rows: [],
   },
   {
     type: "artprod",
     name: "Musician",
-    image_url:
-      "https://upload.wikimedia.org/wikipedia/commons/f/f1/2_C830_in_KCD.JPG",
-    rows: ["Kita masih sebebas itu", "Rasa takut yang tak pernah mengganggu"],
+    image_url: Musician.src,
+    rows: [],
   },
   {
     type: "artprod",
     name: "Dancer",
-    image_url:
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Bombardier_Movia_C951_mockup_020821.jpg/450px-Bombardier_Movia_C951_mockup_020821.jpg",
-    rows: ["Batas naluri bahaya", "Dulu tingginya lebihi logika"],
+    image_url: Dancer1.src,
+    rows: [],
+  },
+  {
+    // second dancer
+    type: "artprod",
+    name: "Dancer (2)",
+    image_url: Dancer2.src,
+    rows: [],
   },
   {
     type: "artprod",
     name: "Makeup & Wardrobe",
-    image_url:
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/CT251_train_interior_160521.jpg/450px-CT251_train_interior_160521.jpg",
-    rows: [
-      "Putaran Bumi dan waktu yang terus berjalan menempa kita",
-      "Walau kini kita terpisah, namun, jiwaku tetap di sana (hey)",
-    ],
+    image_url: Muw.src,
+    rows: [],
   },
   {
     type: "artprod",
     name: "Sound Effect Designer",
-    image_url:
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Percobaan_205-10_dengan_Livery_KAI_Commuter_terbaru_Tahun_2020.jpg/450px-Percobaan_205-10_dengan_Livery_KAI_Commuter_terbaru_Tahun_2020.jpg",
-    rows: ["oh, di masa", "Rasa takut yang tak pernah mengganggu"],
+    image_url: Sfd.src,
+    rows: [],
   },
   {
     type: "artprod",
     name: "Sets, Property & Equipment",
-    image_url:
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/205-series_set_148%2C_%28ex_Musashino_Line_set_M64%29%2C_Pasar_Senen%2C_Oct_2019.jpg/480px-205-series_set_148%2C_%28ex_Musashino_Line_set_M64%29%2C_Pasar_Senen%2C_Oct_2019.jpg",
-    rows: ["Di masa naluri bahaya", "Dulu tingginya lebihi logika"],
+    image_url: Setprops.src,
+    rows: [],
   },
   {
-    type: "artprod",
-    name: "Assistant State Manager",
-    image_url:
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/KRL6000Kebayoran.jpg/1920px-KRL6000Kebayoran.jpg",
-    rows: ["Muda jiwa, selamanya muda", "Kisah kita abadi selamanya"],
+    type: "tops",
+    name: "Stage Director",
+    image_url: TopsStageDir.src,
+    rows: [],
   },
   {
-    type: "extaff",
-    name: "TOPS & MC",
-    image_url:
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Jakarta_MRT_TS11_leaving_Haji_Nawi_Station.jpg/1920px-Jakarta_MRT_TS11_leaving_Haji_Nawi_Station.jpg",
-    rows: ["kita masih sebebas itu", "(Rasa takut yang tak pernah mengganggu)"],
+    type: "tops",
+    name: "External Affairs",
+    image_url: TopsEa.src,
+    rows: [],
   },
   {
     type: "extaff",
     name: "Corporate Liaison",
-    image_url:
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/LRT_Jakarta_-_Hyundai_Rotem_LRV_in_Boulevard_Utara_Station.jpg/1920px-LRT_Jakarta_-_Hyundai_Rotem_LRV_in_Boulevard_Utara_Station.jpg",
-    rows: ["(Batas naluri bahaya, oh-oh)", "(Dulu tingginya lebihi logika)"],
+    image_url: Cl.src,
+    rows: [],
   },
   {
     type: "extaff",
     name: "Marketing & Ticketing",
-    image_url:
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/LRT_Jabodebek_Bekasi_Line.jpg/1920px-LRT_Jabodebek_Bekasi_Line.jpg",
-    rows: [
-      "Sederas apa pun arus di hidupmu",
-      "Genggam terus kenangan tentang kita",
-    ],
+    image_url: Pubs.src,
+    rows: [],
+  },
+  {
+    // Additional committees inferred from filenames
+    type: "extaff",
+    name: "Publicity",
+    image_url: Design.src,
+    rows: [],
+  },
+  {
+    type: "artprod",
+    name: "Scriptwriter",
+    image_url: Writer.src,
+    rows: [],
   },
   {
     type: "extaff",
-    name: "Publicity, Publication & IT (PPIT)",
-    image_url:
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Railink_EA203_passing_Sudirman_Station.jpg/1920px-Railink_EA203_passing_Sudirman_Station.jpg",
-    rows: [
-      "Seberapa pun dewasa mengujimu",
-      "Takkan lebih dari yang engkau bisa (Dan kisah kita abadi untuk s'lama-lamanya)",
-    ],
+    name: "Information Technology",
+    image_url: It.src,
+    rows: [],
+  },
+  {
+    type: "extaff",
+    name: "Marketing & Ticketing",
+    image_url: Mnt.src,
+    rows: [],
+  },
+  {
+    type: "extaff",
+    name: "Welfare",
+    image_url: Welfare.src,
+    rows: [],
+  },
+  {
+    type: "tops",
+    name: "TOPS Director",
+    image_url: TopsDirector.src,
+    rows: [],
   },
 ];
 
@@ -157,6 +190,15 @@ export default function Committees() {
             variant="outline"
             size="lg"
             id="tablinks2"
+            onClick={() => handleTypeSelection("tops")}
+            className={buttonStyle2(selectedType === "tops")}
+          >
+            TOPS
+          </Button>
+          <Button
+            variant="outline"
+            size="lg"
+            id="tablinks2"
             onClick={() => handleTypeSelection("artprod")}
             className={buttonStyle2(selectedType === "artprod")}
           >
@@ -173,7 +215,7 @@ export default function Committees() {
           </Button>
         </div>
         <div>
-          {selectedType === "artprod" && (
+          {/* {selectedType === "artprod" && (
             <div className="flex max-w-fit overflow-x-auto max-h-max">
               <Button
                 variant="ghost"
@@ -244,17 +286,7 @@ export default function Committees() {
               >
                 Sets, Property & Equipment
               </Button>
-              <Button
-                variant="ghost"
-                size="lg"
-                id="tablinks"
-                onClick={() => handleNameSelection("Assistant State Manager")}
-                className={buttonStyle(
-                  selectedName === "Assistant State Manager",
-                )}
-              >
-                Assistant State Manager
-              </Button>
+
             </div>
           )}
           {selectedType === "extaff" && (
@@ -302,7 +334,23 @@ export default function Committees() {
                 Publicity, Publication & IT
               </Button>
             </div>
-          )}
+          )} */}
+          <div className="flex max-w-fit overflow-x-auto max-h-max">
+            {committees
+              .filter((committee) => committee.type === selectedType)
+              .map((committee, index) => (
+                <Button
+                  variant="outline"
+                  size="lg"
+                  id="tablinks2"
+                  key={index}
+                  onClick={() => handleNameSelection(committee.name)}
+                  className={buttonStyle2(selectedName === committee.name)}
+                >
+                  {committee.name}
+                </Button>
+              ))}
+          </div>
         </div>
         {filteredCommittees.map((committee, index) => (
           <div key={index}>

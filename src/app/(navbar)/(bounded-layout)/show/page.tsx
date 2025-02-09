@@ -1,4 +1,3 @@
-import Committees from "src/app/(navbar)/(unbounded-layout)/committees"
 import CastCarousel from "./_components/cast-carousel";
 
 export default function Show() {

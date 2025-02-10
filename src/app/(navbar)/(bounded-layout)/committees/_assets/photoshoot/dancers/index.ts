@@ -33,7 +33,7 @@ const DancersCommittee: Committee = {
   name: "Dancers",
   image_src: [DancerImage.src, DancerImage2.src],
   members: [
-    // Main Committee
+    // Main Committee (sorted by name)
     {
       name: "Kiara Maharani Saputra",
       image_src: KiaraMaharaniSaputra.src,
@@ -46,7 +46,7 @@ const DancersCommittee: Committee = {
       role: "Main Committee",
       course: "DSAI/2",
     },
-    // Choreographers
+    // Choreographers (sorted by name)
     {
       name: "Emmanuella Nicole",
       image_src: EmmanuellaNicole.src,
@@ -65,18 +65,12 @@ const DancersCommittee: Committee = {
       role: "Choreographer",
       course: "MSE/2",
     },
-    // Other Members (role left empty)
+    // Other Members (role left empty) sorted alphabetically by name
     {
       name: "Adhea Rezqy Moedjiyanti",
       image_src: AdheaRezqyMoedjiyanti.src,
       role: "",
       course: "EEE/1",
-    },
-    {
-      name: "Jason Lihan",
-      image_src: JasonLihan.src,
-      role: "",
-      course: "MSE/2",
     },
     {
       name: "Agatha Kristanavia",
@@ -85,22 +79,10 @@ const DancersCommittee: Committee = {
       course: "CBC/2",
     },
     {
-      name: "Justine Alexander Wijaya",
-      image_src: JustineAlexanderWijaya.src,
-      role: "",
-      course: "ENE/1",
-    },
-    {
       name: "Askana Mirza Mawlana Irfany",
       image_src: AskanaMirzaMawlanaIrfany.src,
       role: "",
       course: "MAE/2",
-    },
-    {
-      name: "Kevin Danuarta Siahaan",
-      image_src: KevinDanuartaSiahaan.src,
-      role: "",
-      course: "CEE/2",
     },
     {
       name: "Aydinahasna Huwaida Aziz",
@@ -121,16 +103,58 @@ const DancersCommittee: Committee = {
       course: "DSAI/1",
     },
     {
-      name: "Naja Andria Mumtaz",
-      image_src: NajaAndriaMumtaz.src,
+      name: "Fachri Aziz Fithriadi",
+      image_src: FachriAzizFithriadi.src,
       role: "",
-      course: "BIE/1",
+      course: "ENE/2",
+    },
+    {
+      name: "Frederick Owen Zhong",
+      image_src: FrederickOwenZhong.src,
+      role: "",
+      course: "MSE/2",
+    },
+    {
+      name: "Ivana Christabella Sudjono",
+      image_src: IvanaChristabellaSudjono.src,
+      role: "",
+      course: "CBE/1",
+    },
+    {
+      name: "Jason Jovi Brata",
+      image_src: JasonJoviBrata.src,
+      role: "",
+      course: "MSE/7",
+    },
+    {
+      name: "Jason Lihan",
+      image_src: JasonLihan.src,
+      role: "",
+      course: "MSE/2",
+    },
+    {
+      name: "Justine Alexander Wijaya",
+      image_src: JustineAlexanderWijaya.src,
+      role: "",
+      course: "ENE/1",
+    },
+    {
+      name: "Kevin Danuarta Siahaan",
+      image_src: KevinDanuartaSiahaan.src,
+      role: "",
+      course: "CEE/2",
     },
     {
       name: "Nada Shafiyah Rahmatunnisa",
       image_src: NadaShafiyah.src,
       role: "",
       course: "MSE/1",
+    },
+    {
+      name: "Naja Andria Mumtaz",
+      image_src: NajaAndriaMumtaz.src,
+      role: "",
+      course: "BIE/1",
     },
     {
       name: "Naura Reva Aulia",
@@ -143,18 +167,6 @@ const DancersCommittee: Committee = {
       image_src: RaidonJantanata.src,
       role: "",
       course: "PSY/2",
-    },
-    {
-      name: "Fachri Aziz Fithriadi",
-      image_src: FachriAzizFithriadi.src,
-      role: "",
-      course: "ENE/2",
-    },
-    {
-      name: "Frederick Owen Zhong",
-      image_src: FrederickOwenZhong.src,
-      role: "",
-      course: "MSE/2",
     },
     {
       name: "Sebastian Maximillian Martan",
@@ -173,18 +185,6 @@ const DancersCommittee: Committee = {
       image_src: VicyieJanvierRasio.src,
       role: "",
       course: "BIE/4",
-    },
-    {
-      name: "Jason Jovi Brata",
-      image_src: JasonJoviBrata.src,
-      role: "",
-      course: "MSE/7",
-    },
-    {
-      name: "Ivana Christabella Sudjono",
-      image_src: IvanaChristabellaSudjono.src,
-      role: "",
-      course: "CBE/1",
     },
   ],
 };

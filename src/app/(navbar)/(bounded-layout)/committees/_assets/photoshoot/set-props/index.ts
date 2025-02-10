@@ -20,6 +20,7 @@ const SetpropsCommittee: Committee = {
   name: "SPE",
   image_src: SetpropsImage.src,
   members: [
+    // Main Committee (sorted alphabetically)
     {
       name: "Farassyifa Fuad Salim",
       image_src: FarassyifaFuadSalim.src,
@@ -32,17 +33,12 @@ const SetpropsCommittee: Committee = {
       role: "Main Committee",
       course: "BIE/4",
     },
+    // Other Members (sorted alphabetically by name)
     {
       name: "Anastasia Koesoemo",
       image_src: AnastasyaKoesoemo.src,
       role: "",
       course: "MAS/1",
-    },
-    {
-      name: "Michael Angelo",
-      image_src: MichaelAngelo.src,
-      role: "",
-      course: "MAE/1",
     },
     {
       name: "Ariel Willy Saragi S",
@@ -51,34 +47,14 @@ const SetpropsCommittee: Committee = {
       course: "ADM/1",
     },
     {
-      name: "Mitchell Chandi Pujokusumo",
-      image_src: MitchellChandiPujokusumo.src,
-      role: "",
-      course: "CBE/1",
-    },
-    {
       name: "Celine Ruslim",
       image_src: CelineRuslim.src,
       role: "",
       course: "MAE/1",
     },
-
     {
       name: "Dafa Briliant Herdiansyah",
       image_src: DafaBriliantHerdiansyah.src,
-      role: "",
-      course: "CEE/2",
-    },
-    {
-      name: "Nicholas Henry",
-      image_src: NicholasHenry.src,
-      role: "",
-      course: "EEE/1",
-    },
-
-    {
-      name: "Rosyad Zulfikar Akbari",
-      image_src: RosyadZulfikarAkbari.src,
       role: "",
       course: "CEE/2",
     },
@@ -93,6 +69,30 @@ const SetpropsCommittee: Committee = {
       image_src: LionelOwenWijaya.src,
       role: "",
       course: "CSC/2",
+    },
+    {
+      name: "Michael Angelo",
+      image_src: MichaelAngelo.src,
+      role: "",
+      course: "MAE/1",
+    },
+    {
+      name: "Mitchell Chandi Pujokusumo",
+      image_src: MitchellChandiPujokusumo.src,
+      role: "",
+      course: "CBE/1",
+    },
+    {
+      name: "Nicholas Henry",
+      image_src: NicholasHenry.src,
+      role: "",
+      course: "EEE/1",
+    },
+    {
+      name: "Rosyad Zulfikar Akbari",
+      image_src: RosyadZulfikarAkbari.src,
+      role: "",
+      course: "CEE/2",
     },
     {
       name: "William Mulia",

@@ -236,7 +236,7 @@ export default function Committees() {
             {[committee.image_src].flat().map((image_src, index) => (
               <Image
                 key={index}
-                className="rounded-3xl"
+                className="rounded-3xl mt-2"
                 src={image_src}
                 alt={committee.name}
                 width={700}

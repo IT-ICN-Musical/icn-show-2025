@@ -16,6 +16,12 @@ const PublicationsCommittee: Committee = {
   image_src: Pubs.src,
   members: [
     {
+      name: "Federrico Hansen Budianto",
+      image_src: FederricoHansenBudianto.src,
+      role: "Main Committee",
+      course: "DSAI/2",
+    },
+    {
       name: "Joey Bastari Thamrin",
       image_src: JoeyBastariThamrin.src,
       role: "Main Committee",
@@ -32,12 +38,6 @@ const PublicationsCommittee: Committee = {
       image_src: ElbertOsvaldoYen.src,
       role: "",
       course: "MAE/3",
-    },
-    {
-      name: "Federrico Hansen Budianto",
-      image_src: FederricoHansenBudianto.src,
-      role: "Main Committee",
-      course: "DSAI/2",
     },
 
     {

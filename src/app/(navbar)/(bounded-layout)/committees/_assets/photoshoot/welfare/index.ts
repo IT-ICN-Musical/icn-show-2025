@@ -10,16 +10,16 @@ const WelfareCommittee: Committee = {
   image_src: WelfareImage.src,
   members: [
     {
-      name: "Puti Kinanti Nayla Rahmania",
-      image_src: PutiKinantiNaylaRahmania.src,
-      role: "Main Committee",
-      course: "CBE/3",
-    },
-    {
       name: "Muhammad Adam Nurkholis",
       image_src: MuhammadAdamNurkholis.src,
       role: "Main Committee",
       course: "CEE/2",
+    },
+    {
+      name: "Puti Kinanti Nayla Rahmania",
+      image_src: PutiKinantiNaylaRahmania.src,
+      role: "Main Committee",
+      course: "CBE/3",
     },
   ],
 };

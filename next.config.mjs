@@ -14,7 +14,7 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "picsum.photos",
+        hostname: "upload.wikimedia.org",
         pathname: "/**/*",
       },
     ],

@@ -39,6 +39,7 @@
     "react-dom": "^18",
     "react-phone-number-input": "^3.4.10",
     "swiper": "^11.1.14",
+    "swiper": "^11.2.2",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",
     "vaul": "^1.0.0",

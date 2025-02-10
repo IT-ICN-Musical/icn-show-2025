@@ -17,7 +17,7 @@ import WilliamMulia from "./william-mulia.jpg";
 
 const SetpropsCommittee: Committee = {
   type: "Arts & Production",
-  name: "Setprops",
+  name: "SPE",
   image_src: SetpropsImage.src,
   members: [
     {

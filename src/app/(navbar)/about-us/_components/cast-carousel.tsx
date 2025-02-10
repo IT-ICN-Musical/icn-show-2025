@@ -26,7 +26,7 @@ const CastCarousel = () => {
       </Typography>
 
       <div className="w-full mt-8 flex flex-col overflow-x-auto">
-        <div className="flex flex-row gap-2 md:gap-10 min-w-fit w-full">
+        <div className="flex flex-row gap-2 md:gap-10 w-fit md:w-full justify-center">
           {casts.map((cast, idx) => {
             return (
               <Button

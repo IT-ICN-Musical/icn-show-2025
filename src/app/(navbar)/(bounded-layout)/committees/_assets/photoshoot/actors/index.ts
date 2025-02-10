@@ -39,6 +39,12 @@ const ActorsCommittee: Committee = {
       role: "Main Committee",
       course: "BUS/2",
     },
+    {
+      name: "Floretta Setia Pradana",
+      image_src: FlorettaSetiaPradana.src,
+      role: "Main Committee",
+      course: "BS/4",
+    },
     // Group 2: Act Coach
     {
       name: "Ardi Syahda Ahmad Hakim",
@@ -50,7 +56,7 @@ const ActorsCommittee: Committee = {
       name: "Kimberly Atmadja",
       image_src: KimberlyAtmadja.src,
       role: "Act Coach",
-      course: "MSE/4",
+      course: "MSE/3",
     },
     {
       name: "Michelle Phylicia",
@@ -83,12 +89,7 @@ const ActorsCommittee: Committee = {
       role: "Vocal Coach",
       course: "MAE/4",
     },
-    {
-      name: "Floretta Setia Pradana",
-      image_src: FlorettaSetiaPradana.src,
-      role: "Vocal Director",
-      course: "BS/4",
-    },
+
     {
       name: "Josef Evan Halim",
       image_src: JosefEvanHalim.src,
@@ -99,7 +100,7 @@ const ActorsCommittee: Committee = {
     {
       name: "Brendan Alexander",
       image_src: BrendanAlexander.src,
-      role: "",
+      role: "Vocal Coach",
       course: "EEE/2",
     },
     {

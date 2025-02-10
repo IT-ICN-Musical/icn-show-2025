@@ -22,7 +22,7 @@ const InformationTechnologyCommittee: Committee = {
     {
       name: "Clayton Fernalo",
       image_src: ClaytonFernalo.src,
-      role: "Maincommittee",
+      role: "Main Committee",
       course: "CSC/3",
     },
     // Other Members

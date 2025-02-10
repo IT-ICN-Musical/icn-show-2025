@@ -5,7 +5,7 @@ import PutiKinantiNaylaRahmania from "./puti-kinanti-nayla-rahmania.jpg";
 import WelfareImage from "./welfare.jpg";
 
 const WelfareCommittee: Committee = {
-  type: "External Affairs",
+  type: "Arts & Production",
   name: "Welfare",
   image_src: WelfareImage.src,
   members: [

@@ -18,16 +18,16 @@ const SoundEffectsCommittee: Committee = {
       course: "MSE/4",
     },
     {
+      name: "Leonardo Marco Edilyn",
+      image_src: LeonardoMarcoEdilyn.src,
+      role: "Sound Advisor",
+      course: "MSE/4",
+    },
+    {
       name: "Daniel Lee",
       image_src: DanielLee.src,
       role: "",
       course: "EEE/1",
-    },
-    {
-      name: "Leonardo Marco Edilyn",
-      image_src: LeonardoMarcoEdilyn.src,
-      role: "",
-      course: "MSE/4",
     },
     {
       name: "Sayyed Muhammed Ridzwan Harahap",

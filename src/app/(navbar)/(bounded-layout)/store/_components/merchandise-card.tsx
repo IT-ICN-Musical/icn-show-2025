@@ -10,6 +10,7 @@ export function MerchandiseCard({
   name,
   price,
   className,
+  max_order,
   ...rest
 }: MerchandiseCardProps) {
   return (
@@ -20,9 +21,15 @@ export function MerchandiseCard({
         className="object-cover w-full"
       />
       <Typography variant="h4">{name}</Typography>
-      <Typography variant="p">
-        SGD <span className="font-bold text-xl">{price}</span>
-      </Typography>
+      {max_order > 0 ? (
+        <Typography variant="p">
+          SGD <span className="font-bold text-xl">{price}</span>
+        </Typography>
+      ) : (
+        <Typography variant="p">
+          <span className="font-bold text-xl">Out of stock</span>
+        </Typography>
+      )}
     </div>
   );
 }
@@ -30,4 +37,5 @@ export function MerchandiseCard({
 type MerchandiseCardProps = {
   name: string;
   price: string;
+  max_order: number;
 } & React.HTMLAttributes<HTMLDivElement>;

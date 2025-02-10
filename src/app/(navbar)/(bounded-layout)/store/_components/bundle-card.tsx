@@ -1,19 +1,21 @@
+import { formatTimeRangeSgt } from "@/lib/time";
 import { cn } from "@/lib/utils";
 import { RetrieveBundleDetailsResponse } from "@/types/items";
-import { Clock12, Info, ShoppingCart } from "lucide-react";
+import { Clock12, Info } from "lucide-react";
 import Image from "next/image";
 
-import LeftTicket from "@/app/(navbar)/(bounded-layout)/store/_assets/left-ticket.svg";
-import RightTicket from "@/app/(navbar)/(bounded-layout)/store/_assets/right-ticket.svg";
-
 import Typography from "@/components/typography/typography";
-import { Button } from "@/components/ui/button";
 
 import { LeftTicketBorder, RightTicketBorder } from "./ticket-borders";
 
 export function BundleCard({ bundle }: BundleCardProps) {
+  const startDate = bundle.start_time
+    ? new Date(bundle.start_time)
+    : new Date();
+  const endDate = bundle.end_time ? new Date(bundle.end_time) : new Date();
+
   return (
-    <div className="w-full flex bg-inherit h-[166px]">
+    <div className="w-full flex bg-inherit h-[124px] sm:h-[166px] item-start text-start">
       <LeftTicketBorder />
 
       <div className="flex items-center justify-center sm:gap-2 gap-0 flex-grow bg-white px-3 border-y border-[#D9D9D9]">
@@ -21,37 +23,47 @@ export function BundleCard({ bundle }: BundleCardProps) {
           <Image
             src={bundle.image_url ?? ""}
             alt="ticket-image"
-            width={20}
-            height={20}
+            width={166}
+            height={166}
             className="rounded-lg sm:h-32 sm:w-32 h-20 w-20"
           />
         </div>
         <div className="flex flex-col py-4 pl-3 flex-grow gap-6">
           <div>
-            <Typography variant="p" className="text-md sm:text-xl">
+            <Typography variant="p" className="text-base sm:text-xl">
               {bundle.name}
             </Typography>
-            <Typography
-              className="text-[#71717As] flex gap-2 items-center text-xs sm:text-base"
-              variant="p"
-            >
-              <Clock12 size={12} />
-              Time placeholder
-            </Typography>
-            <Typography
-              className="text-[#71717As] flex gap-2 items-center text-xs sm:text-base"
-              variant="p"
-            >
-              <Info size={12} />
-              Description placeholder
-            </Typography>
+            {bundle.start_time && (
+              <Typography
+                className="text-[#71717As] flex gap-2 items-center text-xs sm:text-base"
+                variant="p"
+              >
+                <Clock12 size={12} />
+                {formatTimeRangeSgt(startDate, endDate) + " SGT"}
+              </Typography>
+            )}
+            {bundle.description && (
+              <Typography
+                className="text-[#71717As] flex gap-2 items-center text-xs sm:text-base"
+                variant="p"
+              >
+                <Info size={12} />
+                {bundle.description}
+              </Typography>
+            )}
           </div>
           <div className="flex justify-between">
-            <BundleCardPrice
-              minPrice={(bundle.min_price / 100).toFixed(2)}
-              oldMinPrice={(bundle.old_min_price / 100).toFixed(2)}
-            />
-            <ShoppingCart className="bg-primary-700 text-white p-1 rounded-md sm:w-8 sm:h-8 h-6 w-6" />
+            {bundle.max_order ? (
+              <BundleCardPrice
+                itemId={bundle.item_id}
+                minPrice={(bundle.min_price / 100).toFixed(2)}
+                oldMinPrice={(bundle.old_min_price / 100).toFixed(2)}
+              />
+            ) : (
+              <div className="text-sm sm:text-lg font-semibold">
+                Out of stock
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -60,17 +72,44 @@ export function BundleCard({ bundle }: BundleCardProps) {
   );
 }
 
-function BundleCardPrice({ minPrice, oldMinPrice }: BundleCardPriceProps) {
+function BundleCardPrice({
+  itemId,
+  minPrice,
+  oldMinPrice,
+}: BundleCardPriceProps) {
   const isDiscounted = oldMinPrice !== minPrice;
-  return (
+
+  // HARDCODE
+  const ITEM_TICKET_BUNDLES = [
+    "e0739c9d-47e3-4c5b-8188-234b395e363c",
+    "d5ba1391-5e0a-4735-815a-89ff04895075",
+  ];
+  const isTicketBundle = ITEM_TICKET_BUNDLES.includes(itemId);
+
+  return !isTicketBundle ? (
     <div className="text-sm sm:text-lg">
+      <span className="font-book text-xs sm:text-md">from </span>
       <span className={cn(isDiscounted && "text-[#DC2626]")}>SGD</span>{" "}
+      <span className={cn("font-bold", isDiscounted && "text-[#DC2626]")}>
+        {minPrice}
+      </span>{" "}
       {isDiscounted && (
         <span className="line-through text-[#A1A1AA]">{oldMinPrice}</span>
       )}{" "}
+    </div>
+  ) : (
+    <div className="text-sm sm:text-lg">
+      <span className="font-book text-xs sm:text-md">from </span>
+      <span className={cn(isDiscounted && "text-[#DC2626]")}>SGD</span>{" "}
       <span className={cn("font-bold", isDiscounted && "text-[#DC2626]")}>
-        {minPrice}
-      </span>
+        {(parseFloat(minPrice) / 5).toFixed(2)}
+      </span>{" "}
+      {isDiscounted && oldMinPrice && (
+        <span className="line-through text-[#A1A1AA]">
+          {(parseFloat(oldMinPrice) / 5).toFixed(2)}
+        </span>
+      )}
+      <span className={cn(isDiscounted && "text-[#DC2626]")}> / ticket</span>{" "}
     </div>
   );
 }
@@ -80,6 +119,7 @@ type BundleCardProps = {
 };
 
 type BundleCardPriceProps = {
+  itemId: string;
   minPrice: string;
   oldMinPrice?: string;
 };

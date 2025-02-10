@@ -1,26 +1,28 @@
-import { formatTimeRange } from "@/lib/time";
+import { formatTimeRange, formatTimeRangeSgt } from "@/lib/time";
+import { cn } from "@/lib/utils";
 import { RetrieveShowDetailsResponse } from "@/types/items";
-import { Clock12, Info, ShoppingCart } from "lucide-react";
+import { Clock12 } from "lucide-react";
 import Image from "next/image";
-
-import LeftTicket from "@/app/(navbar)/(bounded-layout)/store/_assets/left-ticket.svg";
-import RightTicket from "@/app/(navbar)/(bounded-layout)/store/_assets/right-ticket.svg";
+import { format } from "path";
 
 import Typography from "@/components/typography/typography";
 
 import { LeftTicketBorder, RightTicketBorder } from "./ticket-borders";
 
 export function ShowCard({ show }: BundleCardProps) {
+  const startDate = new Date(show.start_time);
+  const endDate = new Date(show.end_time);
+
   return (
-    <div className="w-full flex bg-inherit h-[166px]">
+    <div className="w-full flex bg-inherit h-[124px] sm:h-[166px] item-start text-start">
       <LeftTicketBorder />
       <div className="flex items-center justify-center sm:gap-2 gap-0 bg-white flex-grow px-3 border-y border-[#D9D9D9]">
         <div>
           <Image
             src={show.image_url ?? ""}
             alt="ticket-image"
-            width={20}
-            height={20}
+            width={166}
+            height={166}
             className="rounded-lg sm:h-32 sm:w-32 h-20 w-20"
           />
         </div>
@@ -34,24 +36,25 @@ export function ShowCard({ show }: BundleCardProps) {
               variant="p"
             >
               <Clock12 size={12} />
-              {formatTimeRange(show.start_time, show.end_time)}
-            </Typography>
-            <Typography
-              className="text-[#71717As] flex gap-2 items-center text-xs sm:text-base"
-              variant="p"
-            >
-              <Info size={12} />
-              Description placeholder
+              {formatTimeRangeSgt(startDate, endDate) + " SGT"}
             </Typography>
           </div>
           <div className="flex justify-between">
-            <div className="text-sm sm:text-lg">
-              SGD{" "}
-              <span className="font-bold">
-                {(show.min_price / 100).toFixed(2)}
-              </span>
-            </div>
-            <ShoppingCart className="bg-primary-700 text-white p-1 rounded-md sm:w-8 sm:h-8 h-6 w-6" />
+            {show.max_order > 0 ? (
+              <>
+                <div className="text-sm sm:text-lg">
+                  <span className="font-book text-xs sm:text-md">from </span>
+                  SGD{" "}
+                  <span className="font-bold">
+                    {(show.min_price / 100).toFixed(2)}
+                  </span>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="text-sm sm:text-lg">Out of stock</div>
+              </>
+            )}
           </div>
         </div>
       </div>

@@ -5,13 +5,15 @@ export type PreviewOrderRequest = {
   items: CheckoutItemOrderRequest[]; // Note: orderDto.ItemOrderRequest needs to be defined separately
 };
 
-type BundleItem = {
+export type BundleItem = {
   item_id: string;
   name: string;
   quantity: number;
+  with_viewers?: true;
+  is_flower?: boolean;
 };
 
-interface itemOrderPreviewCommonDetails {
+type itemOrderPreviewCommonDetails = {
   item_id: string;
   name: string;
   image_url?: string;
@@ -21,41 +23,34 @@ interface itemOrderPreviewCommonDetails {
   unit_price: number;
 
   subtotal: number;
-}
 
-interface itemOrderPreviewCommonDetailsPromo
-  extends itemOrderPreviewCommonDetails {
-  old_unit_price: number;
-  old_subtotal: number;
-}
-
-type itemOrderPreviewTicketDetails = {
-  start_time: number;
-  end_time: number;
-  is_selling_fast: boolean;
+  old_unit_price?: number;
+  old_subtotal?: number;
 };
 
-type itemOrderPreviewClothingDetails = {
-  size: string;
+type itemOrderAdditionalDetails = {
+  // ticket
+  start_time?: number;
+  end_time?: number;
+  is_selling_fast?: boolean;
+  with_viewers?: true;
+
+  // clothing
+  size?: string;
+
+  // bundle
+  bundle_items?: BundleItem[];
+
+  // flower
+  is_flower?: boolean;
 };
 
-type itemOrderPreviewBundleDetails = {
-  bundle_items: BundleItem[];
-};
-
-type ItemOrderPreview = (
-  | itemOrderPreviewCommonDetails
-  | itemOrderPreviewCommonDetailsPromo
-) &
-  (
-    | itemOrderPreviewTicketDetails
-    | itemOrderPreviewClothingDetails
-    | itemOrderPreviewBundleDetails
-  );
+export type ItemOrderPreview = itemOrderPreviewCommonDetails &
+  itemOrderAdditionalDetails;
 
 export type PreviewOrderResponse = {
   total: number;
   old_total?: number;
   promo_available: boolean;
-  items: ItemOrderPreview[];
+  items?: ItemOrderPreview[];
 };

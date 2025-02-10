@@ -1,7 +1,7 @@
 import ICNLogo from "@/_assets/logo.png";
 import { cn } from "@/lib/utils";
 import { HamburgerMenuIcon } from "@radix-ui/react-icons";
-import { Clapperboard, House, Info, Store } from "lucide-react";
+import { House, Info, Store } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -30,11 +30,11 @@ const navItems = [
     href: "/store",
     icon: <Store width={20} />,
   },
-  {
-    name: "Show",
-    href: "/show",
-    icon: <Clapperboard width={20} />,
-  },
+  //   {
+  //     name: "Show",
+  //     href: "/show",
+  //     icon: <Clapperboard width={20} />,
+  //   },
   {
     name: "About Us",
     href: "/about-us",
@@ -42,24 +42,49 @@ const navItems = [
   },
 ];
 
-export function Navbar() {
+export function Navbar({
+  className,
+  desktopClassName,
+  mobileClassName,
+  landingMode,
+}: {
+  className?: string;
+  desktopClassName?: string;
+  mobileClassName?: string;
+  landingMode?: boolean;
+}) {
   return (
     <>
-      <DesktopNavbar className="hidden lg:flex" />
-      <MobileNavbar className="lg:hidden" />
+      <DesktopNavbar
+        className={cn("hidden lg:flex", className, desktopClassName)}
+        landingMode={landingMode}
+      />
+      <MobileNavbar className={cn("lg:hidden", className, mobileClassName)} />
     </>
   );
 }
 
-function DesktopNavbar({ className }: { className?: string }) {
+function DesktopNavbar({
+  className,
+  landingMode,
+}: {
+  className?: string;
+  landingMode?: boolean;
+}) {
   return (
     <nav
       className={cn(
-        "flex flex-col items-center sticky top-0 px-6 py-4 bg-white z-50",
+        "flex flex-col items-center sticky top-0 z-40",
+        landingMode ? "bg-none transition-transform duration-1000" : "bg-white",
         className,
       )}
     >
-      <div className="flex flex-row justify-between items-center w-full max-w-3xl">
+      <div
+        className={cn(
+          "flex flex-row justify-between items-center w-full max-w-3xl px-6 py-4 bg-white",
+          landingMode ? "rounded-full mt-8" : "",
+        )}
+      >
         <Image src={ICNLogo} alt="ICN 2025 Musical" width={54} height={54} />
         <div>
           <NavigationMenu>

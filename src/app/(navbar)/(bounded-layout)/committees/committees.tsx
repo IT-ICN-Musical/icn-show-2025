@@ -1,157 +1,33 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Button } from "src/components/ui/button";
 
-import Actor from "./_assets/committee/actor.jpg";
-import Cl from "./_assets/committee/cl.jpg";
-import Dancer2 from "./_assets/committee/dancer-2.jpg";
-import Dancer1 from "./_assets/committee/dancer.jpg";
-import Design from "./_assets/committee/design.jpg";
-import It from "./_assets/committee/it.jpg";
-import Mnt from "./_assets/committee/mnt.jpg";
-import Musician from "./_assets/committee/musician.jpg";
-import Muw from "./_assets/committee/muw.jpg";
-import Pubs from "./_assets/committee/pubs.jpg";
-import Setprops from "./_assets/committee/setprops.jpg";
-import Sfd from "./_assets/committee/sfd.jpg";
-import TOPSArtProd from "./_assets/committee/tops-art-prod.jpg";
-// Example imports (one per file).
-import TopsArtProd from "./_assets/committee/tops-art-prod.jpg";
-import TopsDirector from "./_assets/committee/tops-director.jpg";
-import TopsEa from "./_assets/committee/tops-ea.jpg";
-import TopsStageDir from "./_assets/committee/tops-stage-dir.jpg";
-import Welfare from "./_assets/committee/welfare.jpg";
-import Writer from "./_assets/committee/writer.jpg";
+import committees from "./_assets/photoshoot";
 
-// Then build your committees array with the imported images:
-const committees = [
-  {
-    type: "tops",
-    name: "Art Production",
-    image_url: TopsArtProd.src,
-    rows: [],
-  },
-  {
-    type: "artprod",
-    name: "Actor/Actress",
-    image_url: Actor.src,
-    rows: [],
-  },
-  {
-    type: "artprod",
-    name: "Musician",
-    image_url: Musician.src,
-    rows: [],
-  },
-  {
-    type: "artprod",
-    name: "Dancer",
-    image_url: Dancer1.src,
-    rows: [],
-  },
-  {
-    // second dancer
-    type: "artprod",
-    name: "Dancer (2)",
-    image_url: Dancer2.src,
-    rows: [],
-  },
-  {
-    type: "artprod",
-    name: "Makeup & Wardrobe",
-    image_url: Muw.src,
-    rows: [],
-  },
-  {
-    type: "artprod",
-    name: "Sound Effect Designer",
-    image_url: Sfd.src,
-    rows: [],
-  },
-  {
-    type: "artprod",
-    name: "Sets, Property & Equipment",
-    image_url: Setprops.src,
-    rows: [],
-  },
-  {
-    type: "tops",
-    name: "Stage Director",
-    image_url: TopsStageDir.src,
-    rows: [],
-  },
-  {
-    type: "tops",
-    name: "External Affairs",
-    image_url: TopsEa.src,
-    rows: [],
-  },
-  {
-    type: "extaff",
-    name: "Corporate Liaison",
-    image_url: Cl.src,
-    rows: [],
-  },
-  {
-    type: "extaff",
-    name: "Marketing & Ticketing",
-    image_url: Pubs.src,
-    rows: [],
-  },
-  {
-    // Additional committees inferred from filenames
-    type: "extaff",
-    name: "Publicity",
-    image_url: Design.src,
-    rows: [],
-  },
-  {
-    type: "artprod",
-    name: "Scriptwriter",
-    image_url: Writer.src,
-    rows: [],
-  },
-  {
-    type: "extaff",
-    name: "Information Technology",
-    image_url: It.src,
-    rows: [],
-  },
-  {
-    type: "extaff",
-    name: "Marketing & Ticketing",
-    image_url: Mnt.src,
-    rows: [],
-  },
-  {
-    type: "extaff",
-    name: "Welfare",
-    image_url: Welfare.src,
-    rows: [],
-  },
-  {
-    type: "tops",
-    name: "TOPS Director",
-    image_url: TopsDirector.src,
-    rows: [],
-  },
-];
+function onlyUnique<T>(value: T, index: number, array: T[]) {
+  return array.indexOf(value) === index;
+}
 
 export default function Committees() {
-  const [selectedType, setSelectedType] = useState("artprod");
-  const [selectedName, setSelectedName] = useState("TOPS & MC");
+  const [selectedType, setSelectedType] = useState("Arts & Production");
+  const [selectedName, setSelectedName] = useState("Actors");
   const [filteredCommittees, setFilteredCommittees] = useState(
     committees.filter(
       (committee) =>
-        committee.type === "artprod" && committee.name === "TOPS & MC",
+        committee.type === "Arts & Production" && committee.name === "Actors",
     ),
   );
 
   const handleTypeSelection = (type: string) => {
     setSelectedType(type);
-    const defaultName = type === "artprod" ? "TOPS & MC" : "TOPS & MC";
+    const defaultName =
+      type === "Arts & Production"
+        ? "Actors"
+        : type === "External Affairs"
+          ? "Corporate Liaison"
+          : "TOPS";
     setSelectedName(defaultName);
     setFilteredCommittees(
       committees.filter(
@@ -179,6 +55,11 @@ export default function Committees() {
       ? "bg-white text-primary-700 border-2 border-primary-700 rounded-[40px] text-[18px] flex-none p-[10px] m-[10px]"
       : "bg-secondary-300 text-black rounded-[40px] text-[18px] flex-none p-[10px] m-[10px]";
 
+  // return type list unique
+  const committeeList = useMemo(() => {
+    return committees.map((committee) => committee.type).filter(onlyUnique);
+  }, []);
+
   return (
     <main>
       <main className="font-safira-march">
@@ -186,33 +67,30 @@ export default function Committees() {
       </main>
       <div className="--font-mont">
         <div className="flex max-w-fit overflow-x-auto max-h-max">
-          <Button
-            variant="outline"
-            size="lg"
-            id="tablinks2"
-            onClick={() => handleTypeSelection("tops")}
-            className={buttonStyle2(selectedType === "tops")}
-          >
-            TOPS
-          </Button>
-          <Button
-            variant="outline"
-            size="lg"
-            id="tablinks2"
-            onClick={() => handleTypeSelection("artprod")}
-            className={buttonStyle2(selectedType === "artprod")}
-          >
-            Arts & Productions
-          </Button>
-          <Button
-            variant="outline"
-            size="lg"
-            id="tablinks2"
-            onClick={() => handleTypeSelection("extaff")}
-            className={buttonStyle2(selectedType === "extaff")}
-          >
-            External Affairs
-          </Button>
+          {/* {committees.map((committee, index) => (
+            <Button
+              variant="outline"
+              size="lg"
+              id="tablinks2"
+              key={index}
+              onClick={() => handleTypeSelection(committee.type)}
+              className={buttonStyle2(selectedType === committee.type)}
+            >
+              {committee.type}
+            </Button>
+          ))} */}
+          {committeeList.map((type, index) => (
+            <Button
+              variant="outline"
+              size="lg"
+              id="tablinks2"
+              key={index}
+              onClick={() => handleTypeSelection(type)}
+              className={buttonStyle2(selectedType === type)}
+            >
+              {type}
+            </Button>
+          ))}
         </div>
         <div>
           {/* {selectedType === "artprod" && (
@@ -336,35 +214,61 @@ export default function Committees() {
             </div>
           )} */}
           <div className="flex max-w-fit overflow-x-auto max-h-max">
-            {committees
-              .filter((committee) => committee.type === selectedType)
-              .map((committee, index) => (
-                <Button
-                  variant="outline"
-                  size="lg"
-                  id="tablinks2"
-                  key={index}
-                  onClick={() => handleNameSelection(committee.name)}
-                  className={buttonStyle2(selectedName === committee.name)}
-                >
-                  {committee.name}
-                </Button>
-              ))}
+            {selectedType !== "TOPS" &&
+              committees
+                .filter((committee) => committee.type === selectedType)
+                .map((committee, index) => (
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    id="tablinks2"
+                    key={index}
+                    onClick={() => handleNameSelection(committee.name)}
+                    className={buttonStyle2(selectedName === committee.name)}
+                  >
+                    {committee.name}
+                  </Button>
+                ))}
           </div>
         </div>
-        {filteredCommittees.map((committee, index) => (
-          <div key={index}>
-            <Image
-              src={committee.image_url}
-              alt={committee.name}
-              width={900}
-              height={900}
-            />
-            <p>
-              {committee.rows[0]}
-              <br />
-              {committee.rows[1]}
-            </p>
+        {filteredCommittees.map((committee, idx1) => (
+          <div key={idx1}>
+            {[committee.image_src].flat().map((image_src, index) => (
+              <Image
+                key={index}
+                className="rounded-3xl"
+                src={image_src}
+                alt={committee.name}
+                width={700}
+                height={700}
+                quality={85}
+              />
+            ))}
+            <div className="mt-4 w-full grid grid-cols-1 md:grid-cols-2 gap-4">
+              {committee.members.map((member, idx2) => {
+                return (
+                  <div key={`${idx1}-${idx2}`} className="p-8">
+                    <Image
+                      className="rounded-3xl"
+                      src={member.image_src}
+                      alt={member.name}
+                      width={700}
+                      height={700}
+                      quality={85}
+                    />
+                    <p className="mt-2 text-center font-mont-safira">
+                      {member.name}
+                    </p>
+                    <p className="text-center font-mont-safira text-sm text-slate-400">
+                      {member.course}
+                    </p>
+                    <p className="text-center text-slate-600 text-sm">
+                      {member.role}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         ))}
       </div>

@@ -64,6 +64,3 @@
     @apply bg-background text-foreground;
   }
 }
-.swiper-slide {
-  width: auto !important;
-}

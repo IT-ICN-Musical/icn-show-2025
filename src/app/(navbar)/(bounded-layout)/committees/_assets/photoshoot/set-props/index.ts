@@ -11,6 +11,7 @@ import MichaelAngelo from "./michael-angelo.jpg";
 import MitchellChandiPujokusumo from "./mitchell-chandi-pujokusumo.jpg";
 import MuhammadRajaJauhari from "./muhammad-raja-jauhari.jpg";
 import NicholasHenry from "./nicholas-henry.jpg";
+import PrasastiSuksmaArundhati from "./prasasti-suksma-arundhati.jpg";
 import RosyadZulfikarAkbari from "./rosyad-zulfikar-akbari.jpg";
 import SetpropsImage from "./setprops.jpg";
 import WilliamMulia from "./william-mulia.jpg";
@@ -87,6 +88,12 @@ const SetpropsCommittee: Committee = {
       image_src: NicholasHenry.src,
       role: "",
       course: "EEE/1",
+    },
+    {
+      name: "Prasasti Suksma Arundhati",
+      image_src: PrasastiSuksmaArundhati.src,
+      role: "",
+      course: "PPGA/2",
     },
     {
       name: "Rosyad Zulfikar Akbari",

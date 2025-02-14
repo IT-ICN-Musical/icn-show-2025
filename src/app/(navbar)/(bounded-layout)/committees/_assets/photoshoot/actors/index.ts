@@ -116,7 +116,7 @@ const ActorsCommittee: Committee = {
       course: "CEE/2",
     },
     {
-      name: "Frederick Hanson",
+      name: "Frederik Hanson",
       image_src: FrederickHanson.src,
       role: "",
       course: "EEE/4",

@@ -40,7 +40,7 @@ export default async function MyTickets({
           className="text-blue-500 "
           href={`/my-purchases?token=${emailToken}`}
         >
-          My Tickets
+          My Purchases
         </Link>
         ?
       </div>

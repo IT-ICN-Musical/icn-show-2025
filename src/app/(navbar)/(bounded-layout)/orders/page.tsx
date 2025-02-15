@@ -136,7 +136,7 @@ export default function Page() {
   return (
     <main className="flex w-full h-screen -my-6 items-center justify-center">
       <VerifyEmailDialog
-        onSuccess={(token) => router.push(`/my-purchases?token=${token}`)}
+        onSuccess={(token) => router.push(`/my-tickets?token=${token}`)}
         email={email}
         open={open}
         setOpen={setOpen}

@@ -38,7 +38,7 @@ export default async function MyTickets({
         Go back to{" "}
         <Link
           className="text-blue-500 "
-          href={`/my-tickets?token=${emailToken}`}
+          href={`/my-purchases?token=${emailToken}`}
         >
           My Purchases
         </Link>

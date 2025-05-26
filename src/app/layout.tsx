@@ -9,7 +9,11 @@ import QueryProviders from "./providers";
 export const metadata: Metadata = {
   title: "ICN 2025 - Senjakala: A Musical",
   description:
-    "TICKETS ON SALE! Ride along Arya's path of passion, pride and peril as a Yogyakartan theatre director. @SOTA Drama Theatre, 15/02",
+    "Ride along Arya's path of passion, pride and peril as a Yogyakartan theatre director. @SOTA Drama Theatre, 15/02",
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 export default function RootLayout({
@@ -19,6 +23,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${mont.variable} ${safiraMarch.variable}`}>
+      <head>
+        <meta name="robots" content="noindex,nofollow" />
+      </head>
       <body className={mont.className}>
         <div className="relative min-h-screen w-full flex flex-col">
           <QueryProviders>{children}</QueryProviders>
